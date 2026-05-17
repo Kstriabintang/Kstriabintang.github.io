@@ -102,7 +102,5 @@ export const id: typeof en = {
     rights: 'Seluruh hak cipta dilindungi.',
     quickLinks: 'Tautan Cepat',
     connect: 'Terhubung',
-    builtWith: 'Dibuat dengan React + Tailwind CSS',
-    madeIn: 'Dibuat di Indonesia 🇮🇩',
   },
 }
