@@ -49,9 +49,6 @@ export default function Footer() {
             <p className="font-inter text-sm text-text-muted">
               {t.footer.tagline}
             </p>
-            <p className="font-jetbrains text-xs text-text-muted mt-4">
-              &copy; {new Date().getFullYear()} Ksatria Bintang Samudra. {t.footer.rights}
-            </p>
           </div>
 
           {/* Quick Links Column */}
@@ -95,16 +92,13 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar — Copyright */}
         <div
-          className="mt-10 pt-4 flex flex-col sm:flex-row items-center justify-between gap-2"
+          className="mt-10 pt-4 flex items-center justify-center"
           style={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}
         >
-          <p className="font-jetbrains text-[11px] text-text-muted">
-            {t.footer.builtWith}
-          </p>
-          <p className="font-jetbrains text-[11px] text-text-muted">
-            {t.footer.madeIn}
+          <p className="font-jetbrains text-[11px] text-text-muted text-center">
+            &copy; {new Date().getFullYear()} Ksatria Bintang Samudra. {t.footer.rights}
           </p>
         </div>
       </div>

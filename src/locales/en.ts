@@ -100,7 +100,5 @@ export const en = {
     rights: 'All rights reserved.',
     quickLinks: 'Quick Links',
     connect: 'Connect',
-    builtWith: 'Built with React + Tailwind CSS',
-    madeIn: 'Built in Indonesia 🇮🇩',
   },
 }
