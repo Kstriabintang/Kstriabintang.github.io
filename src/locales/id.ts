@@ -103,6 +103,6 @@ export const id: typeof en = {
     quickLinks: 'Tautan Cepat',
     connect: 'Terhubung',
     builtWith: 'Dibuat dengan React + Tailwind CSS',
-    madeIn: 'Dibuat dengan ❤ di Indonesia • 🇮🇩',
+    madeIn: 'Dibuat di Indonesia 🇮🇩',
   },
 }

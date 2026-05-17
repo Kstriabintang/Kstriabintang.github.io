@@ -101,6 +101,6 @@ export const en = {
     quickLinks: 'Quick Links',
     connect: 'Connect',
     builtWith: 'Built with React + Tailwind CSS',
-    madeIn: 'Made with ❤ in Indonesia • 🇮🇩',
+    madeIn: 'Built in Indonesia 🇮🇩',
   },
 }
