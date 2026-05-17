@@ -124,4 +124,4 @@ MIT — feel free to fork as a template.
 
 ---
 
-**Crafted with 💜 by Ksatria Bintang Samudra** · Pontianak, Indonesia 🇮🇩
+**Crafted by Ksatria Bintang Samudra** · Pontianak, Indonesia 🇮🇩
