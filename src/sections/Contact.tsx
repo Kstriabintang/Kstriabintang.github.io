@@ -411,7 +411,7 @@ export default function Contact() {
           {/* Download CV — Secondary button */}
           <Magnetic>
             <a
-              href="/cv.pdf"
+              href="/cv/ksatria-cv-ai-engineer.pdf"
               download="Ksatria-Bintang-Samudra-CV.pdf"
               className="btn-secondary inline-flex items-center justify-center gap-2 font-inter font-semibold text-base"
               style={{ textDecoration: 'none' }}

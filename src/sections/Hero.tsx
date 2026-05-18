@@ -238,9 +238,10 @@ export default function Hero() {
         {/* Description */}
         <p
           ref={descRef}
-          className="mt-6 font-inter text-lg text-text-secondary max-w-[500px]"
+          className="mt-6 font-inter text-base md:text-lg text-text-secondary max-w-[640px]"
+          style={{ lineHeight: 1.65 }}
         >
-          {t.hero.tagline}
+          {t.hero.body}
         </p>
 
         {/* CTA Buttons */}
@@ -256,11 +257,11 @@ export default function Hero() {
           </Magnetic>
           <Magnetic>
             <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, '#contact')}
+              href="/cv/ksatria-cv-ai-engineer.pdf"
+              download="Ksatria-Bintang-Samudra-CV.pdf"
               className="btn-secondary inline-flex items-center justify-center w-full sm:w-auto"
             >
-              {t.hero.contactMe}
+              {t.hero.downloadCV}
             </a>
           </Magnetic>
         </div>

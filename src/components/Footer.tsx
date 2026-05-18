@@ -13,6 +13,7 @@ export default function Footer() {
   const { t } = useTranslation();
   const quickLinks = [
     { label: t.nav.about, href: '#about' },
+    { label: t.nav.howIWork, href: '#how-i-work' },
     { label: t.nav.skills, href: '#skills' },
     { label: t.nav.experience, href: '#experience' },
     { label: t.nav.projects, href: '#projects' },

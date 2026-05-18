@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import Hero from '@/sections/Hero'
 
 const About = lazy(() => import('@/sections/About'))
+const HowIWork = lazy(() => import('@/sections/HowIWork'))
 const Skills = lazy(() => import('@/sections/Skills'))
 const Experience = lazy(() => import('@/sections/Experience'))
 const Projects = lazy(() => import('@/sections/Projects'))
@@ -39,6 +40,9 @@ export default function Home() {
         <About />
       </Suspense>
       <Suspense fallback={<SectionSkeleton tone="b" />}>
+        <HowIWork />
+      </Suspense>
+      <Suspense fallback={<SectionSkeleton tone="a" />}>
         <Skills />
       </Suspense>
       <Suspense fallback={<SectionSkeleton tone="a" />}>

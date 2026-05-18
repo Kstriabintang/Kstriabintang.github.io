@@ -1,6 +1,7 @@
 export const en = {
   nav: {
     about: 'About',
+    howIWork: 'How I Work',
     skills: 'Skills',
     experience: 'Experience',
     projects: 'Projects',
@@ -11,10 +12,12 @@ export const en = {
   hero: {
     greeting: "Hello, I'm",
     name: 'Ksatria Bintang Samudra',
-    typed: ['Full Stack Developer', 'Bug Hunter', 'Bot Builder'],
-    tagline: 'Secure it. Build it. Automate it.',
-    viewWork: 'View My Work',
-    contactMe: 'Contact Me',
+    typed: ['AI Engineer', 'Automation Builder', 'Solutions Architect'],
+    tagline: 'AI Engineer · Automation Builder · Solutions Architect',
+    body:
+      'I ship production software through AI-augmented engineering workflows. Pairing fluent prompt engineering with end-to-end architectural understanding to build payment-integrated platforms, automation bots, and security tooling — at unusual speed, without compromising rigor.',
+    viewWork: 'View Projects',
+    downloadCV: 'Download CV',
   },
   about: {
     sectionNumber: '02.',
@@ -42,20 +45,45 @@ export const en = {
     quoteAuthor: 'Kevin Mitnick',
     funFact: 'Fun Fact: I break things to make them stronger',
   },
-  skills: {
+  howIWork: {
     sectionNumber: '03.',
+    sectionTitle: 'How I Work',
+    paragraphs: [
+      "I'm an AI-native engineer. Every project starts with a clear specification, then I orchestrate modern AI tooling — Claude, Cursor, v0, Lovable, custom prompt chains — to translate that spec into production code at high velocity. I read every line the AI produces, verify the architecture, and own every trade-off.",
+      'The result: products that ship in days instead of weeks, held to the same quality bar as traditional development — because I think in systems, not just in features.',
+    ],
+    pillars: [
+      {
+        title: 'Spec-driven',
+        body: 'Every build begins with a clear specification: scope, constraints, contracts, acceptance criteria. The AI inherits the spec, never the guesswork.',
+      },
+      {
+        title: 'AI-orchestrated',
+        body: 'Claude, Cursor, v0, Lovable, custom prompt chains. The right tool for the right layer — not a single hammer chasing every nail.',
+      },
+      {
+        title: 'Human-verified',
+        body: 'Every architectural decision, every security boundary, every trade-off — owned by me. The AI accelerates; the engineering stays mine.',
+      },
+    ],
+  },
+  skills: {
+    sectionNumber: '04.',
     sectionTitle: 'Tech Stack',
     sectionSubtitle: 'Tools & technologies I work with',
     categories: {
+      'AI & Workflow': 'AI & Workflow',
+      Languages: 'Languages',
       Frontend: 'Frontend',
       Backend: 'Backend',
-      Database: 'Database',
+      Data: 'Data',
       Security: 'Security',
-      Tools: 'Tools',
+      Automation: 'Automation',
+      Platforms: 'Platforms',
     },
   },
   experience: {
-    sectionNumber: '04.',
+    sectionNumber: '05.',
     sectionTitle: 'Experience',
     sectionSubtitle: 'My professional journey',
     current: 'Current',
@@ -67,20 +95,37 @@ export const en = {
     },
   },
   projects: {
-    sectionNumber: '05.',
-    sectionTitle: 'Projects',
-    sectionSubtitle: 'Featured work from my GitHub repositories',
+    sectionNumber: '06.',
+    sectionTitle: 'Selected Projects',
+    sectionSubtitle: 'Production work I own end-to-end',
     viewOnGithub: 'View on GitHub',
     viewAll: 'View All Projects on GitHub',
+    items: {
+      aktifinimei: {
+        title: 'aktifinIMEI — iPhone IMEI Activation Platform',
+        description:
+          'Production iPhone IMEI activation service for the Indonesian market. End-to-end payment-to-fulfilment pipeline integrating QRIS, automated order tracking, and customer notification.',
+      },
+      portfolio: {
+        title: 'Personal Portfolio Site',
+        description:
+          'Bilingual developer portfolio with custom GSAP animations, ⌘K command palette, and an aggressive 94 KB gzipped initial-load budget.',
+      },
+      linkTracker: {
+        title: 'Link Tracker — Visitor Intelligence Utility',
+        description:
+          'Self-hosted utility for generating trackable short links and capturing visitor metadata — built for marketing attribution and authorised OSINT.',
+      },
+    },
   },
   certificates: {
-    sectionNumber: '06.',
+    sectionNumber: '07.',
     sectionTitle: 'Certificates',
     sectionSubtitle: 'Professional certifications & credentials',
     verified: 'Verified',
   },
   contact: {
-    sectionNumber: '07.',
+    sectionNumber: '08.',
     sectionTitle: 'Get In Touch',
     sectionSubtitle: "Let's build something amazing together",
     letsTalk: "Let's Talk",
@@ -96,7 +141,7 @@ export const en = {
     availability: 'Available for freelance projects',
   },
   footer: {
-    tagline: 'Secure it. Build it. Automate it.',
+    tagline: 'AI Engineer · Automation Builder · Solutions Architect',
     rights: 'All rights reserved.',
     quickLinks: 'Quick Links',
     connect: 'Connect',
