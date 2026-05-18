@@ -36,7 +36,7 @@ const COMMANDS: Record<string, (arg: string) => string> = {
   ].join('\n'),
 
   whoami: () =>
-    'ksatria — full stack dev / bug hunter / bot builder.\nPontianak, Indonesia. Coffee-powered. Coded since the first laptop overheat.',
+    'ksatria — ai engineer / automation builder / solutions architect.\nPontianak, Indonesia. Spec-driven, AI-orchestrated, human-verified.',
 
   ls: () =>
     'secret.txt   contact.txt   skills.json   .ssh/   projects/   wisdom.md',
@@ -74,11 +74,12 @@ const COMMANDS: Record<string, (arg: string) => string> = {
 
   skills: () =>
     [
-      'frontend  : React, Next.js, TypeScript, Tailwind',
+      'ai        : Claude, GPT, Cursor, v0, Lovable, prompt-engineering',
+      'frontend  : React, Next.js, TypeScript, Tailwind, GSAP, Vite',
       'backend   : Node.js, Express, Flask, FastAPI, Python',
-      'database  : MongoDB, MySQL, PostgreSQL, Firebase',
-      'security  : Pentest, OWASP, Vulnerability Research',
-      'tools     : Git, Docker, Linux, GWS, Excel, VS Code',
+      'data      : PostgreSQL, MySQL, MongoDB, Firebase',
+      'security  : Pentest, OWASP, Vuln-Assessment, Burp Suite',
+      'platforms : Git, GitHub, Docker, Linux, Google Workspace',
     ].join('\n'),
 
   social: () =>

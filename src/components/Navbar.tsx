@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 import { useTranslation } from '@/lib/i18n';
 import { useActiveSection } from '@/hooks/use-active-section';
 
-const SECTION_IDS = ['about', 'skills', 'experience', 'projects', 'certificates', 'contact'];
+const SECTION_IDS = ['about', 'how-i-work', 'skills', 'experience', 'projects', 'certificates', 'contact'];
 
 export default function Navbar() {
   const { t, locale, toggle } = useTranslation();
@@ -15,6 +15,7 @@ export default function Navbar() {
   const navLinks = useMemo(
     () => [
       { id: 'about', label: t.nav.about, href: '#about' },
+      { id: 'how-i-work', label: t.nav.howIWork, href: '#how-i-work' },
       { id: 'skills', label: t.nav.skills, href: '#skills' },
       { id: 'experience', label: t.nav.experience, href: '#experience' },
       { id: 'projects', label: t.nav.projects, href: '#projects' },

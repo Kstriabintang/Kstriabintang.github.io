@@ -14,6 +14,7 @@ import {
   Languages,
   Download,
   Home as HomeIcon,
+  Sparkles,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n'
 
@@ -42,8 +43,9 @@ export function CommandPalette() {
 
   const items: PaletteItem[] = useMemo(
     () => [
-      { id: 'hero', group: t.nav.about, label: 'Home', icon: <HomeIcon className="w-4 h-4" />, action: () => scrollTo('#hero') },
+      { id: 'hero', group: 'Navigation', label: 'Home', icon: <HomeIcon className="w-4 h-4" />, action: () => scrollTo('#hero') },
       { id: 'about', group: 'Navigation', label: t.nav.about, icon: <User className="w-4 h-4" />, action: () => scrollTo('#about') },
+      { id: 'how-i-work', group: 'Navigation', label: t.nav.howIWork, icon: <Sparkles className="w-4 h-4" />, action: () => scrollTo('#how-i-work') },
       { id: 'skills', group: 'Navigation', label: t.nav.skills, icon: <Code2 className="w-4 h-4" />, action: () => scrollTo('#skills') },
       { id: 'experience', group: 'Navigation', label: t.nav.experience, icon: <Briefcase className="w-4 h-4" />, action: () => scrollTo('#experience') },
       { id: 'projects', group: 'Navigation', label: t.nav.projects, icon: <FolderGit2 className="w-4 h-4" />, action: () => scrollTo('#projects') },
@@ -67,7 +69,7 @@ export function CommandPalette() {
         label: t.contact.downloadCV,
         icon: <Download className="w-4 h-4" />,
         action: () => {
-          window.open('/cv.pdf', '_blank')
+          window.open('/cv/ksatria-cv-ai-engineer.pdf', '_blank')
           setOpen(false)
         },
       },

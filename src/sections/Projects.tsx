@@ -8,77 +8,34 @@ import { useTranslation } from '@/lib/i18n';
 /* ------------------------------------------------------------------ */
 
 interface Project {
-  title: string;
+  key: 'aktifinimei' | 'portfolio' | 'linkTracker';
   language: string;
   languageColor: string;
-  description: string;
   tags: string[];
   link: string;
 }
 
 const projects: Project[] = [
   {
-    title: 'aktifinimei',
-    language: 'JavaScript',
-    languageColor: '#F7DF1E',
-    description:
-      'Professional IMEI activation service for iPhone Indonesia. Fast 1x24h processing, automated QRIS payment, real-time order tracking.',
-    tags: ['JavaScript', 'Automation', 'Payment'],
+    key: 'aktifinimei',
+    language: 'Node.js',
+    languageColor: '#339933',
+    tags: ['Node.js', 'Express', 'QRIS'],
     link: 'https://github.com/Kstriabintang/aktifinimei',
   },
   {
-    title: 'hi-frozen-food',
-    language: 'HTML',
-    languageColor: '#E34F26',
-    description:
-      'Modern responsive landing page for a frozen food business. Pure HTML, CSS, and Vanilla JS.',
-    tags: ['HTML', 'CSS', 'JavaScript'],
-    link: 'https://github.com/Kstriabintang/hi-frozen-food',
-  },
-  {
-    title: 'personal-branding-cv-template',
-    language: 'HTML',
-    languageColor: '#E34F26',
-    description:
-      'Multi-page personal branding CV website template with deep purple elegance theme. MIT Licensed.',
-    tags: ['HTML', 'CSS', 'Template'],
-    link: 'https://github.com/Kstriabintang/personal-branding-cv-template',
-  },
-  {
-    title: 'link-tracker',
-    language: 'Python',
-    languageColor: '#3776AB',
-    description:
-      'IP tracking tool built with Flask. Generate tracking links, capture visitor data, and redirect seamlessly.',
-    tags: ['Python', 'Flask', 'Security'],
-    link: 'https://github.com/Kstriabintang/link-tracker',
-  },
-  {
-    title: 'codegraph',
+    key: 'portfolio',
     language: 'TypeScript',
     languageColor: '#3178C6',
-    description:
-      'Pre-indexed code knowledge graph for Claude Code — fewer tokens, fewer tool calls, 100% local.',
-    tags: ['TypeScript', 'AI', 'Local'],
-    link: 'https://github.com/Kstriabintang/codegraph',
+    tags: ['React 19', 'Vite', 'GSAP'],
+    link: 'https://github.com/Kstriabintang/Kstriabintang.github.io',
   },
   {
-    title: 'kstriabintang',
-    language: 'Markdown',
-    languageColor: '#083FA1',
-    description:
-      'GitHub profile README with animated banners, stats, and personal branding.',
-    tags: ['Markdown', 'GitHub', 'Branding'],
-    link: 'https://github.com/Kstriabintang/kstriabintang',
-  },
-  {
-    title: 'Learn-Python',
+    key: 'linkTracker',
     language: 'Python',
     languageColor: '#3776AB',
-    description:
-      'My first programming project — learning Python fundamentals and building simple scripts.',
-    tags: ['Python', 'Learning', 'Beginner'],
-    link: 'https://github.com/Kstriabintang/Learn-Python',
+    tags: ['Python', 'Flask', 'OSINT'],
+    link: 'https://github.com/Kstriabintang/link-tracker',
   },
 ];
 
@@ -240,12 +197,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
         {/* Content */}
         <div className="flex-1 px-5 pt-3 pb-5 flex flex-col">
-          <h3 className="font-jetbrains text-xl font-semibold text-text-primary tracking-tight">
-            {project.title}
+          <h3 className="font-jetbrains text-lg font-semibold text-text-primary tracking-tight leading-snug">
+            {t.projects.items[project.key].title}
           </h3>
 
-          <p className="font-inter text-sm text-text-secondary mt-2 leading-relaxed line-clamp-3">
-            {project.description}
+          <p className="font-inter text-sm text-text-secondary mt-2 leading-relaxed">
+            {t.projects.items[project.key].description}
           </p>
 
           {/* Tags */}
@@ -310,7 +267,7 @@ export default function Projects() {
         {/* Project Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, i) => (
-            <ProjectCard key={project.title} project={project} index={i} />
+            <ProjectCard key={project.key} project={project} index={i} />
           ))}
         </div>
 

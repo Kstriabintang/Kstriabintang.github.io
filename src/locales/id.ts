@@ -3,6 +3,7 @@ import type { en } from './en'
 export const id: typeof en = {
   nav: {
     about: 'Tentang',
+    howIWork: 'Cara Kerja',
     skills: 'Keahlian',
     experience: 'Pengalaman',
     projects: 'Proyek',
@@ -13,10 +14,12 @@ export const id: typeof en = {
   hero: {
     greeting: 'Halo, saya',
     name: 'Ksatria Bintang Samudra',
-    typed: ['Full Stack Developer', 'Bug Hunter', 'Bot Builder'],
-    tagline: 'Amankan. Bangun. Otomatiskan.',
-    viewWork: 'Lihat Karya Saya',
-    contactMe: 'Hubungi Saya',
+    typed: ['AI Engineer', 'Pembangun Otomasi', 'Arsitek Solusi'],
+    tagline: 'AI Engineer · Pembangun Otomasi · Arsitek Solusi',
+    body:
+      'Saya membangun software production-grade lewat alur kerja engineering yang ditenagai AI. Memadukan prompt engineering yang fasih dengan pemahaman arsitektur end-to-end untuk membangun platform pembayaran terintegrasi, bot otomasi, dan tooling keamanan — dengan kecepatan tak biasa, tanpa mengorbankan ketelitian.',
+    viewWork: 'Lihat Proyek',
+    downloadCV: 'Unduh CV',
   },
   about: {
     sectionNumber: '02.',
@@ -44,20 +47,45 @@ export const id: typeof en = {
     quoteAuthor: 'Kevin Mitnick',
     funFact: 'Fakta Seru: Saya merusak sistem agar lebih kuat',
   },
-  skills: {
+  howIWork: {
     sectionNumber: '03.',
+    sectionTitle: 'Cara Saya Bekerja',
+    paragraphs: [
+      'Saya engineer AI-native. Setiap proyek dimulai dari spesifikasi yang jelas, lalu saya mengorkestrasi tooling AI modern — Claude, Cursor, v0, Lovable, custom prompt chain — untuk menerjemahkannya jadi kode production dengan kecepatan tinggi. Saya membaca setiap baris yang dihasilkan AI, memverifikasi arsitekturnya, dan bertanggung jawab atas setiap trade-off.',
+      'Hasilnya: produk yang rilis dalam hitungan hari, bukan minggu, dengan standar kualitas setara development tradisional — karena saya berpikir dalam sistem, bukan sekadar fitur.',
+    ],
+    pillars: [
+      {
+        title: 'Berbasis Spesifikasi',
+        body: 'Setiap pengembangan dimulai dari spesifikasi yang jelas: scope, batasan, kontrak, kriteria penerimaan. AI mewarisi spesifikasi itu, bukan terkaan.',
+      },
+      {
+        title: 'Diorkestrasi AI',
+        body: 'Claude, Cursor, v0, Lovable, custom prompt chain. Alat yang tepat untuk lapisan yang tepat — bukan satu palu mengejar semua paku.',
+      },
+      {
+        title: 'Diverifikasi Manusia',
+        body: 'Setiap keputusan arsitektur, setiap batas keamanan, setiap trade-off — saya yang bertanggung jawab. AI mempercepat; engineering-nya tetap milik saya.',
+      },
+    ],
+  },
+  skills: {
+    sectionNumber: '04.',
     sectionTitle: 'Tech Stack',
     sectionSubtitle: 'Tools & teknologi yang saya gunakan',
     categories: {
+      'AI & Workflow': 'AI & Alur Kerja',
+      Languages: 'Bahasa',
       Frontend: 'Frontend',
       Backend: 'Backend',
-      Database: 'Database',
+      Data: 'Data',
       Security: 'Keamanan',
-      Tools: 'Tools',
+      Automation: 'Otomasi',
+      Platforms: 'Platform',
     },
   },
   experience: {
-    sectionNumber: '04.',
+    sectionNumber: '05.',
     sectionTitle: 'Pengalaman',
     sectionSubtitle: 'Perjalanan profesional saya',
     current: 'Saat ini',
@@ -69,20 +97,37 @@ export const id: typeof en = {
     },
   },
   projects: {
-    sectionNumber: '05.',
-    sectionTitle: 'Proyek',
-    sectionSubtitle: 'Karya unggulan dari repositori GitHub saya',
+    sectionNumber: '06.',
+    sectionTitle: 'Proyek Pilihan',
+    sectionSubtitle: 'Pekerjaan production yang saya tangani end-to-end',
     viewOnGithub: 'Lihat di GitHub',
     viewAll: 'Lihat Semua Proyek di GitHub',
+    items: {
+      aktifinimei: {
+        title: 'aktifinIMEI — Platform Aktivasi IMEI iPhone',
+        description:
+          'Layanan aktivasi IMEI iPhone production-grade untuk pasar Indonesia. Pipeline end-to-end dari pembayaran ke pemenuhan order, terintegrasi QRIS, pelacakan order otomatis, dan notifikasi pelanggan.',
+      },
+      portfolio: {
+        title: 'Personal Portfolio Site',
+        description:
+          'Portfolio developer bilingual dengan animasi GSAP custom, command palette ⌘K, dan budget initial load 94 KB gzipped yang agresif.',
+      },
+      linkTracker: {
+        title: 'Link Tracker — Utility Visitor Intelligence',
+        description:
+          'Utility self-hosted untuk membuat short link yang bisa dilacak dan menangkap metadata pengunjung — dibangun untuk atribusi marketing dan OSINT yang terotorisasi.',
+      },
+    },
   },
   certificates: {
-    sectionNumber: '06.',
+    sectionNumber: '07.',
     sectionTitle: 'Sertifikat',
     sectionSubtitle: 'Sertifikasi profesional & kredensial',
     verified: 'Terverifikasi',
   },
   contact: {
-    sectionNumber: '07.',
+    sectionNumber: '08.',
     sectionTitle: 'Mari Terhubung',
     sectionSubtitle: 'Yuk bangun sesuatu yang keren bersama',
     letsTalk: 'Mari Ngobrol',
@@ -98,7 +143,7 @@ export const id: typeof en = {
     availability: 'Tersedia untuk proyek freelance',
   },
   footer: {
-    tagline: 'Amankan. Bangun. Otomatiskan.',
+    tagline: 'AI Engineer · Pembangun Otomasi · Arsitek Solusi',
     rights: 'Seluruh hak cipta dilindungi.',
     quickLinks: 'Tautan Cepat',
     connect: 'Terhubung',

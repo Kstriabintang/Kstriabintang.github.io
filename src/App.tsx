@@ -1,10 +1,16 @@
+import { Suspense, lazy } from 'react'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import { LanguageProvider } from './lib/i18n'
-import { KonamiTerminal } from './components/KonamiTerminal'
-import { CommandPalette } from './components/CommandPalette'
 import { SpotlightTracker } from './components/SpotlightTracker'
 import { TabTitleEgg } from './components/TabTitleEgg'
+
+const KonamiTerminal = lazy(() =>
+  import('./components/KonamiTerminal').then((m) => ({ default: m.KonamiTerminal }))
+)
+const CommandPalette = lazy(() =>
+  import('./components/CommandPalette').then((m) => ({ default: m.CommandPalette }))
+)
 
 export default function App() {
   return (
@@ -12,8 +18,10 @@ export default function App() {
       <Layout>
         <Home />
       </Layout>
-      <CommandPalette />
-      <KonamiTerminal />
+      <Suspense fallback={null}>
+        <CommandPalette />
+        <KonamiTerminal />
+      </Suspense>
       <SpotlightTracker />
       <TabTitleEgg />
     </LanguageProvider>
