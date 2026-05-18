@@ -5,11 +5,12 @@ import { useGSAP } from '@gsap/react';
 import { motion } from 'framer-motion';
 import {
   Brain,
-  Table2,
-  Code2,
+  Terminal,
+  Globe,
   ShieldCheck,
   Lock,
   CheckCircle2,
+  ExternalLink,
 } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n';
 
@@ -23,6 +24,7 @@ interface Certificate {
   year: string;
   gradient: string;
   icon: React.ReactNode;
+  url: string;
 }
 
 const certificates: Certificate[] = [
@@ -32,34 +34,39 @@ const certificates: Certificate[] = [
     year: '2024',
     gradient: 'linear-gradient(135deg, #4285F4, #34A853)',
     icon: <Brain className="w-7 h-7 text-white" />,
+    url: '/sertif/google-ai-essentials.pdf',
   },
   {
-    title: 'Microsoft Excel Certified',
-    issuer: 'Microsoft',
-    year: '2024',
-    gradient: 'linear-gradient(135deg, #107C10, #21A366)',
-    icon: <Table2 className="w-7 h-7 text-white" />,
-  },
-  {
-    title: 'Python Programming',
-    issuer: 'Certified',
-    year: '2024',
-    gradient: 'linear-gradient(135deg, #3776AB, #FFD43B)',
-    icon: <Code2 className="w-7 h-7 text-white" />,
-  },
-  {
-    title: 'Ethical Hacker',
+    title: 'Certified Ethical Hacker (CEH)',
     issuer: 'EC-Council',
     year: '2024',
     gradient: 'linear-gradient(135deg, #DC2626, #EF4444)',
     icon: <ShieldCheck className="w-7 h-7 text-white" />,
+    url: '/sertif/ethical-hacker.pdf',
   },
   {
-    title: 'ISC2 Pre-assessment',
+    title: 'ISC2 Certified in Cybersecurity',
     issuer: 'ISC2',
     year: '2024',
     gradient: 'linear-gradient(135deg, #7C3AED, #4C1D95)',
     icon: <Lock className="w-7 h-7 text-white" />,
+    url: '/sertif/isc2-cybersecurity.pdf',
+  },
+  {
+    title: 'Expert Linux',
+    issuer: 'Linux',
+    year: '2024',
+    gradient: 'linear-gradient(135deg, #1F2937, #FCC624)',
+    icon: <Terminal className="w-7 h-7 text-white" />,
+    url: '/sertif/expert-linux.pdf',
+  },
+  {
+    title: 'TOEFL — Professional English',
+    issuer: 'ETS',
+    year: '2024',
+    gradient: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
+    icon: <Globe className="w-7 h-7 text-white" />,
+    url: '/sertif/toefl.pdf',
   },
 ];
 
@@ -306,6 +313,23 @@ export default function Certificates() {
                     {t.certificates.verified}
                   </span>
                 </div>
+
+                {/* View Certificate button */}
+                <a
+                  href={cert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-1.5 font-jetbrains text-purple-400 hover:text-purple-300 transition-colors duration-200"
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 500,
+                    letterSpacing: '0.02em',
+                  }}
+                  aria-label={`${t.certificates.viewCert} — ${cert.title}`}
+                >
+                  <span>{t.certificates.viewCert}</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
               </div>
             </motion.div>
           ))}

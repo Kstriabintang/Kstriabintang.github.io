@@ -123,6 +123,7 @@ export const en = {
     sectionTitle: 'Certificates',
     sectionSubtitle: 'Professional certifications & credentials',
     verified: 'Verified',
+    viewCert: 'View Certificate',
   },
   contact: {
     sectionNumber: '08.',
