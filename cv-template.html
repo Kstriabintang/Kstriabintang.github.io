@@ -1,581 +1,403 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<title>Ksatria Bintang Samudra — Curriculum Vitae</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap');
+  <meta charset="utf-8">
+  <title>Ksatria Bintang Samudra — CV</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
 
-  @page {
-    size: A4;
-    margin: 0;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      color: #000;
+      background: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
 
-  html, body {
-    background: #fff;
-    color: #1F2937;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    font-size: 10pt;
-    line-height: 1.5;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 16mm 18mm 14mm 18mm;
+      background: #fff;
+    }
 
-  .page {
-    width: 210mm;
-    min-height: 297mm;
-    padding: 14mm 16mm 14mm 16mm;
-    background: #fff;
-    position: relative;
-  }
+    a {
+      color: #1A56DB;
+      text-decoration: underline;
+    }
 
-  /* === Header === */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding-bottom: 14px;
-    margin-bottom: 16px;
-    border-bottom: 2px solid #7C3AED;
-    position: relative;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 60px;
-    height: 2px;
-    background: #F97316;
-  }
-  .name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 28pt;
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    color: #0A0A0A;
-  }
-  .title {
-    font-family: 'Inter', sans-serif;
-    font-size: 11pt;
-    font-weight: 500;
-    margin-top: 6px;
-    color: #6B7280;
-  }
-  .title .accent { color: #7C3AED; font-weight: 600; }
-  .tagline {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9pt;
-    color: #F97316;
-    margin-top: 8px;
-    letter-spacing: 0.02em;
-  }
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid #000;
+    }
 
-  .contact {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8.5pt;
-    color: #4B5563;
-    text-align: right;
-    line-height: 1.7;
-    min-width: 200px;
-  }
-  .contact a {
-    color: #4B5563;
-    text-decoration: none;
-  }
-  .contact a:hover { color: #7C3AED; }
-  .contact .label {
-    color: #9CA3AF;
-    display: inline-block;
-    width: 24px;
-    font-weight: 600;
-  }
+    .name {
+      font-size: 24pt;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+      color: #000;
+    }
 
-  /* === Two-column layout === */
-  .body {
-    display: grid;
-    grid-template-columns: 1.55fr 1fr;
-    gap: 24px;
-  }
+    .title {
+      font-size: 11pt;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+      letter-spacing: 0.3px;
+    }
 
-  /* === Section === */
-  .section { margin-bottom: 14px; }
-  .section-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9pt;
-    font-weight: 700;
-    color: #7C3AED;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    padding-left: 10px;
-    border-left: 3px solid #7C3AED;
-    margin-bottom: 10px;
-    line-height: 1.1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section-title::before {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #F97316;
-    display: none;
-  }
+    .contact {
+      font-size: 10pt;
+      color: #000;
+      line-height: 1.6;
+    }
 
-  /* === Profile === */
-  .profile-text {
-    font-size: 9.5pt;
-    line-height: 1.6;
-    color: #374151;
-    text-align: justify;
-  }
-  .profile-text + .profile-text { margin-top: 6px; }
+    .contact .sep {
+      color: #9CA3AF;
+      margin: 0 4px;
+    }
 
-  /* === Experience === */
-  .exp-item { margin-bottom: 11px; page-break-inside: avoid; }
-  .exp-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 8px;
-  }
-  .exp-role {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10pt;
-    font-weight: 700;
-    color: #0A0A0A;
-    line-height: 1.2;
-  }
-  .exp-period {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8pt;
-    color: #6B7280;
-    white-space: nowrap;
-  }
-  .exp-company {
-    font-size: 9.5pt;
-    color: #7C3AED;
-    font-weight: 500;
-    margin-top: 2px;
-  }
-  .exp-company .sep {
-    color: #D1D5DB;
-    margin: 0 6px;
-  }
-  .exp-company .location {
-    color: #6B7280;
-    font-weight: 400;
-  }
-  .exp-desc {
-    font-size: 9pt;
-    color: #4B5563;
-    margin-top: 4px;
-    line-height: 1.5;
-  }
-  .exp-bullets {
-    list-style: none;
-    margin-top: 4px;
-  }
-  .exp-bullets li {
-    font-size: 9pt;
-    color: #4B5563;
-    padding-left: 14px;
-    position: relative;
-    margin-bottom: 2px;
-    line-height: 1.5;
-  }
-  .exp-bullets li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: #7C3AED;
-    font-size: 8pt;
-  }
+    /* ===== SECTION ===== */
+    .section {
+      margin-bottom: 14px;
+    }
 
-  /* === Projects === */
-  .proj-item { margin-bottom: 8px; page-break-inside: avoid; }
-  .proj-name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9.5pt;
-    font-weight: 700;
-    color: #0A0A0A;
-  }
-  .proj-meta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8pt;
-    color: #6B7280;
-    margin-left: 6px;
-  }
-  .proj-desc {
-    font-size: 8.5pt;
-    color: #4B5563;
-    line-height: 1.45;
-    margin-top: 1px;
-  }
+    .section-title {
+      font-size: 12pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1.5px solid #000;
+      padding-bottom: 3px;
+      margin-bottom: 9px;
+      color: #000;
+    }
 
-  /* === Skills === */
-  .skill-group { margin-bottom: 9px; }
-  .skill-cat {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8.5pt;
-    font-weight: 700;
-    color: #0A0A0A;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 3px;
-  }
-  .skill-list {
-    font-size: 9pt;
-    color: #4B5563;
-    line-height: 1.55;
-  }
-  .skill-list .pill {
-    display: inline-block;
-    background: #F3F0FF;
-    color: #4C1D95;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7.5pt;
-    font-weight: 500;
-    padding: 1px 6px;
-    border-radius: 4px;
-    margin: 0 2px 2px 0;
-    border: 1px solid #E9DDFF;
-  }
+    /* ===== SUMMARY ===== */
+    .summary {
+      text-align: justify;
+      font-size: 10.5pt;
+      hyphens: auto;
+    }
 
-  /* === Certifications === */
-  .cert-item {
-    font-size: 9pt;
-    margin-bottom: 5px;
-    line-height: 1.4;
-  }
-  .cert-title {
-    color: #0A0A0A;
-    font-weight: 600;
-  }
-  .cert-meta {
-    color: #6B7280;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8pt;
-    display: block;
-  }
+    /* ===== EXPERIENCE ===== */
+    .exp-item {
+      margin-bottom: 11px;
+      page-break-inside: avoid;
+    }
+    .exp-item:last-child { margin-bottom: 0; }
 
-  /* === Languages === */
-  .lang-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 9pt;
-    margin-bottom: 3px;
-  }
-  .lang-name { color: #0A0A0A; font-weight: 500; }
-  .lang-level {
-    color: #6B7280;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8pt;
-  }
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
 
-  /* === Footer === */
-  .footer {
-    position: absolute;
-    bottom: 8mm;
-    left: 16mm;
-    right: 16mm;
-    display: flex;
-    justify-content: space-between;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7.5pt;
-    color: #9CA3AF;
-    border-top: 1px solid #E5E7EB;
-    padding-top: 6px;
-  }
-  .footer a { color: #9CA3AF; text-decoration: none; }
-</style>
+    .exp-role {
+      font-weight: 700;
+      font-size: 11pt;
+    }
+
+    .exp-date {
+      font-size: 10pt;
+      font-weight: 600;
+      white-space: nowrap;
+      color: #333;
+    }
+
+    .exp-company {
+      font-style: italic;
+      font-size: 10pt;
+      margin-bottom: 3px;
+      color: #333;
+    }
+
+    .exp-bullets {
+      list-style: disc;
+      padding-left: 18px;
+      margin-top: 3px;
+    }
+
+    .exp-bullets li {
+      margin-bottom: 2px;
+      text-align: justify;
+      font-size: 10pt;
+    }
+
+    /* ===== PROJECTS ===== */
+    .proj-item {
+      margin-bottom: 8px;
+      page-break-inside: avoid;
+    }
+    .proj-item:last-child { margin-bottom: 0; }
+
+    .proj-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .proj-name {
+      font-weight: 700;
+      font-size: 11pt;
+    }
+
+    .proj-tech {
+      font-size: 9.5pt;
+      font-style: italic;
+      white-space: nowrap;
+      color: #333;
+    }
+
+    .proj-desc {
+      text-align: justify;
+      font-size: 10pt;
+      margin-top: 2px;
+    }
+
+    /* ===== SKILLS ===== */
+    .skill-row {
+      margin-bottom: 4px;
+      font-size: 10.5pt;
+      line-height: 1.45;
+    }
+
+    .skill-cat {
+      font-weight: 700;
+    }
+
+    /* ===== CERTS ===== */
+    .cert-list {
+      list-style: disc;
+      padding-left: 18px;
+    }
+
+    .cert-list li {
+      margin-bottom: 3px;
+      font-size: 10.5pt;
+    }
+
+    /* ===== LANGUAGES ===== */
+    .lang-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .lang-table td {
+      padding: 2px 0;
+      width: 50%;
+      font-size: 10.5pt;
+    }
+  </style>
 </head>
+
 <body>
-<div class="page">
+  <div class="page">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div>
-      <div class="name">Ksatria Bintang Samudra</div>
-      <div class="title">
-        <span class="accent">Full Stack Developer</span>
-        · Bug Hunter · Bot Builder
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+      <div class="name">KSATRIA BINTANG SAMUDRA</div>
+      <div class="title">Full Stack Developer &nbsp;|&nbsp; Bug Hunter &nbsp;|&nbsp; Bot Builder</div>
+      <div class="contact">
+        Pontianak, Indonesia
+        <span class="sep">|</span>
+        <a href="mailto:ksatriabintangsamudra2022@gmail.com">ksatriabintangsamudra2022@gmail.com</a>
+        <span class="sep">|</span>
+        +62&nbsp;852-6440-2640
+        <br>
+        <a href="https://ksatriabintangsamudra.my.id">ksatriabintangsamudra.my.id</a>
+        <span class="sep">|</span>
+        <a href="https://github.com/Kstriabintang">github.com/Kstriabintang</a>
+        <span class="sep">|</span>
+        <a href="https://linkedin.com/in/ksatria-bintang-samudra-265952313">linkedin.com/in/ksatria-bintang-samudra</a>
       </div>
-      <div class="tagline">$ secure_it &amp;&amp; build_it &amp;&amp; automate_it</div>
     </div>
-    <div class="contact">
-      <div><span class="label">📍</span> Pontianak, Indonesia</div>
-      <div><span class="label">✉</span> <a href="mailto:ksatriabintangsamudra2022@gmail.com">ksatriabintangsamudra2022@gmail.com</a></div>
-      <div><span class="label">☎</span> <a href="https://wa.me/6285264402640">+62 852-6440-2640</a></div>
-      <div><span class="label">🌐</span> <a href="https://ksatriabintangsamudra.my.id">ksatriabintangsamudra.my.id</a></div>
-      <div><span class="label">⌥</span> <a href="https://github.com/Kstriabintang">github.com/Kstriabintang</a></div>
-      <div><span class="label">in</span> <a href="https://www.linkedin.com/in/ksatria-bintang-samudra-265952313">ksatria-bintang-samudra</a></div>
+
+    <!-- ===== PROFESSIONAL SUMMARY ===== -->
+    <div class="section">
+      <div class="section-title">Professional Summary</div>
+      <p class="summary">
+        Results-driven Full Stack Developer with hands-on experience in web development, cybersecurity,
+        and automation. Proven track record in penetration testing having conducted security
+        assessments on 10+ web applications with OWASP-aligned reporting, reducing vulnerabilities by
+        90%. Experienced in building end-to-end applications using React, TypeScript, Node.js, Python,
+        and Flask. Certified Ethical Hacker (CEH) with a security-first mindset — passionate about
+        breaking systems to make them stronger. Strong background in Google Workspace administration,
+        bot development (WhatsApp, Telegram, Discord), and API integration. Looking to collaborate on
+        open-source security tools and innovative automation solutions.
+      </p>
     </div>
+
+    <!-- ===== WORK EXPERIENCE ===== -->
+    <div class="section">
+      <div class="section-title">Work Experience</div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">IT Systems &amp; Google Workspace Administrator</div>
+          <div class="exp-date">September 2024 &ndash; March 2026</div>
+        </div>
+        <div class="exp-company">Kalimantan Tambang Mandiri &middot; Remote</div>
+        <ul class="exp-bullets">
+          <li>Reduced communication downtime by 90% via proactive monthly maintenance protocols across enterprise-level Google Workspace environments</li>
+          <li>Achieved 100% data redundancy across all critical workloads through streamlined backup and disaster recovery processes</li>
+          <li>Cut backup execution time by 50% with scripted automation for multi-domain infrastructure administration</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">Notary Assistant</div>
+          <div class="exp-date">June 2024 &ndash; August 2024</div>
+        </div>
+        <div class="exp-company">PPAT Fandri Lim &middot; Batam, Indonesia</div>
+        <ul class="exp-bullets">
+          <li>Managed 50+ notarial documents monthly with zero compliance issues</li>
+          <li>Implemented digital filing system replacing legacy paper workflow for faster document retrieval</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">Freelance Penetration Tester</div>
+          <div class="exp-date">July 2023 &ndash; January 2024</div>
+        </div>
+        <div class="exp-company">Upwork &middot; Remote</div>
+        <ul class="exp-bullets">
+          <li>Conducted security assessments on 10+ web applications, delivering OWASP-aligned reports with actionable remediation strategies</li>
+          <li>Reduced exploitable vulnerabilities by 90% across audited applications through simulated cyber attacks</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">Social Media Data Analyst</div>
+          <div class="exp-date">May 2020 &ndash; March 2022</div>
+        </div>
+        <div class="exp-company">Upwork &middot; Remote</div>
+        <ul class="exp-bullets">
+          <li>Improved engagement by 35% across 10+ client accounts via data-driven content strategy</li>
+          <li>Delivered multi-platform analytics (Instagram, TikTok, Twitter) to guide marketing decisions</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== PROJECTS ===== -->
+    <div class="section">
+      <div class="section-title">Projects</div>
+
+      <div class="proj-item">
+        <div class="proj-header">
+          <div class="proj-name">Personal Portfolio Website</div>
+          <div class="proj-tech">React 19, TypeScript, Vite, GSAP, Tailwind CSS</div>
+        </div>
+        <div class="proj-desc">
+          Bilingual EN/ID personal portfolio with GSAP animations, CMD+K command palette, and 94 KB gzipped initial load.
+          <a href="https://ksatriabintangsamudra.my.id">Live</a> |
+          <a href="https://github.com/Kstriabintang/Kstriabintang.github.io">GitHub</a>
+        </div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-header">
+          <div class="proj-name">aktifinIMEI</div>
+          <div class="proj-tech">JavaScript, Node.js, QRIS Payment API</div>
+        </div>
+        <div class="proj-desc">
+          Professional IMEI activation service for iPhone in Indonesia with automated QRIS payment processing and real-time order tracking.
+          <a href="https://github.com/Kstriabintang/aktifinimei">GitHub</a>
+        </div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-header">
+          <div class="proj-name">Link Tracker</div>
+          <div class="proj-tech">Python, Flask</div>
+        </div>
+        <div class="proj-desc">
+          IP tracking utility for generating tracking links, capturing visitor data, and seamless redirection.
+          <a href="https://github.com/Kstriabintang/link-tracker">GitHub</a>
+        </div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-header">
+          <div class="proj-name">Hi Frozen Food</div>
+          <div class="proj-tech">HTML, CSS, Vanilla JavaScript</div>
+        </div>
+        <div class="proj-desc">
+          Modern responsive landing page for a frozen food business with clean UI and mobile-first design.
+          <a href="https://github.com/Kstriabintang/hi-frozen-food">GitHub</a>
+        </div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-header">
+          <div class="proj-name">Personal Branding CV Template</div>
+          <div class="proj-tech">HTML, CSS, JavaScript</div>
+        </div>
+        <div class="proj-desc">
+          Multi-page personal branding CV website template with deep purple elegance theme, easy to customize for any profession.
+          <a href="https://github.com/Kstriabintang/personal-branding-cv-template">GitHub</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SKILLS ===== -->
+    <div class="section">
+      <div class="section-title">Skills</div>
+      <div class="skill-row"><span class="skill-cat">Programming Languages:</span> Python, JavaScript, TypeScript, HTML5, CSS3</div>
+      <div class="skill-row"><span class="skill-cat">Frontend:</span> React, Next.js, Tailwind CSS</div>
+      <div class="skill-row"><span class="skill-cat">Backend:</span> Node.js, Express, Flask, FastAPI</div>
+      <div class="skill-row"><span class="skill-cat">Database:</span> PostgreSQL, MySQL, MongoDB, Firebase</div>
+      <div class="skill-row"><span class="skill-cat">Security:</span> Penetration Testing, OWASP, Ethical Hacking, Vulnerability Assessment, Vulnerability Research</div>
+      <div class="skill-row"><span class="skill-cat">Tools &amp; Platforms:</span> Git, GitHub, Docker, Linux, Google Workspace, VS Code</div>
+      <div class="skill-row"><span class="skill-cat">Bot Development:</span> WhatsApp Bot, Telegram Bot, Discord Bot</div>
+      <div class="skill-row"><span class="skill-cat">Other:</span> API Integration, Payment Gateway (QRIS), Web Scraping, Automation, CLI Tools</div>
+    </div>
+
+    <!-- ===== CERTIFICATIONS ===== -->
+    <div class="section">
+      <div class="section-title">Certifications</div>
+      <ul class="cert-list">
+        <li>Certified Ethical Hacker (CEH), EC-Council, 2024</li>
+        <li>ISC2 Pre-Assessment, ISC2, 2024</li>
+        <li>Google AI Essentials, Google, 2024</li>
+        <li>Python Programming, Certified, 2024</li>
+        <li>Microsoft Excel Certified, Microsoft, 2024</li>
+      </ul>
+    </div>
+
+    <!-- ===== LANGUAGES ===== -->
+    <div class="section">
+      <div class="section-title">Languages</div>
+      <table class="lang-table">
+        <tr>
+          <td><strong>Indonesian</strong> &mdash; Native</td>
+          <td><strong>English</strong> &mdash; Professional Working Proficiency</td>
+        </tr>
+      </table>
+    </div>
+
   </div>
-
-  <!-- BODY -->
-  <div class="body">
-
-    <!-- LEFT COLUMN -->
-    <div>
-
-      <!-- PROFILE -->
-      <div class="section">
-        <div class="section-title">Profile</div>
-        <p class="profile-text">
-          Indonesia-based developer who genuinely enjoys the moment a system finally clicks together:
-          a clean API, a vulnerability that reveals itself, a bot that runs at 3 AM while I sleep.
-          Background spans social media data analysis, freelance penetration testing, and enterprise
-          Google Workspace administration — every stop teaching one thing I now bring to every line
-          of code: respect data, assume nothing is safe by default, automate what doesn't need a human.
-        </p>
-        <p class="profile-text">
-          Security-first mindset across full-stack work. Whether shipping a React application or
-          hardening someone's infrastructure, the goal is the same — build things that work today
-          and don't quietly break tomorrow.
-        </p>
-      </div>
-
-      <!-- EXPERIENCE -->
-      <div class="section">
-        <div class="section-title">Experience</div>
-
-        <div class="exp-item">
-          <div class="exp-header">
-            <div class="exp-role">IT Systems &amp; Google Workspace Administrator</div>
-            <div class="exp-period">Sept 2024 — Mar 2026</div>
-          </div>
-          <div class="exp-company">
-            Kalimantan Tambang Mandiri
-            <span class="sep">·</span>
-            <span class="location">Remote</span>
-          </div>
-          <div class="exp-desc">
-            Administered and secured enterprise-level Google Workspace environments across multi-domain
-            infrastructures. Streamlined data backup and disaster-recovery processes.
-          </div>
-          <ul class="exp-bullets">
-            <li>Reduced communication downtime by 90% via proactive monthly preventive maintenance</li>
-            <li>Achieved 100% data redundancy across all critical workloads</li>
-            <li>Cut backup execution time by 50% through scripted automation</li>
-          </ul>
-        </div>
-
-        <div class="exp-item">
-          <div class="exp-header">
-            <div class="exp-role">Notary Assistant</div>
-            <div class="exp-period">Jun 2024 — Aug 2024</div>
-          </div>
-          <div class="exp-company">
-            PPAT Fandri Lim
-            <span class="sep">·</span>
-            <span class="location">Batam, Indonesia</span>
-          </div>
-          <div class="exp-desc">
-            Managed 50+ notarial documents monthly with zero compliance issues and implemented a
-            digital filing system that significantly accelerated document retrieval.
-          </div>
-          <ul class="exp-bullets">
-            <li>Coordinated 30+ weekly client consultations with zero scheduling conflicts</li>
-            <li>Designed digital filing system replacing legacy paper workflow</li>
-          </ul>
-        </div>
-
-        <div class="exp-item">
-          <div class="exp-header">
-            <div class="exp-role">Freelance Penetration Tester</div>
-            <div class="exp-period">Jul 2023 — Jan 2024</div>
-          </div>
-          <div class="exp-company">
-            Upwork
-            <span class="sep">·</span>
-            <span class="location">Remote</span>
-          </div>
-          <div class="exp-desc">
-            Conducted security assessments on 10+ web applications. Simulated cyber attacks and
-            delivered comprehensive reports with actionable remediation.
-          </div>
-          <ul class="exp-bullets">
-            <li>Reduced exploitable vulnerabilities by 90% across audited applications</li>
-            <li>Delivered OWASP-aligned remediation reports for each engagement</li>
-          </ul>
-        </div>
-
-        <div class="exp-item">
-          <div class="exp-header">
-            <div class="exp-role">Social Media Data Analyst</div>
-            <div class="exp-period">May 2020 — Mar 2022</div>
-          </div>
-          <div class="exp-company">
-            Upwork
-            <span class="sep">·</span>
-            <span class="location">Remote</span>
-          </div>
-          <div class="exp-desc">
-            Analyzed social-media performance across 10+ client accounts. Developed data-driven
-            strategies that improved reach and follower growth across multiple platforms.
-          </div>
-          <ul class="exp-bullets">
-            <li>Achieved 35% average engagement increase across managed accounts</li>
-            <li>Multi-platform expertise: Instagram, TikTok, Twitter analytics</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- NOTABLE PROJECTS -->
-      <div class="section">
-        <div class="section-title">Notable Projects</div>
-
-        <div class="proj-item">
-          <span class="proj-name">codegraph</span>
-          <span class="proj-meta">· TypeScript · AI tooling</span>
-          <div class="proj-desc">
-            Pre-indexed code knowledge graph for Claude Code — fewer tokens, fewer tool calls, 100% local.
-          </div>
-        </div>
-
-        <div class="proj-item">
-          <span class="proj-name">aktifinimei</span>
-          <span class="proj-meta">· JavaScript · Payment automation</span>
-          <div class="proj-desc">
-            Professional IMEI activation service for iPhone Indonesia. 1×24h processing, automated
-            QRIS payment, real-time order tracking.
-          </div>
-        </div>
-
-        <div class="proj-item">
-          <span class="proj-name">link-tracker</span>
-          <span class="proj-meta">· Python · Flask · Security</span>
-          <div class="proj-desc">
-            IP tracking utility built with Flask — generate tracking links, capture visitor data,
-            redirect seamlessly.
-          </div>
-        </div>
-
-        <div class="proj-item">
-          <span class="proj-name">Personal Branding Portfolio</span>
-          <span class="proj-meta">· React 19 · TypeScript · Vite</span>
-          <div class="proj-desc">
-            This very portfolio — bilingual EN/ID, GSAP + Framer Motion animations, ⌘K command
-            palette, Konami easter egg, Lighthouse 95+ scores.
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- RIGHT COLUMN -->
-    <div>
-
-      <!-- SKILLS -->
-      <div class="section">
-        <div class="section-title">Skills</div>
-
-        <div class="skill-group">
-          <div class="skill-cat">Frontend</div>
-          <div class="skill-list">
-            <span class="pill">React</span><span class="pill">Next.js</span><span class="pill">TypeScript</span><span class="pill">JavaScript</span><span class="pill">Tailwind</span><span class="pill">HTML5</span><span class="pill">CSS3</span>
-          </div>
-        </div>
-
-        <div class="skill-group">
-          <div class="skill-cat">Backend</div>
-          <div class="skill-list">
-            <span class="pill">Node.js</span><span class="pill">Express</span><span class="pill">Python</span><span class="pill">Flask</span><span class="pill">FastAPI</span>
-          </div>
-        </div>
-
-        <div class="skill-group">
-          <div class="skill-cat">Database</div>
-          <div class="skill-list">
-            <span class="pill">PostgreSQL</span><span class="pill">MySQL</span><span class="pill">MongoDB</span><span class="pill">Firebase</span>
-          </div>
-        </div>
-
-        <div class="skill-group">
-          <div class="skill-cat">Security</div>
-          <div class="skill-list">
-            <span class="pill">Penetration Testing</span><span class="pill">OWASP</span><span class="pill">Ethical Hacking</span><span class="pill">Vulnerability Research</span>
-          </div>
-        </div>
-
-        <div class="skill-group">
-          <div class="skill-cat">Tools &amp; Platforms</div>
-          <div class="skill-list">
-            <span class="pill">Git</span><span class="pill">Docker</span><span class="pill">Linux</span><span class="pill">Google Workspace</span><span class="pill">VS Code</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- CERTIFICATIONS -->
-      <div class="section">
-        <div class="section-title">Certifications</div>
-        <div class="cert-item">
-          <div class="cert-title">Ethical Hacker</div>
-          <span class="cert-meta">EC-Council · 2024</span>
-        </div>
-        <div class="cert-item">
-          <div class="cert-title">ISC2 Pre-Assessment</div>
-          <span class="cert-meta">ISC2 · 2024</span>
-        </div>
-        <div class="cert-item">
-          <div class="cert-title">Google AI Essentials</div>
-          <span class="cert-meta">Google · 2024</span>
-        </div>
-        <div class="cert-item">
-          <div class="cert-title">Python Programming</div>
-          <span class="cert-meta">Certified · 2024</span>
-        </div>
-        <div class="cert-item">
-          <div class="cert-title">Microsoft Excel Certified</div>
-          <span class="cert-meta">Microsoft · 2024</span>
-        </div>
-      </div>
-
-      <!-- LANGUAGES -->
-      <div class="section">
-        <div class="section-title">Languages</div>
-        <div class="lang-item">
-          <span class="lang-name">Indonesian</span>
-          <span class="lang-level">Native</span>
-        </div>
-        <div class="lang-item">
-          <span class="lang-name">English</span>
-          <span class="lang-level">Professional</span>
-        </div>
-      </div>
-
-      <!-- FIND ME ONLINE -->
-      <div class="section">
-        <div class="section-title">Find Me Online</div>
-        <div class="cert-item">
-          <div class="cert-title">GitHub</div>
-          <span class="cert-meta">@Kstriabintang</span>
-        </div>
-        <div class="cert-item">
-          <div class="cert-title">LinkedIn</div>
-          <span class="cert-meta">ksatria-bintang-samudra</span>
-        </div>
-        <div class="cert-item">
-          <div class="cert-title">Instagram</div>
-          <span class="cert-meta">@ven_0day</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <span>Last updated · May 2026</span>
-    <span><a href="https://ksatriabintangsamudra.my.id">ksatriabintangsamudra.my.id</a></span>
-  </div>
-
-</div>
 </body>
+
 </html>
