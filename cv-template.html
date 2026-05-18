@@ -45,11 +45,19 @@
 
     .page {
       width: 210mm;
-      min-height: 297mm;
+      height: 297mm;
       padding: 16mm 20mm 14mm 20mm;
       background: var(--bg);
       margin: 0 auto;
       position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .page:last-of-type {
+      page-break-after: auto;
+      break-after: auto;
     }
 
     a {
@@ -392,6 +400,10 @@
       .page {
         box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
       }
+
+      .page + .page {
+        margin-top: 24px;
+      }
     }
   </style>
 </head>
@@ -486,6 +498,10 @@
         </ul>
       </div>
     </section>
+
+  </div>
+  <!-- ============ PAGE 2 ============ -->
+  <div class="page">
 
     <!-- ============ PROJECTS ============ -->
     <section>
