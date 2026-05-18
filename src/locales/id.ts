@@ -125,6 +125,7 @@ export const id: typeof en = {
     sectionTitle: 'Sertifikat',
     sectionSubtitle: 'Sertifikasi profesional & kredensial',
     verified: 'Terverifikasi',
+    viewCert: 'Lihat Sertifikat',
   },
   contact: {
     sectionNumber: '08.',
