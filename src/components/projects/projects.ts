@@ -1,0 +1,46 @@
+// Shared helpers for project cards, the /projects index and case-study pages.
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { ProjectCategory } from '../../content.config';
+
+export type Project = CollectionEntry<'projects'>;
+
+export const categoryLabels: Record<ProjectCategory, string> = {
+  'ai-automation': 'AI & Automation',
+  web: 'Web',
+  mobile: 'Mobile',
+  security: 'Security',
+};
+
+/** Short badge text used on card heroes (reference uses "AI", "Web", …). */
+export const categoryShort: Record<ProjectCategory, string> = {
+  'ai-automation': 'AI',
+  web: 'Web',
+  mobile: 'Mobile',
+  security: 'Security',
+};
+
+/** Modifier used for category accent colours (border-left, hover glow). */
+export const categoryModifier: Record<ProjectCategory, string> = {
+  'ai-automation': 'ai',
+  web: 'web',
+  mobile: 'mobile',
+  security: 'security',
+};
+
+export const filterOrder: ProjectCategory[] = ['ai-automation', 'web', 'mobile', 'security'];
+
+export async function getProjects(): Promise<Project[]> {
+  const all = await getCollection('projects');
+  return all.sort((a, b) => a.data.order - b.data.order);
+}
+
+export function heroGradient(p: Project): string {
+  const [from, to] = p.data.cover.gradient;
+  return `linear-gradient(135deg, ${from} 0%, ${to} 100%)`;
+}
+
+export function primaryLink(p: Project): { href: string; label: string } | undefined {
+  if (p.data.links.live) return { href: p.data.links.live, label: 'Live' };
+  if (p.data.links.demo) return { href: p.data.links.demo, label: 'Demo' };
+  return undefined;
+}

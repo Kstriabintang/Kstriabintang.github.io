@@ -1,0 +1,37 @@
+---
+title: Phishing Threat-Intel Case Files
+summary: A passive, read-only forensic dissection of a nationwide WhatsApp "free data" scam — a 506-domain network mapped, two hidden origin servers de-cloaked, and a full chain of custody ready for takedown reports.
+category: security
+metric: 506 domains mapped
+tags: [OSINT, Threat Intel, Forensics, Abuse Reporting]
+cover:
+  gradient: ['#334155', '#0f172a']
+  icon: shield
+links:
+  source: https://github.com/Kstriabintang/phishing-forensics
+year: 2026
+metrics:
+  - label: Domains mapped
+    value: 506
+  - label: Live hosts tagged
+    value: 222
+  - label: Origins de-cloaked
+    value: 2
+stack: [Passive DNS, WHOIS / RDAP, Certificate Transparency, Sandboxed browser renders, SHA-256 manifests, Markdown dossiers]
+featured: true
+order: 6
+---
+
+## The Challenge
+
+Around Indonesia's 81st Independence Day in August 2026, a WhatsApp chain message promising "81 GB of free data" spread across the country. It forced victims to re-share the link before a claim button unlocked, and it sat behind Cloudflare and a device-fingerprinting cloaker — so from the outside it was hard to see who ran it or where the traffic went.
+
+## My Approach
+
+I dissected the campaign using **passive, read-only** techniques only: DNS, WHOIS, certificate-transparency and passive-DNS lookups plus sandboxed browser renders — no exploitation and no data submitted to attacker infrastructure. That reconstructed the full six-hop chain from fake Facebook-styled landing page through a redirector and the cloaker into rotating CPA and real-time-bidding ad networks. No data quota was ever delivered; the operators were selling the victims' clicks.
+
+Every capture is kept with a **SHA-256 manifest** for chain of custody, alongside indicators of compromise, a findings register, a print-ready report and ready-to-send abuse drafts. Any potentially malicious sample is quarantined as inert data and never executed.
+
+## The Results
+
+Two real origin servers de-cloaked behind Cloudflare (Chicago and Helsinki), a network of 506 domains and 548 hosts mapped with 222 tagged live, a second scam product line uncovered (a Telegram Mini App "quiz"), and a 2018 online-gambling lineage for the cloaker domain. The campaign was independently declared a hoax by Indonesia's Ministry of Communication and Digital Affairs.

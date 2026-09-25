@@ -1,0 +1,210 @@
+---
+import '../../styles/pages/_projects.scss';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import {
+  getProjects,
+  categoryShort,
+  categoryModifier,
+  heroGradient,
+  type Project,
+} from '../../components/projects/projects';
+import { caseSections } from '../../components/projects/markdown';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project, all: projects } }));
+}
+
+interface Props {
+  project: Project;
+  all: Project[];
+}
+
+const { project, all } = Astro.props;
+const d = project.data;
+const mod = categoryModifier[d.category];
+const sections = caseSections(project.body);
+
+const related = [
+  ...all.filter((p) => p.id !== project.id && p.data.category === d.category),
+  ...all.filter((p) => p.id !== project.id && p.data.category !== d.category),
+].slice(0, 3);
+
+const actions = [
+  d.links.live && { href: d.links.live, label: 'Visit Site', primary: true },
+  d.links.demo && { href: d.links.demo, label: d.links.live ? 'Live Demo' : 'Try the Demo', primary: !d.links.live },
+  d.links.source && { href: d.links.source, label: 'View Source', primary: !d.links.live && !d.links.demo },
+].filter(Boolean) as { href: string; label: string; primary: boolean }[];
+
+const url = new URL(`/projects/${project.id}/`, site.url).toString();
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: d.title,
+    headline: `${d.title} — case study`,
+    description: d.summary,
+    url,
+    dateCreated: String(d.year),
+    keywords: [...d.tags, ...d.stack].join(', '),
+    author: { '@type': 'Person', name: site.name, url: site.url },
+    ...(d.links.live || d.links.demo ? { sameAs: d.links.live ?? d.links.demo } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Projects', item: new URL('/projects/', site.url).toString() },
+      { '@type': 'ListItem', position: 3, name: d.title, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout title={`${d.title} — Case Study`} description={d.summary} type="article" jsonLd={jsonLd}>
+  <section class="tool-page project-detail">
+    <div class="tool-page__container tool-page__container--wide">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a><span aria-hidden="true">›</span></li>
+          <li><a href="/projects/">Projects</a><span aria-hidden="true">›</span></li>
+          <li aria-current="page">{d.title}</li>
+        </ol>
+      </nav>
+
+      <header class={`project-detail__hero project-detail__hero--${mod}`} style={`--project-hero-bg: ${heroGradient(project)}`}>
+        <div class="project-detail__hero-grid"></div>
+        <div class="project-detail__hero-inner">
+          <span class="project-detail__category">{categoryShort[d.category]}</span>
+          <h1 class="project-detail__title">{d.title}</h1>
+          <p class="project-detail__subtitle">{d.summary}</p>
+          <div class="project-detail__tags">
+            {d.tags.map((t) => <span class="project-detail__tag">{t}</span>)}
+          </div>
+          <div class="project-detail__hero-foot">
+            <div class="project-detail__impact">
+              <span class="project-detail__impact-label">Impact</span>
+              <span class="project-detail__impact-value">{d.metric}</span>
+            </div>
+            {actions.length > 0 && (
+              <div class="project-detail__actions">
+                {actions.map((a) => (
+                  <a
+                    class:list={['tool-btn', 'project-detail__action', a.primary && 'tool-btn--primary']}
+                    href={a.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {a.label}
+                    <Icon name="arrow-up-right" size={14} strokeWidth={2} />
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+          {(d.status || d.client) && (
+            <p class="project-detail__status">
+              {[d.client?.anonymised, d.status].filter(Boolean).join(' · ')}
+            </p>
+          )}
+        </div>
+      </header>
+
+      <section class="project-detail__metrics" aria-label="Key metrics" data-countup-root>
+        {d.metrics.map((m) => (
+          <div class="project-detail__metric">
+            <span class="project-detail__metric-value" data-countup-target={m.value} data-countup-prefix={m.prefix ?? ''}>
+              {m.prefix}<span data-countup-number>{m.value.toLocaleString('en-US')}</span>
+              {m.suffix && <span class="project-detail__metric-suffix">{m.suffix}</span>}
+            </span>
+            <span class="project-detail__metric-label">{m.label}</span>
+          </div>
+        ))}
+      </section>
+
+      <section class={`project-detail__case project-detail__case--${mod}`}>
+        <h2 class="project-detail__section-heading">Case Study</h2>
+        {sections.map((s) => (
+          <article class="project-detail__case-card">
+            <h3 class="project-detail__case-title">{s.title}</h3>
+            <Fragment set:html={s.html} />
+          </article>
+        ))}
+      </section>
+
+      <section class="project-detail__tech">
+        <h2 class="project-detail__section-heading">Tech Stack</h2>
+        <div class="project-detail__tech-list">
+          {d.stack.map((t) => <span class="project-detail__tech-pill">{t}</span>)}
+        </div>
+      </section>
+
+      {related.length > 0 && (
+        <section class="project-detail__related">
+          <h2 class="project-detail__section-heading">Related Projects</h2>
+          <div class="project-detail__related-grid">
+            {related.map((r) => (
+              <a class={`project-detail__related-card project-detail__related-card--${categoryModifier[r.data.category]}`} href={`/projects/${r.id}/`}>
+                <div class="project-detail__related-hero" style={`background: ${heroGradient(r)}`}>
+                  <span class="project-detail__related-category">{categoryShort[r.data.category]}</span>
+                </div>
+                <div class="project-detail__related-body">
+                  <h3 class="project-detail__related-title">{r.data.title}</h3>
+                  <p class="project-detail__related-info">{r.data.summary}</p>
+                  <span class="project-detail__related-cta">Read case study →</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <div class="project-detail__back">
+        <a class="project-detail__back-link" href="/projects/">← Back to all projects</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Count the key metrics up from zero the first time they scroll into view.
+  function initCountUp() {
+    const root = document.querySelector<HTMLElement>('[data-countup-root]');
+    if (!root) return;
+    const els = Array.from(root.querySelectorAll<HTMLElement>('[data-countup-target]'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+
+    const run = (el: HTMLElement) => {
+      const target = Number(el.dataset.countupTarget ?? 0);
+      const num = el.querySelector<HTMLElement>('[data-countup-number]');
+      if (!num || !Number.isFinite(target)) return;
+      const duration = 1400;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        num.textContent = Math.round(target * eased).toLocaleString('en-US');
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      num.textContent = '0';
+      requestAnimationFrame(tick);
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          els.forEach(run);
+          io.disconnect();
+        });
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(root);
+  }
+  initCountUp();
+</script>

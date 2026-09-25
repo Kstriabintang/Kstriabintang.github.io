@@ -1,3 +1,73 @@
 ---
-// Placeholder — replaced by the section work.
+// Home section 04 — "Selected work": filter pills + project cards linking to case studies.
+import SectionHead from '../ui/SectionHead.astro';
+import ProjectCard from '../projects/ProjectCard.astro';
+import { getProjects, categoryLabels, filterOrder } from '../projects/projects';
+
+const projects = (await getProjects()).filter((p) => p.data.featured);
+const used = new Set(projects.map((p) => p.data.category));
+const filters = filterOrder.filter((c) => used.has(c));
 ---
+
+<section id="projects">
+  <div class="container">
+    <SectionHead num="04" lead="Selected" em="work" />
+
+    <div class="projects-v2__filters" role="group" aria-label="Filter projects by category" data-project-filters>
+      <button type="button" class="projects-v2__filter projects-v2__filter--active" data-filter="all" aria-pressed="true">All</button>
+      {filters.map((c) => (
+        <button type="button" class="projects-v2__filter" data-filter={c} aria-pressed="false">{categoryLabels[c]}</button>
+      ))}
+    </div>
+
+    <div class="sr sr--scale project-grid" data-project-grid>
+      {projects.map((project, i) => (
+        <div class="sr__child" data-category={project.data.category} style={`--sr-i:${i};transition-delay:${i * 120}ms`}>
+          <ProjectCard project={project} />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function initSelectedWork() {
+    const bar = document.querySelector<HTMLElement>('[data-project-filters]');
+    const grid = document.querySelector<HTMLElement>('[data-project-grid]');
+    if (!bar || !grid) return;
+
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
+      if (!btn) return;
+      const filter = btn.dataset.filter;
+      bar.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('projects-v2__filter--active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      grid.querySelectorAll<HTMLElement>('[data-category]').forEach((item) => {
+        const show = filter === 'all' || item.dataset.category === filter;
+        item.hidden = !show;
+        if (show) {
+          item.style.transitionDelay = '0ms';
+          item.animate?.(
+            [
+              { opacity: 0, transform: 'scale(0.96)' },
+              { opacity: 1, transform: 'scale(1)' },
+            ],
+            { duration: 320, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+          );
+        }
+      });
+    });
+
+    // Whole card is clickable (like the reference), inner links keep their own targets.
+    grid.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a, button')) return;
+      const card = target.closest<HTMLElement>('[data-card-href]');
+      if (card?.dataset.cardHref) window.location.href = card.dataset.cardHref;
+    });
+  }
+  initSelectedWork();
+</script>

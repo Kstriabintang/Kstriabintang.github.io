@@ -1,0 +1,38 @@
+---
+title: Wedding Saving
+summary: A savings dashboard where every deposit is a real QRIS payment — verified server-side, announced by a Telegram bot, and counted exactly once — running on one Cloudflare Worker with D1.
+category: ai-automation
+metric: 247 tests
+tags: [Cloudflare Workers, Hono, QRIS, Telegram Bot]
+cover:
+  gradient: ['#059669', '#06b6d4']
+  icon: credit-card
+links:
+  demo: https://demo.weddingsaving.my.id
+status: In production since September 2026; public demo runs on a separate sandbox database
+year: 2026
+metrics:
+  - label: Automated tests
+    value: 247
+  - label: Webhooks verified
+    value: 2
+  - label: Notification types
+    value: 4
+stack: [Vue 3.5, Vite, Tailwind CSS 4, Pinia, Hono, Cloudflare Workers, D1, Cron Triggers, Pakasir QRIS, Telegram Bot API, Vitest]
+featured: true
+order: 5
+---
+
+## The Challenge
+
+Saving for a wedding as a couple raises the same questions every week: how much is in, who put in what, and are we on pace for the date? A spreadsheet answers none of them reliably. I wanted an app where deposits aren't typed in by hand at all — every one is a real payment — and where nobody ever has to chase the other person for an update.
+
+## My Approach
+
+Everything runs on **one Cloudflare Worker** (Hono) with **D1**, serving the Vue SPA, the JSON API, two webhooks and the cron jobs. Money paths are defensive by default. The payment provider doesn't sign its webhooks, so the webhook path carries a random secret **and** every notification is verified back against the provider's transaction-status API before a single rupiah is added. A sandbox/live mode guard rejects mismatches in both directions, and one-way status transitions mean a webhook delivered twice never counts twice.
+
+Login is a 4-digit code sent over Telegram: it burns after five wrong tries, expires in five minutes, is rate-limited per username, and the response is identical whether a username exists or not. Sessions store only SHA-256 hashes. Notifications — deposits, 25/50/75/100% milestones, a monthly summary and an evening reminder — are claimed with `INSERT OR IGNORE`, so each is sent exactly once. The bot's command handlers are pure functions, portable off Cloudflare without a rewrite.
+
+## The Results
+
+In production with live QRIS since September 2026, with 247 tests (207 worker, 40 client) written test-first. A separate demo environment with its own database and read-only guard lets anyone try the full flow without touching real savings.

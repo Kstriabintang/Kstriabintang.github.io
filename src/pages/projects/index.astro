@@ -1,0 +1,155 @@
+---
+import '../../styles/pages/_projects.scss';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import {
+  getProjects,
+  categoryLabels,
+  categoryShort,
+  categoryModifier,
+  filterOrder,
+  heroGradient,
+} from '../../components/projects/projects';
+import { site } from '../../data/site';
+
+const projects = await getProjects();
+const used = new Set(projects.map((p) => p.data.category));
+const filters = filterOrder.filter((c) => used.has(c));
+
+const related = [
+  { icon: '👤', label: 'About', desc: 'Background, experience, and how I work.', href: '/about' },
+  { icon: '🤝', label: 'Services', desc: 'How we can work together on your system.', href: '/services' },
+  { icon: '🧰', label: 'Uses', desc: 'The tools, hardware, and software I reach for.', href: '/uses' },
+];
+
+const itemListLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `Projects by ${site.name}`,
+  itemListElement: projects.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: new URL(`/projects/${p.id}/`, site.url).toString(),
+    name: p.data.title,
+  })),
+};
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected work across AI & automation, web, mobile and security — every project with a full case study."
+  jsonLd={itemListLd}
+>
+  <section class="tools-page projects-index">
+    <div class="tools-page__container">
+      <header class="tools-page__header">
+        <h1>Projects</h1>
+        <p>Selected work across AI &amp; automation, web, mobile and security. Each project includes a full case study.</p>
+      </header>
+
+      <div class="blog-filter" data-projects-index>
+        <div class="blog-filter__search-row">
+          <div class="blog-filter__search">
+            <span class="blog-filter__search-icon"><Icon name="search" size={16} strokeWidth={2} /></span>
+            <input class="blog-filter__input" type="search" placeholder="Search projects..." aria-label="Search projects" data-projects-search />
+          </div>
+        </div>
+        <div class="blog-filter__categories" role="group" aria-label="Filter by category">
+          <button type="button" class="blog-filter__cat active" data-filter="all" aria-pressed="true">All</button>
+          {filters.map((c) => (
+            <button type="button" class="blog-filter__cat" data-filter={c} aria-pressed="false">{categoryLabels[c]}</button>
+          ))}
+        </div>
+
+        <div class="projects-index__grid">
+          {projects.map((p, i) => (
+            <a
+              class={`projects-index__card projects-index__card--${categoryModifier[p.data.category]}`}
+              href={`/projects/${p.id}/`}
+              style={`animation-delay:${i * 40}ms`}
+              data-category={p.data.category}
+              data-search={[p.data.title, p.data.summary, ...p.data.tags, ...p.data.stack].join(' ').toLowerCase()}
+            >
+              <div class="projects-index__card-hero" style={`background:${heroGradient(p)}`}>
+                <div class="projects-index__card-hero-grid"></div>
+                <div class="projects-index__card-hero-icon"><Icon name={p.data.cover.icon} size={44} strokeWidth={1.2} /></div>
+                <span class="projects-index__card-impact">{p.data.metric}</span>
+                <span class="projects-index__card-category">{categoryShort[p.data.category]}</span>
+              </div>
+              <div class="projects-index__card-body">
+                <h2 class="projects-index__card-title">{p.data.title}</h2>
+                <p class="projects-index__card-info">{p.data.summary}</p>
+                <div class="projects-index__card-tags">
+                  {p.data.tags.map((t) => <span class="projects-index__card-tag">{t}</span>)}
+                </div>
+                <span class="projects-index__card-cta">View case study →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div class="blog-filter__empty" hidden data-projects-empty>
+          <div class="blog-filter__empty-icon">🔍</div>
+          <div class="blog-filter__empty-title">No projects match</div>
+          <p class="blog-filter__empty-desc">
+            Try another search or <button type="button" class="blog-filter__empty-reset" data-projects-reset>show all projects</button>.
+          </p>
+        </div>
+      </div>
+
+      <aside class="tools-related">
+        <h2 class="tools-related__title">See also</h2>
+        <div class="tools-related__grid">
+          {related.map((r) => (
+            <a class="tools-related__card" href={r.href}>
+              <span class="tools-related__icon" aria-hidden="true">{r.icon}</span>
+              <span class="tools-related__label">{r.label}</span>
+              <span class="tools-related__desc">{r.desc}</span>
+            </a>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  function initProjectsIndex() {
+    const root = document.querySelector<HTMLElement>('[data-projects-index]');
+    if (!root) return;
+    const input = root.querySelector<HTMLInputElement>('[data-projects-search]');
+    const empty = root.querySelector<HTMLElement>('[data-projects-empty]');
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-category]'));
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+    let active = 'all';
+
+    const apply = () => {
+      const q = (input?.value ?? '').trim().toLowerCase();
+      let shown = 0;
+      cards.forEach((card) => {
+        const okCat = active === 'all' || card.dataset.category === active;
+        const okText = !q || (card.dataset.search ?? '').includes(q);
+        card.hidden = !(okCat && okText);
+        if (!card.hidden) shown += 1;
+      });
+      if (empty) empty.hidden = shown > 0;
+    };
+
+    buttons.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        active = btn.dataset.filter ?? 'all';
+        buttons.forEach((b) => {
+          b.classList.toggle('active', b === btn);
+          b.setAttribute('aria-pressed', String(b === btn));
+        });
+        apply();
+      }),
+    );
+    input?.addEventListener('input', apply);
+    root.querySelector('[data-projects-reset]')?.addEventListener('click', () => {
+      if (input) input.value = '';
+      buttons[0]?.click();
+    });
+  }
+  initProjectsIndex();
+</script>

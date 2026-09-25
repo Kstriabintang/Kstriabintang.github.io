@@ -1,0 +1,43 @@
+---
+title: CoalTrack
+summary: Anti-fraud attendance and automatic payroll for coal-mining crews — server-decided check-ins, an append-only event log, and Indonesian-compliant payslips delivered by email and Telegram.
+category: mobile
+metric: 6-layer anti-fraud
+tags: [Flutter, Laravel 12, PostgreSQL, Payroll]
+cover:
+  gradient: ['#f59e0b', '#b45309']
+  icon: shield
+links:
+  live: https://coaltrack.id
+  demo: https://demo.coaltrack.id
+client:
+  anonymised: Built with a coal-mining contractor in East Kalimantan as its first customer.
+status: In Apple TestFlight and Google Play closed testing
+year: 2026
+metrics:
+  - label: App tests
+    value: 422
+  - label: Languages
+    value: 7
+  - label: Anti-fraud layers
+    value: 6
+stack: [Flutter, Riverpod, Laravel 12, PHP 8.3, PostgreSQL 16, Sanctum, Vue 3, Cloudflare Workers, Codemagic CI, Docker]
+featured: true
+order: 1
+---
+
+## The Challenge
+
+In a mining operation, attendance is a spreadsheet problem that turns into a payroll problem. Phone clocks get rolled back, a friend clocks in for you, and by the end of the month nobody can prove what actually happened. The contractor needed attendance that is hard to fake and payroll that follows from it — without asking field crews to learn anything complicated.
+
+## My Approach
+
+I designed CoalTrack so the **server decides**, not the phone. A check-in is two taps: real GPS plus the server's clock, one approved device per employee, and a decision engine that accepts, rejects or flags each event. Attendance is **append-only** — a PostgreSQL trigger rejects UPDATE and DELETE — and when one of our own services fails, the check-in is flagged for human review instead of rejecting the worker. The work-hour window holds even offline, using the last server time plus a monotonic counter.
+
+Verified hours feed a payroll engine for Indonesian rules — **PPh21 TER** (PMK 168/2023), **BPJS** and overtime per Kepmenaker 102/2004. The engine is written twice on purpose, in PHP and in Dart, and mirrored tests prove both produce identical numbers. Sensitive payroll settings need a second approver, every change lands in an audit trail, and payslips go out as PDFs by DKIM-signed email and Telegram.
+
+One call I'm proud of: face verification was built, tested on real devices with the gate forced on — and a photo of a wall still passed. I removed it. A feature that doesn't work is worse than no feature, because the screen promises something that never happens.
+
+## The Results
+
+One Flutter app for Android, iOS and web, a Laravel 12 API and a Vue admin portal, localized in seven languages including full right-to-left Arabic. It is in Apple TestFlight and Google Play closed testing, with a public showcase at coaltrack.id and a server-free demo with four personas at demo.coaltrack.id.
