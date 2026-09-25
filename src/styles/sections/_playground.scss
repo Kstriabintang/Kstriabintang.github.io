@@ -29,23 +29,28 @@
 .jump-back__title {font-size:1.4rem; font-weight:600}
 .jump-back__kind {font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.05rem; letter-spacing:.06em; text-transform:uppercase; color:#02aab0}
 @media(prefers-reduced-motion:reduce) { .jump-back__pulse,.jump-back__item,.crosspromo__card,.pg-band__all,.sharebar__btn {animation:none; transition:none} }
-.showcard[data-astro-cid-cb7d7j45] {display:flex; flex-direction:column; background:var(--card-bg, rgba(255, 255, 255, .03)); border:1px solid var(--card-border, rgba(255, 255, 255, .1)); border-radius:16px; overflow:hidden; text-decoration:none; color:inherit; position:relative; transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}
-.showcard[data-astro-cid-cb7d7j45]:after {content:""; position:absolute; inset:0; border-radius:inherit; padding:1px; background:linear-gradient(130deg,#02aab0,#00cdac); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; opacity:0; transition:opacity .35s cubic-bezier(.16,1,.3,1); pointer-events:none}
-.showcard[data-astro-cid-cb7d7j45]:hover,.showcard[data-astro-cid-cb7d7j45]:focus-visible {transform:translateY(-4px); text-decoration:none; color:inherit; border-color:transparent; box-shadow:0 18px 44px -18px #02aab080}
-.showcard[data-astro-cid-cb7d7j45]:hover:after,.showcard[data-astro-cid-cb7d7j45]:focus-visible:after {opacity:1}
-.showcard[data-astro-cid-cb7d7j45]:hover .showcard__img[data-astro-cid-cb7d7j45],.showcard[data-astro-cid-cb7d7j45]:focus-visible .showcard__img[data-astro-cid-cb7d7j45] {transform:scale(1.06)}
-.showcard[data-astro-cid-cb7d7j45]:hover .showcard__cta[data-astro-cid-cb7d7j45],.showcard[data-astro-cid-cb7d7j45]:focus-visible .showcard__cta[data-astro-cid-cb7d7j45] {color:#00cdac; gap:.7rem}
-.showcard[data-astro-cid-cb7d7j45]:focus-visible {outline:2px solid #00cdac; outline-offset:2px}
-.showcard__art[data-astro-cid-cb7d7j45] {position:relative; aspect-ratio:16/10; display:grid; place-items:center; background:radial-gradient(140% 120% at 80% 0%,rgba(0,205,172,.14),transparent 60%),linear-gradient(160deg,#27234199,#0f0f1a99); overflow:hidden}
-.showcard__fallback[data-astro-cid-cb7d7j45] {position:absolute; font-size:3.2rem; line-height:1; filter:drop-shadow(0 4px 10px rgba(0,0,0,.4)); z-index:0}
-.showcard__img[data-astro-cid-cb7d7j45] {position:relative; z-index:1; width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.16,1,.3,1)}
-.showcard__img--missing[data-astro-cid-cb7d7j45] {display:none}
-.showcard__badge[data-astro-cid-cb7d7j45] {position:absolute; top:.8rem; left:.8rem; z-index:2; font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#04121a; background:linear-gradient(120deg,#02aab0,#00cdac); padding:.3rem .7rem; border-radius:6px}
-.showcard__body[data-astro-cid-cb7d7j45] {display:flex; flex-direction:column; gap:.5rem; padding:1.4rem 1.5rem 1.5rem; flex:1}
-.showcard__title[data-astro-cid-cb7d7j45] {font-size:1.7rem; font-weight:700; line-height:1.2; margin:0; color:var(--text-primary, #fff)}
-.showcard__meta[data-astro-cid-cb7d7j45] {font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.15rem; letter-spacing:.02em; color:var(--text-secondary, #9aa4b8); margin:0}
-.showcard__desc[data-astro-cid-cb7d7j45] {font-size:1.35rem; line-height:1.5; color:var(--text-secondary, #9aa4b8); margin:.2rem 0 0; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
-.showcard__cta[data-astro-cid-cb7d7j45] {display:inline-flex; align-items:center; gap:.5rem; margin-top:auto; padding-top:.8rem; font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.2rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:#02aab0; transition:color .3s cubic-bezier(.16,1,.3,1),gap .3s cubic-bezier(.16,1,.3,1)}
-@media(prefers-reduced-motion:reduce) { .showcard[data-astro-cid-cb7d7j45],.showcard__img[data-astro-cid-cb7d7j45],.showcard__cta[data-astro-cid-cb7d7j45] {transition:none} }
-@media(prefers-reduced-motion:reduce) { .showcard[data-astro-cid-cb7d7j45]:hover,.showcard[data-astro-cid-cb7d7j45]:hover .showcard__img[data-astro-cid-cb7d7j45] {transform:none} }
-.pg-section--home[data-astro-cid-s36mqxm2] {border-top:1px solid rgba(255,255,255,.06); background:radial-gradient(1200px 500px at 80% 0%,rgba(2,170,176,.06),transparent 60%)}
+.showcard {display:flex; flex-direction:column; background:var(--card-bg, rgba(255, 255, 255, .03)); border:1px solid var(--card-border, rgba(255, 255, 255, .1)); border-radius:16px; overflow:hidden; text-decoration:none; color:inherit; position:relative; transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}
+.showcard:after {content:""; position:absolute; inset:0; border-radius:inherit; padding:1px; background:linear-gradient(130deg,#02aab0,#00cdac); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; opacity:0; transition:opacity .35s cubic-bezier(.16,1,.3,1); pointer-events:none}
+.showcard:hover,.showcard:focus-visible {transform:translateY(-4px); text-decoration:none; color:inherit; border-color:transparent; box-shadow:0 18px 44px -18px #02aab080}
+.showcard:hover:after,.showcard:focus-visible:after {opacity:1}
+.showcard:hover .showcard__img,.showcard:focus-visible .showcard__img {transform:scale(1.06)}
+.showcard:hover .showcard__cta,.showcard:focus-visible .showcard__cta {color:#00cdac; gap:.7rem}
+.showcard:focus-visible {outline:2px solid #00cdac; outline-offset:2px}
+.showcard__art {position:relative; aspect-ratio:16/10; display:grid; place-items:center; background:radial-gradient(140% 120% at 80% 0%,rgba(0,205,172,.14),transparent 60%),linear-gradient(160deg,#27234199,#0f0f1a99); overflow:hidden}
+.showcard__fallback {position:absolute; font-size:3.2rem; line-height:1; filter:drop-shadow(0 4px 10px rgba(0,0,0,.4)); z-index:0}
+.showcard__img {position:relative; z-index:1; width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.showcard__img--missing {display:none}
+.showcard__badge {position:absolute; top:.8rem; left:.8rem; z-index:2; font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#04121a; background:linear-gradient(120deg,#02aab0,#00cdac); padding:.3rem .7rem; border-radius:6px}
+.showcard__body {display:flex; flex-direction:column; gap:.5rem; padding:1.4rem 1.5rem 1.5rem; flex:1}
+.showcard__title {font-size:1.7rem; font-weight:700; line-height:1.2; margin:0; color:var(--text-primary, #fff)}
+.showcard__meta {font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.15rem; letter-spacing:.02em; color:var(--text-secondary, #9aa4b8); margin:0}
+.showcard__desc {font-size:1.35rem; line-height:1.5; color:var(--text-secondary, #9aa4b8); margin:.2rem 0 0; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+.showcard__cta {display:inline-flex; align-items:center; gap:.5rem; margin-top:auto; padding-top:.8rem; font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.2rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:#02aab0; transition:color .3s cubic-bezier(.16,1,.3,1),gap .3s cubic-bezier(.16,1,.3,1)}
+@media(prefers-reduced-motion:reduce) { .showcard,.showcard__img,.showcard__cta {transition:none} }
+@media(prefers-reduced-motion:reduce) { .showcard:hover,.showcard:hover .showcard__img {transform:none} }
+.pg-section--home {border-top:1px solid rgba(255,255,255,.06); background:radial-gradient(1200px 500px at 80% 0%,rgba(2,170,176,.06),transparent 60%)}
+html:not([data-theme=dark]) .pg-section--home {border-top-color:rgba(0,0,0,.06)}
+@keyframes jumpPulse{0%,to{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+
+// Poster screenshots sit at the top of the frame so the product headline stays visible.
+.showcard--tool .showcard__img {object-position:top center}

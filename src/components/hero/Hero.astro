@@ -1,4 +1,132 @@
 ---
-// Placeholder — replaced by the hero work.
+import { site } from '../../data/site';
+
+// Split the headline into animated words at build time (no layout shift, works without JS).
+let wordIndex = 0;
+const words = (text: string) =>
+  text
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => ({ w, delay: `${(0.15 + wordIndex++ * 0.09).toFixed(2)}s` }));
+
+const lead = words(site.headline.lead);
+const em = words(site.headline.em);
+const tail = words(site.headline.tail);
+
+const chips = ['LLM gateways', 'QRIS payments', 'webhooks', 'edge computing'];
 ---
-<section id="hero" class="jumbotron"></section>
+
+<section id="hero" class="jumbotron">
+  <div class="hero-north-star" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-layout">
+      <div class="hero-layout__left">
+        <div class="hero-kicker">
+          <span class="hero-kicker__rule" aria-hidden="true"></span>
+          <span class="hero-kicker__text">{site.kicker}</span>
+        </div>
+
+        <h1 class="hero-title hero-title--split" id="hero-title">
+          {lead.map((x) => <><span class="w" style={`animation-delay:${x.delay}`}>{x.w}</span>{' '}</>)}
+          <em>{em.map((x, i) => <><span class="w" style={`animation-delay:${x.delay}`}>{x.w}</span>{i < em.length - 1 ? ' ' : ''}</>)}</em>{tail.map((x) => <span class="w" style={`animation-delay:${x.delay}`}>{x.w}</span>)}
+        </h1>
+
+        <p class="hero-role-line">
+          <span class="hero-role-line__prefix">$ whoami →</span>{' '}<span id="hero-role-type" data-roles={JSON.stringify(site.roles)}></span><span class="hero-role-line__caret" aria-hidden="true"></span>
+        </p>
+
+        <p class="hero-subtitle-text">Ask about any tech topic — I'll explain it simply, with a diagram.</p>
+
+        <div class="hero-explainer" id="hero-explainer">
+          <form class="hero-subscribe" id="hero-explain-form" novalidate>
+            <div class="hero-subscribe__row">
+              <label class="hero-subscribe__label" for="hero-topic">Topic to explain</label>
+              <input
+                id="hero-topic"
+                class="hero-subscribe__input"
+                type="text"
+                name="topic"
+                autocomplete="off"
+                maxlength="80"
+                placeholder="e.g. RAG, webhooks, QRIS"
+              />
+              <button type="submit" class="hero-subscribe__btn">
+                <span class="hero-subscribe__btn-label">Explain it</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+          <p class="hero-explainer__chips" id="hero-explainer-chips">
+            <span class="hero-explainer__chips-label">Try:</span>
+            {chips.map((c) => <button type="button" class="hero-explainer__chip" data-topic={c}>{c}</button>)}
+          </p>
+          <p class="hero-explainer__sent" id="hero-explainer-status" role="status" hidden>
+            <span aria-hidden="true">↘</span><span></span>
+          </p>
+          <p class="hero-subscribe__error" id="hero-explainer-error" role="alert" hidden></p>
+        </div>
+
+        <p class="hero-proof">
+          {site.proof.map((item, i) => (
+            <>
+              {i > 0 && <span class="hero-proof__sep" aria-hidden="true">·</span>}
+              <span class="hero-proof__item">{item}</span>
+            </>
+          ))}
+        </p>
+
+        <p class="hero-secondary">
+          <a href="#projects" class="hero-secondary__link">See selected work <span class="arrow" aria-hidden="true">→</span></a>
+        </p>
+      </div>
+
+      <div class="hero-layout__right">
+        <div class="hero-portrait">
+          <div class="hero-portrait__ring" aria-hidden="true"></div>
+          <div class="hero-profile-photo">
+            <img src="/images/profile.jpg" alt={site.name} width="220" height="220" fetchpriority="high" decoding="async" />
+          </div>
+          <div class="availability-badge availability-badge--float">
+            <span class="availability-badge__dot" aria-hidden="true"></span>
+            <span class="availability-badge__text">{site.availability}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#playground" class="hero-scroll-indicator" id="hero-scroll-indicator" aria-label="Scroll to the playground">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </a>
+</section>
+
+<dialog class="hero-explain" id="hero-explain-dialog" aria-labelledby="hero-explain-title">
+  <div class="hero-explain__card">
+    <header class="hero-explain__head">
+      <div>
+        <p class="hero-explain__eyebrow">Explained simply</p>
+        <h2 class="hero-explain__title" id="hero-explain-title"></h2>
+      </div>
+      <button type="button" class="hero-explain__close" data-explain-close aria-label="Close explanation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      </button>
+    </header>
+    <div class="hero-explain__body" id="hero-explain-body"></div>
+    <div class="hero-explain__diagram" id="hero-explain-diagram" hidden></div>
+    <footer class="hero-explain__foot">
+      <span class="hero-explain__note">AI-generated · double-check anything important</span>
+      <button type="button" class="hero-explain__again" data-explain-again>Explain another topic <span class="arrow" aria-hidden="true">→</span></button>
+    </footer>
+  </div>
+</dialog>
+
+<script>
+  import { initHeroBackground } from '../../scripts/hero-bg';
+  import { initHeroUi } from '../../scripts/hero-ui';
+  import { initHeroExplainer } from '../../scripts/hero-explainer';
+
+  const hero = document.getElementById('hero');
+  initHeroUi();
+  initHeroExplainer();
+  if (hero) initHeroBackground(hero);
+</script>
