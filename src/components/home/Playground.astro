@@ -1,3 +1,54 @@
 ---
-// Placeholder — replaced by the section work.
+import { playground } from '../../data/playground';
 ---
+
+<section id="playground" class="pg-section pg-section--home">
+  <div class="pg-section__container">
+    <header class="pg-section__head">
+      <p class="pg-section__eyebrow">{playground.eyebrow}</p>
+      <h2 class="pg-section__title">{playground.title.lead} <em>{playground.title.em}</em></h2>
+      <p class="pg-section__sub">{playground.sub}</p>
+    </header>
+
+    {playground.bands.map((band) => (
+      <>
+        <div class="pg-band">
+          <h3 class="pg-band__name"><span aria-hidden="true">{band.emoji}</span> {band.name}</h3>
+          <a class="pg-band__all" href={band.allHref}>
+            {band.allLabel}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+          </a>
+        </div>
+        <div class="pg-grid pg-grid--tri">
+          {band.items.map((tool) => (
+            <a class="showcard showcard--tool" href={tool.href} target="_blank" rel="noopener">
+              <div class="showcard__art">
+                <span class="showcard__fallback" aria-hidden="true">{tool.emoji}</span>
+                <img class="showcard__img" src={tool.poster} alt="" width="800" height="500" loading="lazy" decoding="async" />
+                {tool.badge && <span class="showcard__badge">{tool.badge}</span>}
+              </div>
+              <div class="showcard__body">
+                <h3 class="showcard__title">{tool.title}</h3>
+                <p class="showcard__meta">{tool.meta}</p>
+                <p class="showcard__desc">{tool.desc}</p>
+                <span class="showcard__cta">
+                  Open
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </>
+    ))}
+  </div>
+</section>
+
+<script>
+  // Hide the poster (show the emoji fallback) if an image fails to load.
+  document.querySelectorAll<HTMLImageElement>('#playground .showcard__img').forEach((img) => {
+    const fail = () => img.classList.add('showcard__img--missing');
+    if (img.complete && img.naturalWidth === 0) fail();
+    else img.addEventListener('error', fail, { once: true });
+  });
+</script>
