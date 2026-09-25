@@ -1,0 +1,26 @@
+// Global stylesheet — imported once by BaseLayout.
+// Each partial owns one component or section; keep class names BEM-style and unique.
+
+@use 'tokens';
+@use 'base';
+
+@use 'components/reveal';
+@use 'components/section-head';
+@use 'components/buttons';
+@use 'components/scroll-progress';
+@use 'components/navbar';
+@use 'components/footer';
+@use 'components/chat';
+@use 'components/palette';
+@use 'components/terminal';
+
+@use 'sections/hero';
+@use 'sections/playground';
+@use 'sections/projects';
+@use 'sections/about';
+@use 'sections/currently';
+@use 'sections/skills';
+@use 'sections/globe';
+@use 'sections/contact';
+
+@use 'pages/shared';

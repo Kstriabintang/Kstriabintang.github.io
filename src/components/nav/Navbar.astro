@@ -1,0 +1,120 @@
+---
+import Icon from '../ui/Icon.astro';
+import { navGroups } from '../../data/nav';
+import { site } from '../../data/site';
+
+const path = Astro.url.pathname;
+const isCurrent = (hrefs: string[]) => hrefs.some((h) => !h.startsWith('http') && h !== '/' && path.startsWith(h.split('#')[0]) && h.split('#')[0] !== '/');
+---
+
+<nav class="navbar-custom" id="site-nav" aria-label="Primary">
+  <div class="navbar-custom__inner">
+    <div class="navbar-custom__left">
+      <button class="navbar-custom__hamburger" type="button" id="site-nav-hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav-drawer">
+        <span></span><span></span><span></span>
+      </button>
+      <a class="navbar-custom__logo" href="/" aria-label={`${site.name} — home`}>{site.initials}<span class="navbar-custom__logo-dot">.</span></a>
+      <button class="navbar-custom__search" type="button" id="site-search-btn" aria-label="Search the site — press Command K" data-open-palette>
+        <Icon name="search" size={16} />
+        <span class="navbar-custom__search-label">Search</span>
+        <kbd class="navbar-custom__search-kbd">⌘K</kbd>
+      </button>
+    </div>
+
+    <div class="navbar-custom__right">
+      <div class="navbar-custom__scrim" id="site-nav-scrim"></div>
+      <ul class="navbar-custom__links" id="site-nav-drawer">
+        {navGroups.map((group) => {
+          const allItems = group.items ?? group.columns?.flatMap((c) => c.items) ?? [];
+          const current = isCurrent(allItems.map((i) => i.href));
+          return (
+            <li class:list={['navbar-custom__group', current && 'navbar-custom__group--current']} data-nav-group>
+              <button
+                class:list={['navbar-custom__link', 'navbar-custom__group-trigger', current && 'navbar-custom__link--active']}
+                type="button"
+                id={`navtrigger-${group.id}`}
+                aria-expanded="false"
+                aria-controls={`navgroup-${group.id}`}
+              >
+                {group.label}
+                <svg class="navbar-custom__caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+              </button>
+              <div
+                class:list={['navbar-custom__dropdown', group.layout === 'grid' ? 'navbar-custom__dropdown--grid' : 'navbar-custom__dropdown--sections']}
+                id={`navgroup-${group.id}`}
+                role="group"
+                aria-labelledby={`navtrigger-${group.id}`}
+                hidden
+              >
+                {group.blurb && <p class="navbar-custom__dropdown-blurb">{group.blurb}</p>}
+                {group.items && (
+                  <ul class="navbar-custom__dropdown-list">
+                    {group.items.map((item) => (
+                      <li>
+                        <a
+                          href={item.href}
+                          class:list={['navbar-custom__card', !item.external && path === item.href && 'navbar-custom__card--active']}
+                          target={item.external ? '_blank' : undefined}
+                          rel={item.external ? 'noopener' : undefined}
+                        >
+                          <span class="navbar-custom__card-icon"><Icon name={item.icon} /></span>
+                          <span class="navbar-custom__card-text">
+                            <span class="navbar-custom__card-label">
+                              {item.label}
+                              {item.badge && <em class="navbar-custom__card-badge">{item.badge}</em>}
+                            </span>
+                            <span class="navbar-custom__card-desc">{item.desc}</span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {group.columns && (
+                  <div class="navbar-custom__dropdown-cols">
+                    {group.columns.map((col) => (
+                      <div class="navbar-custom__dropdown-col">
+                        <p class="navbar-custom__dropdown-heading">{col.heading}</p>
+                        <ul class="navbar-custom__dropdown-list">
+                          {col.items.map((item) => (
+                            <li>
+                              <a href={item.href} class:list={['navbar-custom__card', path === item.href && 'navbar-custom__card--active']}>
+                                <span class="navbar-custom__card-icon"><Icon name={item.icon} /></span>
+                                <span class="navbar-custom__card-text">
+                                  <span class="navbar-custom__card-label">{item.label}</span>
+                                  <span class="navbar-custom__card-desc">{item.desc}</span>
+                                </span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </li>
+          );
+        })}
+        <li class="navbar-custom__cta-item">
+          <a class="navbar-custom__cta" href="/#contact">Let's talk</a>
+        </li>
+      </ul>
+
+      <div class="navbar-custom__utils">
+        <button class="navbar-custom__terminal-btn" type="button" id="site-terminal-btn" aria-label="Open terminal" data-open-terminal>&gt;_</button>
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Toggle colour theme">
+          <span class="theme-toggle__icon" data-theme-icon>
+            <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></svg>
+            <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  import { initNavbar } from '../../scripts/navbar';
+  initNavbar();
+</script>

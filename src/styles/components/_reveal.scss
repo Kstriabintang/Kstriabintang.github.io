@@ -1,0 +1,32 @@
+// Ported design values — see README › Design System
+.load-hidden {visibility:hidden}
+.sr .sr__child {transition-property:opacity,transform,filter,clip-path; transition-timing-function:cubic-bezier(.16,1,.3,1)}
+.sr--fade-up {opacity:0; transform:translateY(30px); transition:opacity .5s ease-out,transform .5s ease-out}
+.sr--fade-up.sr-visible {opacity:1; transform:translateY(0)}
+.sr--fade-up .sr__child {opacity:0; transform:translateY(30px); transition-duration:.5s}
+.sr--fade-up.sr-visible .sr__child {opacity:1; transform:translateY(0)}
+.sr--clip {clip-path:inset(100% 0 0 0); transition:clip-path .6s cubic-bezier(.16,1,.3,1)}
+.sr--clip.sr-visible {clip-path:inset(0 0 0 0)}
+.sr--clip .sr__child {clip-path:inset(100% 0 0 0); transition-duration:.6s}
+.sr--clip.sr-visible .sr__child {clip-path:inset(0 0 0 0)}
+.sr--blur {opacity:0; filter:blur(12px); transition:opacity .5s ease-out,filter .5s ease-out}
+.sr--blur.sr-visible {opacity:1; filter:blur(0)}
+.sr--blur .sr__child {opacity:0; filter:blur(12px); transition-duration:.5s}
+.sr--blur.sr-visible .sr__child {opacity:1; filter:blur(0)}
+.sr--scale {opacity:0; transform:scale(.92); transition:opacity .45s ease-out,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.sr--scale.sr-visible {opacity:1; transform:scale(1)}
+.sr--scale .sr__child {opacity:0; transform:scale(.92); transition-duration:.45s; transition-timing-function:ease-out,cubic-bezier(.34,1.56,.64,1)}
+.sr--scale.sr-visible .sr__child {opacity:1; transform:scale(1)}
+.sr--slide-right {opacity:0; transform:translate(-40px); transition:opacity .5s ease-out,transform .5s ease-out}
+.sr--slide-right.sr-visible {opacity:1; transform:translate(0)}
+.sr--slide-right .sr__child {opacity:0; transform:translate(-40px); transition-duration:.5s}
+.sr--slide-right.sr-visible .sr__child {opacity:1; transform:translate(0)}
+@media(prefers-reduced-motion:reduce) { .sr--fade-up,.sr--clip,.sr--blur,.sr--scale,.sr--slide-right,.sr--slide-left,.sr .sr__child {opacity:1!important; transform:none!important; filter:none!important; clip-path:none!important; transition:none!important} }
+.sr--slide-left {opacity:0; transform:translate(40px); transition:opacity .5s ease-out,transform .5s ease-out}
+.sr--slide-left.sr-visible {opacity:1; transform:translate(0)}
+.sr--slide-left .sr__child {opacity:0; transform:translate(40px); transition-duration:.5s}
+.sr--slide-left.sr-visible .sr__child {opacity:1; transform:translate(0)}
+.projects-v2 .sr--scale {display:grid; grid-template-columns:repeat(2,1fr); gap:2.5rem; max-width:1000px; margin:0 auto}
+@media(max-width:56.25em) { .projects-v2 .sr--scale {grid-template-columns:1fr; gap:2rem} }
+.testimonials-grid,.testimonials-section .sr--scale {display:grid; grid-template-columns:repeat(2,1fr); gap:2rem}
+@media(max-width:56.25em) { .testimonials-grid,.testimonials-section .sr--scale {display:none} }

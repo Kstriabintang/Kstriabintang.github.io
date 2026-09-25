@@ -1,0 +1,21 @@
+// Ported design values — see README › Design System
+#skills {background:var(--bg-secondary); color:var(--text-primary); padding-top:9rem; padding-bottom:7rem}
+.skills-grid {display:grid; grid-template-columns:repeat(2,1fr); gap:1.6rem}
+@media(max-width:56.25em) { .skills-grid {grid-template-columns:1fr} }
+.skills-grid__full {grid-column:span 2}
+@media(max-width:56.25em) { .skills-grid__full {grid-column:span 1} }
+.skills-category {height:100%; text-align:left; padding:2.4rem 2.6rem; border-radius:18px; background:var(--surface-card, var(--card-bg)); border:1px solid var(--card-border); transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1),border-color .35s}
+.skills-category:hover {transform:translateY(-5px); box-shadow:var(--card-shadow-hover, 0 12px 40px rgba(0, 0, 0, .08)); border-color:#02aab059}
+.skills-category--highlighted {background:linear-gradient(160deg,rgba(2,170,176,.1),var(--surface-card, var(--card-bg)) 55%); border-color:#02aab040; grid-column:span 2}
+@media(max-width:56.25em) { .skills-category--highlighted {grid-column:span 1} }
+.skills-category__kicker {font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.1rem; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--text-secondary); display:block; color:#02aab0; margin-bottom:.7rem}
+.skills-category__title {font-family:Fraunces,Georgia,serif; font-size:2rem; font-weight:600; margin-bottom:1.5rem; color:var(--text-primary)}
+.skills-category__pills {display:flex; flex-wrap:wrap; gap:.8rem}
+.skills-pill {display:inline-flex; align-items:center; gap:.6rem; padding:.5rem 1.2rem .5rem .9rem; background:var(--bg-primary); border:1px solid var(--card-border); border-left:4px solid var(--card-border); border-radius:50px; font-size:1.3rem; font-weight:600; color:var(--text-primary); transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s; cursor:default}
+.skills-pill:before {content:""; width:7px; height:7px; border-radius:50%; background:var(--card-border); flex-shrink:0}
+.skills-pill:hover {transform:translateY(-2px); border-color:#02aab066; border-left-color:#02aab0}
+.skills-pill--expert {border-left-color:#02aab0}
+.skills-pill--expert:before {background:#02aab0; box-shadow:0 0 7px #02aab099; animation:expertPulse 2s ease-in-out infinite}
+.skills-pill--advanced {border-left-color:#02aab073}
+.skills-pill--advanced:before {background:#02aab08c}
+.skills-pill--glow,.skills-pill--accent {font-weight:500}

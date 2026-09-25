@@ -1,0 +1,17 @@
+---
+// Numbered serif section heading: "04  Selected *work* ————"
+interface Props {
+  num: string;
+  lead: string;
+  em: string;
+  tail?: string;
+  as?: 'h1' | 'h2';
+}
+const { num, lead, em, tail, as: Tag = 'h2' } = Astro.props;
+---
+
+<div class="section-head sr sr--fade-up">
+  <span class="section-head__num">{num}</span>
+  <Tag class="section-head__title">{lead} <em>{em}</em>{tail}</Tag>
+  <span class="section-head__rule" aria-hidden="true"></span>
+</div>

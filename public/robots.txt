@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ksatriabintangsamudra.my.id/sitemap.xml
+Sitemap: https://ksatriabintangsamudra.com/sitemap-index.xml

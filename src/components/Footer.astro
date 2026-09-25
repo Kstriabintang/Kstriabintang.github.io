@@ -1,0 +1,58 @@
+---
+import Icon from './ui/Icon.astro';
+import { footerColumns } from '../data/nav';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+const socials = [
+  { label: 'linkedin', href: site.socials.linkedin, icon: 'linkedin' },
+  { label: 'github', href: site.socials.github, icon: 'github' },
+  { label: 'instagram', href: site.socials.instagram, icon: 'instagram' },
+];
+---
+
+<footer class="footer navbar-static-bottom">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-columns">
+        {footerColumns.map((col) => (
+          <div class="footer-column">
+            <h3 class="footer-column__title">{col.title}</h3>
+            <ul class="footer-column__list">
+              {col.links.map((link) => {
+                const external = link.href.startsWith('http');
+                return (
+                  <li>
+                    <a href={link.href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+                      {link.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div class="footer-top">
+        <div class="footer-top__left">
+          <span class="footer-logo">{site.initials}</span>
+          <p class="footer-tagline">{site.footerTagline}</p>
+        </div>
+        <div class="footer-top__right">
+          <div class="social-links">
+            {socials.map((s) => (
+              <a href={s.href} aria-label={s.label} target="_blank" rel="noopener">
+                <Icon name={s.icon} size={24} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">{site.footerNote} {year}.</p>
+      </div>
+    </div>
+  </div>
+</footer>
