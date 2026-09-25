@@ -115,3 +115,23 @@ a:hover {color:var(--accent-ink); text-decoration:underline}
 @media print { .head__photo {border-color:#0a7f83; box-shadow:none} }
 @media print { .two-col {display:block} }
 @media print { .foot__q {color:#111} }
+
+// Print pagination: keep headings with their content, let long sections flow.
+@media print {
+  .block,
+  .timeline {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+  .job,
+  .skills__row,
+  .earlier__row {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .h2,
+  .job__head {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+}
