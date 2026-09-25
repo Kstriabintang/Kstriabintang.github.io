@@ -9,7 +9,4 @@ export default defineConfig({
   output: 'static',
   integrations: [react(), sitemap({ filter: (page) => !page.includes('/404') }), mdx()],
   build: { format: 'directory' },
-  vite: {
-    css: { preprocessorOptions: { scss: { api: 'modern-compiler' } } },
-  },
 });
