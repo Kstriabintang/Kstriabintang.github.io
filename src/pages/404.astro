@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/pages/_error.scss';
+
+const popular = [
+  { title: 'CoalTrack', meta: 'Mining workforce & payroll', href: '/projects' },
+  { title: 'Services', meta: 'Work with me', href: '/services' },
+  { title: 'About', meta: 'Who I am', href: '/about' },
+  { title: 'Resume', meta: 'Experience & skills', href: '/resume' },
+];
+---
+
+<BaseLayout title="Page not found" description="This page doesn't exist." noindex>
+  <section class="error-page">
+    <div class="error-page__hero">
+      <div class="error-page__message">
+        <p class="error-page__code">404</p>
+        <p class="error-page__text">This page wandered off the equator. Let’s get you back on track.</p>
+        <div class="error-page__links">
+          <a class="cta-btn cta-btn--hero" href="/">Back home</a>
+          <a class="error-page__link" href="/projects">See projects →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-page__search">
+      <p class="error-page__search-label">Looking for something specific?</p>
+      <form class="error-page__search-form" onsubmit="event.preventDefault(); window.dispatchEvent(new CustomEvent('kb:open-palette'));">
+        <input class="error-page__search-input" type="text" placeholder="Search the site…" aria-label="Search the site" onfocus="window.dispatchEvent(new CustomEvent('kb:open-palette'))" />
+        <button class="error-page__search-btn" type="submit">Search</button>
+      </form>
+    </div>
+
+    <div class="error-page__popular">
+      <p class="error-page__popular-label">Popular</p>
+      <div class="error-page__popular-list">
+        {popular.map((p) => (
+          <a class="error-page__popular-card" href={p.href}>
+            <span class="error-page__popular-info">
+              <span class="error-page__popular-title">{p.title}</span>
+              <span class="error-page__popular-meta">{p.meta}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

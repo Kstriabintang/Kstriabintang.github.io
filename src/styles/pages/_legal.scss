@@ -1,0 +1,16 @@
+// Ported design values — see README › Design System
+.legal-page {padding:8rem 0 6rem}
+@media(max-width:37.5em) { .legal-page {padding:5.5rem 0 4rem} }
+.legal-page__container {max-width:760px; margin:0 auto; padding:0 2rem; text-align:left}
+.legal-page__header {margin:1.6rem 0 2.8rem; padding-bottom:2rem; border-bottom:1px solid var(--card-border, rgba(0, 0, 0, .08))}
+.legal-page__header h1 {font-size:3.4rem; font-weight:800; margin:0 0 .8rem; color:var(--text-primary, #272341)}
+.legal-page__updated {font-size:1.4rem; color:var(--text-secondary, #777); margin:0}
+.legal-prose {font-size:1.6rem; line-height:1.7; color:var(--text-primary, #272341)}
+.legal-prose h2 {font-size:2rem; font-weight:700; margin:3.2rem 0 1rem; color:var(--text-primary, #272341); scroll-margin-top:9rem}
+.legal-prose p {margin:0 0 1.4rem}
+.legal-prose ul {margin:0 0 1.6rem; padding-left:2.2rem}
+.legal-prose li {margin:0 0 .7rem}
+.legal-prose a {color:#02aab0; text-decoration:underline; text-underline-offset:2px}
+.legal-prose a:hover {color:#00cdac}
+.legal-prose abbr {text-decoration-style:dotted; cursor:help}
+.legal-prose strong {font-weight:700}

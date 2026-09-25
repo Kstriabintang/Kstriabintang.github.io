@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/pages/_tool-page.scss';
+import '../styles/pages/_legal.scss';
+import { site } from '../data/site';
+---
+
+<BaseLayout title="Privacy" description="What ksatriabintangsamudra.com collects, why, and how long it keeps it.">
+  <section class="legal-page">
+    <div class="legal-page__container">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li>Privacy</li>
+        </ol>
+      </nav>
+      <header class="legal-page__header">
+        <h1>Privacy</h1>
+        <p class="legal-page__updated">Last updated: 26 September 2026</p>
+      </header>
+      <div class="legal-prose">
+        <p>This is a personal site. It collects as little as possible and never sells or shares data for advertising.</p>
+
+        <h2>Contact form</h2>
+        <p>When you send a message, your name, email and message are emailed to me through Cloudflare Email Routing. They are not stored on this site. I use them only to reply.</p>
+
+        <h2>“Ask me anything” chat</h2>
+        <ul>
+          <li>Before chatting you give a name and an email or phone number. These are stored for up to 90 days so I can follow up, then deleted automatically.</li>
+          <li>Your messages are processed by Cloudflare Workers AI to generate answers. The conversation lives in your browser tab (session storage) and is not kept on the server.</li>
+        </ul>
+
+        <h2>“Explain it” tool</h2>
+        <p>Topics you submit are sent to Cloudflare Workers AI. Answers are cached by topic for up to 7 days so repeated questions are fast; the cache does not include who asked.</p>
+
+        <h2>Abuse protection</h2>
+        <p>To stop spam, the site keeps short-lived counters keyed to a hashed IP address (about one hour).</p>
+
+        <h2>Your browser</h2>
+        <p>Your light/dark theme choice is saved in <abbr title="Stored only in your browser">localStorage</abbr>. There are no advertising or tracking cookies.</p>
+
+        <h2>Questions or deletion</h2>
+        <p>Email <a href={`mailto:${site.email}`}>{site.email}</a> and I’ll answer or delete your data.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

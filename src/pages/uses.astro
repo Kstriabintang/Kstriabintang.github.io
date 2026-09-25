@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/pages/_tool-page.scss';
+
+const categories = [
+  {
+    icon: '🖥️',
+    title: 'Hardware',
+    items: [
+      { name: 'MacBook Pro', desc: 'Daily driver for everything — code, design, builds and store uploads.' },
+      { name: 'vivo V21', desc: 'Android test device for Flutter builds; also the case study for my adb-kit debloat toolkit.' },
+    ],
+  },
+  {
+    icon: '✏️',
+    title: 'Editor & IDE',
+    items: [
+      { name: 'Visual Studio Code', desc: 'Main editor, with Astro, Flutter and PHP tooling.' },
+      { name: 'Cursor', desc: 'AI-first editor for fast refactors and multi-file changes.' },
+      { name: 'Android Studio', desc: 'Emulators, Kotlin / Compose work and Android builds.' },
+    ],
+  },
+  {
+    icon: '⬛',
+    title: 'Terminal',
+    items: [
+      { name: 'zsh on macOS', desc: 'Default shell for scripts, git and deploys.' },
+      { name: 'Wrangler', desc: 'Cloudflare CLI for Workers, D1, KV and Pages.' },
+      { name: 'ADB (wireless)', desc: 'Device debugging, installs and debloat scripts.' },
+    ],
+  },
+  {
+    icon: '🤖',
+    title: 'AI Tools',
+    items: [
+      { name: 'Claude Code', desc: 'Agentic coding in the terminal — specs in, reviewed code out.' },
+      { name: 'Cursor', desc: 'In-editor AI for iteration.' },
+      { name: 'OpenRouter', desc: 'Model routing behind my Vensix gateway.' },
+      { name: 'Cloudflare Workers AI', desc: 'Edge inference — powers the chat and explainer on this site.' },
+    ],
+  },
+  {
+    icon: '🧩',
+    title: 'Languages & Frameworks',
+    items: [
+      { name: 'TypeScript', desc: 'Astro, React, Next.js, Hono, Workers.' },
+      { name: 'Python', desc: 'FastAPI services, scripts and tooling.' },
+      { name: 'PHP / Laravel', desc: 'APIs and Filament admin panels.' },
+      { name: 'Dart / Flutter', desc: 'Cross-platform mobile apps with offline queues.' },
+      { name: 'Vue', desc: 'Dashboards and client sites.' },
+    ],
+  },
+  {
+    icon: '🗄️',
+    title: 'Databases',
+    items: [
+      { name: 'PostgreSQL', desc: 'Primary relational store for larger systems.' },
+      { name: 'SQLite / Cloudflare D1', desc: 'Edge and single-node apps.' },
+      { name: 'Supabase', desc: 'Auth, Postgres with row-level security and storage.' },
+    ],
+  },
+  {
+    icon: '☁️',
+    title: 'Cloud & DevOps',
+    items: [
+      { name: 'Cloudflare', desc: 'DNS, Workers, Pages, D1, KV, R2, Email Routing, Turnstile.' },
+      { name: 'GitHub Actions', desc: 'CI and deploys.' },
+      { name: 'Codemagic', desc: 'iOS and Android builds to TestFlight and Play.' },
+      { name: 'Docker', desc: 'Local stacks and VPS deploys.' },
+    ],
+  },
+  {
+    icon: '💳',
+    title: 'Payments & Messaging',
+    items: [
+      { name: 'Pakasir · Midtrans · iPaymu', desc: 'QRIS and card payments with server-side verification.' },
+      { name: 'Telegram Bot API', desc: 'Notifications, OTP login and order bots.' },
+      { name: 'Resend · Brevo', desc: 'Transactional email.' },
+    ],
+  },
+  {
+    icon: '🌐',
+    title: 'This Site',
+    items: [
+      { name: 'Astro', desc: 'Static-first pages with small interactive islands.' },
+      { name: 'SCSS', desc: 'Token-driven styles with light and dark themes.' },
+      { name: 'React', desc: 'Command palette, terminal and chat widget.' },
+      { name: 'Cloudflare Workers', desc: 'Hosting, contact form and AI endpoints.' },
+      { name: 'cobe', desc: 'The WebGL globe.' },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Uses" description="The hardware, editors, AI tools and stack Ksatria Bintang Samudra uses to ship production software.">
+  <main class="tool-page">
+    <div class="tool-page__container tool-page__container--wide">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li>Uses</li>
+        </ol>
+      </nav>
+      <header class="tool-page__header">
+        <h1>My Tech Stack &amp; Setup</h1>
+        <p>The hardware, software and services I actually use to build and ship — no affiliate links, just the setup.</p>
+      </header>
+      <div class="uses-grid">
+        {categories.map((c) => (
+          <section class="tool-panel uses-category">
+            <h2 class="tool-panel-title"><span class="uses-category__icon">{c.icon}</span> {c.title}</h2>
+            <ul class="uses-list">
+              {c.items.map((i) => (
+                <li class="uses-list__item">
+                  <span class="uses-list__name">{i.name}</span>
+                  <span class="uses-list__desc">{i.desc}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>

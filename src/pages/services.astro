@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/pages/_services.scss';
+import { site } from '../data/site';
+
+const proof = [
+  { value: '15+', label: 'Live products I built and still operate' },
+  { value: '39', label: 'Public repositories — read the code before you hire' },
+  { value: 'QRIS', label: 'Payment flows with verified webhooks and idempotent delivery' },
+  { value: 'Shipped', label: 'Every case study links to something you can open today' },
+];
+
+const offers = [
+  {
+    title: 'AI integration & LLM features',
+    body: 'Add chat, summarisation, extraction or an OpenAI-compatible gateway to your product — with cost metering, rate limits, fallbacks and prompts you can version. I built Vensix, my own AI gateway, the same way.',
+    fit: 'Best for: products that need AI features that behave in production and don’t surprise you on the invoice.',
+  },
+  {
+    title: 'Automation & payments',
+    body: 'QRIS / Midtrans / Pakasir payments, Telegram and WhatsApp bots, webhook pipelines and auto-fulfilment. Payments are verified server-side, delivery is idempotent, and every state change leaves an audit trail.',
+    fit: 'Best for: businesses still doing orders, payments or notifications by hand.',
+  },
+  {
+    title: 'Build or production-readiness review',
+    body: 'End-to-end builds — web, Flutter mobile or Cloudflare edge — or a written review of a system you already run: failure modes, security surfaces, data integrity and running cost, with prioritised fixes.',
+    fit: 'Best for: teams a few weeks from launch, or a system that misbehaves under real users.',
+  },
+];
+---
+
+<BaseLayout
+  title="Work with me"
+  description="Hire Ksatria Bintang Samudra for AI integration, payment automation and production-ready builds. Free 20-minute intro call, fixed-scope proposals."
+>
+  <section class="services-page" id="main-content">
+    <div class="services-page__container">
+      <header class="services-page__hero">
+        <h1>Work with me</h1>
+        <p class="services-page__lede">
+          I help founders and teams ship AI-powered products and automation that hold up in production — from LLM features
+          and payment flows to field apps that keep working offline. You get a spec first, fast delivery, and an engineer
+          who owns every trade-off.
+        </p>
+        <div class="services-page__cta-row">
+          <a class="services-page__btn services-page__btn--primary" href={site.bookCall} target="_blank" rel="noopener">Book an intro call</a>
+          <a class="services-page__btn services-page__btn--secondary" href={`mailto:${site.email}`}>Email me</a>
+        </div>
+      </header>
+
+      <div class="services-page__proof">
+        {proof.map((p) => (
+          <div class="services-page__proof-item">
+            <span class="services-page__proof-value">{p.value}</span>
+            <span class="services-page__proof-label">{p.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="services-page__offers">
+        <h2>How I can help</h2>
+        {offers.map((o) => (
+          <article class="services-page__offer">
+            <h3>{o.title}</h3>
+            <p>{o.body}</p>
+            <p class="services-page__offer-fit">{o.fit}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="services-page__how">
+        <h2>How it works</h2>
+        <ol>
+          <li><strong>Intro call (free, 20 min).</strong> You describe the product and the problem; I tell you honestly whether I’m the right fit.</li>
+          <li><strong>Scoped proposal.</strong> Fixed scope, fixed price, written acceptance criteria. No open-ended hourly billing.</li>
+          <li><strong>The work.</strong> Weekly demos on a preview URL, a written handover, and a walkthrough call at the end.</li>
+        </ol>
+      </div>
+
+      <div class="services-page__cta services-page__cta--bottom">
+        <a class="services-page__btn services-page__btn--primary" href={site.bookCall} target="_blank" rel="noopener">Book an intro call</a>
+        <p class="services-page__cta-note">
+          Prefer async? <a href={`mailto:${site.email}`}>{site.email}</a> — tell me what you’re building and what’s getting in the way.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

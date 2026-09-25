@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/ui/Icon.astro';
+import '../styles/pages/_about-page.scss';
+import { site } from '../data/site';
+
+const facts = [
+  { emoji: '🚀', value: '15+', label: 'Live products' },
+  { emoji: '📦', value: '39', label: 'Public repos' },
+  { emoji: '🌐', value: '0°', label: 'Home latitude' },
+  { emoji: '💳', value: 'QRIS', label: 'Native payments' },
+  { emoji: '🗣️', value: '7', label: 'Languages in one app' },
+  { emoji: '💡', value: 'AI agents', label: 'Current obsession' },
+];
+
+const skills = [
+  'AI Engineering', 'LLM Integration', 'Prompt Engineering', 'Multi-agent Workflows', 'Automation', 'Payment Integration',
+  'Solutions Architecture', 'Cloudflare Workers', 'Flutter', 'Laravel', 'FastAPI', 'React', 'Vue', 'TypeScript', 'Python',
+  'Penetration Testing', 'OSINT',
+];
+
+const shipped = [
+  {
+    label: 'CoalTrack — anti-fraud workforce & payroll for mining',
+    year: '2026',
+    detail: 'Flutter + Laravel, multi-tenant. Tamper-resistant attendance (server time, device binding, mock-GPS rejection) that feeds Indonesian payroll, bank files and payslips. 7 languages. In pilot with a coal-mining contractor.',
+    links: [{ label: 'coaltrack.id →', href: 'https://coaltrack.id' }, { label: 'Live demo →', href: 'https://demo.coaltrack.id' }],
+  },
+  {
+    label: 'Vensix — OpenAI-compatible AI gateway',
+    year: '2026',
+    detail: 'One key, one Rupiah balance: routes to Claude, GPT, Gemini, DeepSeek and Kimi with live cost-based metering, QRIS top-ups and automated hosting provisioning.',
+    links: [{ label: 'vensix.biz.id →', href: 'https://vensix.biz.id' }],
+  },
+  {
+    label: 'Makmur Motor — edge-native showroom & CMS',
+    year: '2026',
+    detail: 'Next.js on Cloudflare Workers with D1 and KV; a dealership runs its own inventory, photos and SEO from an admin panel.',
+    links: [{ label: 'makmurmotor.biz.id →', href: 'https://makmurmotor.biz.id' }],
+  },
+  {
+    label: 'Lavelle — digital wedding-invitation studio',
+    year: '2026',
+    detail: 'Staff portal with live preview, Supabase row-level security and one-click publishing of each invitation to its own subdomain.',
+    links: [{ label: 'lavelle.my.id →', href: 'https://lavelle.my.id' }],
+  },
+  {
+    label: 'Phishing threat-intel case files',
+    year: '2026',
+    detail: 'Passive OSINT dissection of a WhatsApp phishing / CPA-fraud campaign: 500+ related domains mapped, chain-of-custody manifests, abuse reports.',
+    links: [{ label: 'Read on GitHub →', href: 'https://github.com/Kstriabintang/phishing-forensics' }],
+  },
+];
+
+const principles = [
+  { t: 'Spec first', d: 'Every build starts with scope, constraints, contracts and acceptance criteria. The AI inherits the spec — never the guesswork.' },
+  { t: 'AI-orchestrated', d: 'Claude Code, Cursor and custom prompt chains do the typing. The right tool for each layer, not one hammer for every nail.' },
+  { t: 'Human-verified', d: 'I read what the tools produce, test it, and own every architectural decision, security boundary and trade-off.' },
+  { t: 'Security by default', d: 'Pentesting taught me to assume nothing is safe: server-side verification, least privilege, idempotent payments, no secrets in the client.' },
+];
+
+const socials = [
+  { label: 'LinkedIn', href: site.socials.linkedin, icon: 'linkedin' },
+  { label: 'GitHub', href: site.socials.github, icon: 'github' },
+  { label: 'Instagram', href: site.socials.instagram, icon: 'instagram' },
+  { label: 'Email', href: `mailto:${site.email}`, icon: 'mail' },
+];
+---
+
+<BaseLayout
+  title="About"
+  description="About Ksatria Bintang Samudra — AI engineer, automation builder and solutions architect from Pontianak, Indonesia. What I've shipped and how I work."
+  type="profile"
+>
+  <section class="about-page" id="main-content">
+    <div class="about-page__container">
+      <div class="about-page__hero">
+        <img class="about-page__photo" src="/images/profile.jpg" alt={site.name} width="160" height="160" />
+        <div class="about-page__hero-info">
+          <h1 class="about-page__name">{site.name}</h1>
+          <p class="about-page__title">AI Engineer · Automation Builder · Solutions Architect</p>
+          <p class="about-page__location">{site.location}</p>
+          <div class="about-page__socials">
+            {socials.map((s) => (
+              <a class="about-page__social-link" href={s.href} aria-label={s.label} target={s.href.startsWith('http') ? '_blank' : undefined} rel="noopener">
+                <Icon name={s.icon} size={18} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="about-page__bio">
+        <h2>About Me</h2>
+        <p>
+          I’m Ksatria — an AI-native engineer from Pontianak, the Indonesian city that sits right on the equator. I build
+          production systems end-to-end: an OpenAI-compatible AI gateway with live cost metering, an anti-fraud attendance
+          and payroll platform for a mining contractor, and payment-native automation that runs while its owners sleep.
+        </p>
+        <p>
+          My path is a little unusual. I started analysing social-media data for clients on Upwork, moved into penetration
+          testing, then spent a year and a half administering Google Workspace for a mining company. Each stop left a habit I
+          still use: respect data, assume nothing is safe by default, and automate whatever doesn’t need a human.
+        </p>
+        <p>
+          Today I work spec-first and AI-orchestrated — Claude Code and Cursor do a lot of the typing, and I own every
+          decision. If you need something real shipped quickly, without cutting corners on security or data integrity, let’s talk.
+        </p>
+      </div>
+
+      <div class="about-page__facts">
+        <h2>Quick Facts</h2>
+        <div class="about-page__facts-grid">
+          {facts.map((f) => (
+            <div class="about-page__fact">
+              <span class="about-page__fact-emoji">{f.emoji}</span>
+              <span class="about-page__fact-value">{f.value}</span>
+              <span class="about-page__fact-label">{f.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="about-page__expertise">
+        <h2>Expertise</h2>
+        <div class="about-page__skills">
+          {skills.map((s) => <span class="about-page__skill">{s}</span>)}
+        </div>
+      </div>
+
+      <div class="about-page__shipped">
+        <h2>What I’ve shipped</h2>
+        <p class="about-page__shipped-lede">Concrete things I built end-to-end, with the scope that matters. Every link is live.</p>
+        <ul class="about-page__shipped-list">
+          {shipped.map((s) => (
+            <li class="about-page__shipped-item">
+              <div class="about-page__shipped-row">
+                <strong class="about-page__shipped-label">{s.label}</strong>
+                <span class="about-page__shipped-year">{s.year}</span>
+              </div>
+              <p class="about-page__shipped-detail">{s.detail}</p>
+              <div class="about-page__shipped-links">
+                {s.links.map((l) => <a href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="about-page__editorial">
+        <h2>How I work</h2>
+        <p class="about-page__editorial-lede">The rules behind everything on this site — and everything I ship for clients.</p>
+        <dl class="about-page__editorial-list">
+          {principles.map((p) => (
+            <>
+              <dt>{p.t}</dt>
+              <dd>{p.d}</dd>
+            </>
+          ))}
+        </dl>
+      </div>
+
+      <div class="about-page__cited">
+        <h2>Where the work shows up</h2>
+        <ul class="about-page__cited-list">
+          <li><a href="https://github.com/Kstriabintang" target="_blank" rel="noopener">GitHub — 39 public repositories ↗</a></li>
+          <li><a href="https://coaltrack.id" target="_blank" rel="noopener">coaltrack.id — product site in 7 languages ↗</a></li>
+          <li><a href="https://lavelle.my.id" target="_blank" rel="noopener">lavelle.my.id — live invitation studio ↗</a></li>
+          <li><a href="https://resumekita.my.id" target="_blank" rel="noopener">resumekita.my.id — free ATS resume builder ↗</a></li>
+        </ul>
+      </div>
+
+      <div class="about-page__cta">
+        <a class="about-page__cta-btn about-page__cta-btn--primary" href={site.bookCall} target="_blank" rel="noopener">Book a Meeting</a>
+        <a class="about-page__cta-btn about-page__cta-btn--secondary" href={`mailto:${site.email}`}>Email Me</a>
+        <a class="about-page__cta-btn about-page__cta-btn--secondary" href="/services">Work With Me</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
