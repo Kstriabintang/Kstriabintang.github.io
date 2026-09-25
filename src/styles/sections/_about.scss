@@ -2,20 +2,20 @@
 #about {background:var(--bg-primary)}
 #about .container {max-width:1180px}
 .mlabel {font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.15rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:#02aab0}
-.bento {display:grid; grid-template-columns:repeat(3,1fr); grid-template-areas:"intro       intro        canada" "facts       personality  canada" "facts       closer       collage"; gap:2.2rem; max-width:1180px; margin:0 auto}
-@media(max-width:56.25em) { .bento {grid-template-columns:1fr 1fr; grid-template-areas:"intro        intro" "canada       facts" "personality  closer" "collage      collage"} }
-@media(max-width:37.5em) { .bento {grid-template-columns:1fr; grid-template-areas:"intro" "canada" "facts" "personality" "closer" "collage"} }
+.bento {display:grid; grid-template-columns:repeat(3,1fr); grid-template-areas:"intro       intro        portrait" "facts       personality  portrait" "facts       closer       collage"; gap:2.2rem; max-width:1180px; margin:0 auto}
+@media(max-width:56.25em) { .bento {grid-template-columns:1fr 1fr; grid-template-areas:"intro        intro" "portrait       facts" "personality  closer" "collage      collage"} }
+@media(max-width:37.5em) { .bento {grid-template-columns:1fr; grid-template-areas:"intro" "portrait" "facts" "personality" "closer" "collage"} }
 .bcell {text-align:left; background:var(--surface-card, var(--card-bg, #fff)); border:1px solid var(--card-border); border-radius:1.8rem; padding:3.4rem; transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .5s,box-shadow .5s cubic-bezier(.16,1,.3,1)}
 .bcell:hover {transform:translateY(-5px); border-color:#02aab059; box-shadow:var(--card-shadow-hover, 0 18px 48px rgba(0, 0, 0, .1))}
 .bcell--intro {grid-area:intro}
 .bcell--facts {grid-area:facts; display:flex; flex-direction:column}
 .bcell--personality {grid-area:personality}
 .bcell--closer {grid-area:closer}
-.bcell--canada,.bcell--collage {padding:0; overflow:hidden; position:relative; min-height:24rem}
-.bcell--canada img,.bcell--collage img {width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.16,1,.3,1)}
-.bcell--canada:hover img,.bcell--collage:hover img {transform:scale(1.05)}
-.bcell--canada:after,.bcell--collage:after {content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(10,10,15,.55)); pointer-events:none}
-.bcell--canada {grid-area:canada}
+.bcell--portrait,.bcell--collage {padding:0; overflow:hidden; position:relative; min-height:24rem}
+.bcell--portrait img,.bcell--collage img {width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.bcell--portrait:hover img,.bcell--collage:hover img {transform:scale(1.05)}
+.bcell--portrait:after,.bcell--collage:after {content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(10,10,15,.55)); pointer-events:none}
+.bcell--portrait {grid-area:portrait}
 .bcell--collage {grid-area:collage}
 @media(max-width:37.5em) { .bcell {padding:2.6rem} }
 .bcell__headline {font-family:Fraunces,Georgia,serif; font-size:2.7rem; font-weight:600; line-height:1.25; margin-bottom:1.8rem; color:var(--text-primary)}
@@ -36,3 +36,8 @@
 .more__label {display:flex; align-items:center; gap:.5rem; font-size:1.5rem; font-weight:700; color:var(--text-primary)}
 .more__label .arr {margin-left:auto; color:#02aab0; transition:transform .3s cubic-bezier(.16,1,.3,1)}
 .more__desc {color:var(--text-secondary); font-size:1.3rem; line-height:1.6}
+
+// Photos fill their cell without contributing to row height (portrait or landscape sources both work).
+.bcell--portrait img,
+.bcell--collage img {position:absolute; inset:0}
+.bcell--collage {min-height:26rem}

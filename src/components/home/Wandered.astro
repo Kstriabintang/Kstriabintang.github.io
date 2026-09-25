@@ -1,3 +1,68 @@
 ---
-// Placeholder — replaced by the section work.
+import SectionHead from '../ui/SectionHead.astro';
+import { travel } from '../../data/travel';
+
+const cityLabel = (n: number) => `${n} ${n === 1 ? 'city' : 'cities'}`;
+const markers = travel.places
+  .filter((p) => typeof p.lat === 'number' && typeof p.lng === 'number')
+  .map((p) => ({ location: [p.lat, p.lng], size: Math.min(0.07, 0.03 + p.cities.length * 0.01) }));
 ---
+
+<section id="travel-globe" class="travel-globe-section">
+  <div class="container">
+    <SectionHead num={travel.heading.num} lead={travel.heading.lead} em={travel.heading.em} />
+
+    <div class="travel-globe__layout">
+      <div class="travel-globe__canvas-wrap">
+        <canvas class="travel-globe__canvas" data-globe data-markers={JSON.stringify(markers)} style="cursor:grab;contain:layout" aria-label="Interactive globe showing where my work runs" role="img"></canvas>
+      </div>
+
+      <div class="travel-globe__sidebar">
+        <div class="sr sr--fade-up" style="transition-delay:200ms">
+          <p class="travel-globe__subtitle">
+            {travel.subtitle.lead} <em>{travel.subtitle.em}</em> {travel.subtitle.tail}
+          </p>
+        </div>
+        <div class="sr sr--slide-right">
+          <div class="travel-globe__countries">
+            {travel.places.map((place, i) => (
+              <button type="button" class="travel-globe__country sr__child" data-place={place.id} aria-expanded="false" aria-controls="travel-globe-card" style={`transition-delay:${i * 60}ms`}>
+                <span class="travel-globe__flag" aria-hidden="true">{place.flag}</span>
+                <span class="travel-globe__name">{place.country}</span>
+                <span class="travel-globe__cities">{place.note ?? cityLabel(place.cities.length)}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        {travel.places.map((place) => (
+          <div class="travel-globe__card" id={`travel-globe-card-${place.id}`} data-place-card={place.id} hidden>
+            <div class="travel-globe__card-header">
+              <span class="travel-globe__card-flag" aria-hidden="true">{place.flag}</span>
+              <h3 class="travel-globe__card-title">{place.country}</h3>
+            </div>
+            <p class="travel-globe__card-memory">{place.memory}</p>
+            <div class="travel-globe__card-cities">
+              {place.cities.map((city) => <span class="travel-globe__card-city">{city}</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="sr sr--fade-up" style="transition-delay:400ms">
+      <div class="travel-globe__stats">
+        {travel.stats.map((stat) => (
+          <div class="travel-globe__stat">
+            <span class="travel-globe__stat-value">{stat.value}</span>
+            <span class="travel-globe__stat-label">{stat.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initGlobe } from '../../scripts/globe';
+  initGlobe();
+</script>

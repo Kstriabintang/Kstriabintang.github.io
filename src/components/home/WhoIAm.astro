@@ -1,3 +1,69 @@
 ---
-// Placeholder — replaced by the section work.
+import SectionHead from '../ui/SectionHead.astro';
+import { about } from '../../data/about';
+import { site } from '../../data/site';
+
+const { portrait, collage } = about.photos;
+const isExternal = (href: string) => href.startsWith('http');
 ---
+
+<section id="about">
+  <div class="container">
+    <SectionHead num="01" lead="Who" em="I am" />
+
+    <div class="bento">
+      <div class="bcell bcell--intro sr sr--fade-up">
+        <h3 class="bcell__headline">{about.headline.lead} <em>{about.headline.em}</em></h3>
+        <p class="bcell__text">{about.intro}</p>
+      </div>
+
+      <div class="bcell bcell--portrait sr sr--fade-up">
+        <img src={portrait.src} alt={portrait.alt} loading="lazy" width={portrait.width} height={portrait.height} style={portrait.position ? `object-position:${portrait.position}` : undefined} />
+        <span class="bcell__caption">{portrait.caption}</span>
+      </div>
+
+      <div class="bcell bcell--facts sr sr--fade-up">
+        <div class="facts__title"><span class="mlabel">Quick facts</span></div>
+        <div class="facts__grid">
+          {about.facts.map((fact) => (
+            <div class="fact">
+              <span class="fact__value">{fact.value}</span>
+              <span class="fact__label">{fact.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="bcell bcell--personality sr sr--fade-up">
+        <p class="bcell__text">{about.personality}</p>
+      </div>
+
+      <div class="bcell bcell--closer sr sr--fade-up">
+        <p class="bcell__text">{about.closer}</p>
+        <div class="bcell__cta">
+          <a class="btn-hero" href={`mailto:${site.email}`}>Contact me</a>
+          <a class="btn-ghost" href={site.bookCall} target="_blank" rel="noopener noreferrer">Book a call</a>
+        </div>
+      </div>
+
+      <div class="bcell bcell--collage sr sr--fade-up">
+        <img src={collage.src} alt={collage.alt} loading="lazy" width={collage.width} height={collage.height} style={collage.position ? `object-position:${collage.position}` : undefined} />
+        <span class="bcell__caption">{collage.caption}</span>
+      </div>
+    </div>
+
+    <div class="more sr sr--fade-up">
+      {about.more.map((card) => (
+        <a
+          class="more__card"
+          href={card.href}
+          target={isExternal(card.href) ? '_blank' : undefined}
+          rel={isExternal(card.href) ? 'noopener noreferrer' : undefined}
+        >
+          <span class="more__label">{card.emoji} {card.label} <span class="arr" aria-hidden="true">→</span></span>
+          <span class="more__desc">{card.desc}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

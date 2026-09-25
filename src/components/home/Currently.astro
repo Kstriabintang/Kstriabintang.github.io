@@ -1,3 +1,20 @@
 ---
-// Placeholder — replaced by the section work.
+import { currently } from '../../data/about';
+// Two identical tracks make the marquee loop seamlessly; the copy is hidden from assistive tech.
 ---
+
+<div class="currently-section" aria-label="What I'm up to right now">
+  <div class="currently-marquee">
+    {[false, true].map((duplicate) => (
+      <div class="currently-track" aria-hidden={duplicate ? 'true' : undefined}>
+        {currently.map((item) => (
+          <span class="currently-item">
+            <span class="currently-item__emoji" aria-hidden="true">{item.emoji}</span>
+            <span class="currently-item__label">{item.label}</span>
+            <span class="currently-item__value">{item.value}</span>
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
