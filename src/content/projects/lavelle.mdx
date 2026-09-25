@@ -1,0 +1,37 @@
+---
+title: Lavelle
+summary: A digital wedding-invitation studio with a staff portal that designs, previews and publishes each invitation to its own subdomain — RSVP and guestbook backed by Supabase with row-level security.
+category: web
+metric: 1-click subdomain publish
+tags: [Vue 3, Supabase, Cloudflare Pages, Three.js]
+cover:
+  gradient: ['#be185d', '#f59e0b']
+  icon: heart
+links:
+  live: https://lavelle.my.id
+year: 2026
+metrics:
+  - label: Portal templates
+    value: 5
+  - label: RLS policies
+    value: 15
+  - label: Live theme demos
+    value: 5
+stack: [Vue 3, Vite, vite-ssg, Tailwind CSS 4, GSAP, Three.js, Supabase (Postgres, Auth, Storage), Cloudflare Pages Functions, Vitest]
+featured: true
+order: 4
+---
+
+## The Challenge
+
+Lavelle is my own online invitation studio. Hand-building every invitation doesn't scale: each couple needs their own design, their own link, and a way for guests to RSVP and leave wishes — and the studio needs to turn an order around quickly without a developer in the loop.
+
+## My Approach
+
+I built a **staff portal** on top of the marketing site: a dashboard, an editor with section progress and a phone/desktop preview, five templates, duplication and filtering. Publishing is the interesting part — a Cloudflare Pages Function first checks in Supabase that the slug belongs to a **published** invitation, then attaches `<slug>.lavelle.my.id` to the one Pages project it is hard-scoped to, so it can never touch anything else.
+
+Guest data lives in **Supabase** — Postgres with 15 row-level-security policies across profiles, invites, RSVP and guestbook — with client-side image compression before upload. The public site is pre-rendered with vite-ssg for SEO (JSON-LD, sitemap, blog), and the theme demos range from classic to a scroll-driven WebGL scene in Three.js.
+
+## The Results
+
+A live studio at lavelle.my.id where an invitation goes from editor to its own subdomain in one click, with RSVP and guestbook data protected at the database level rather than in the UI.

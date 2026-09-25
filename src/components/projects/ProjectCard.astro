@@ -1,0 +1,50 @@
+---
+// Home "Selected work" card — gradient placeholder, impact badge, tags and link row.
+import Icon from '../ui/Icon.astro';
+import { heroGradient, primaryLink, type Project } from './projects';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const { title, summary, metric, tags, cover, links } = project.data;
+const href = `/projects/${project.id}/`;
+const primary = primaryLink(project);
+---
+
+<div class="project-card project-card--clickable" data-card-href={href}>
+  <div class="project-card__visual">
+    <div class="project-card__placeholder" style={`background:${heroGradient(project)}`}>
+      <div class="project-card__placeholder-grid"></div>
+      <div class="project-card__placeholder-icon">
+        <Icon name={cover.icon} size={40} strokeWidth={1.2} />
+      </div>
+    </div>
+    <span class="project-card__impact-badge">{metric}</span>
+  </div>
+  <div class="project-card__body">
+    <h3 class="project-card__title">{title}</h3>
+    <p class="project-card__info">{summary}</p>
+    <div class="project-card__tags">
+      {tags.map((tag) => <span class="project-card__tag">{tag}</span>)}
+    </div>
+    <div class="project-card__links">
+      <a class="project-card__link project-card__link--case" href={href}>
+        View Case Study
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+      </a>
+      {primary && (
+        <a class="project-card__link" href={primary.href} target="_blank" rel="noopener noreferrer">
+          {primary.label}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"></path></svg>
+        </a>
+      )}
+      {links.source && (
+        <a class="project-card__link project-card__link--secondary" href={links.source} target="_blank" rel="noopener noreferrer">
+          Source
+        </a>
+      )}
+    </div>
+  </div>
+</div>

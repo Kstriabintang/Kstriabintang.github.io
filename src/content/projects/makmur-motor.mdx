@@ -1,0 +1,39 @@
+---
+title: Makmur Motor
+summary: An edge-native showroom and inventory CMS for a used-car dealer in Denpasar — Next.js on Cloudflare Workers with D1 and KV, so the owner manages stock, photos and sold units without touching code.
+category: web
+metric: 0 servers to manage
+tags: [Next.js 15, Cloudflare Workers, D1, SEO]
+cover:
+  gradient: ['#0ea5e9', '#6366f1']
+  icon: car
+links:
+  live: https://makmurmotor.biz.id
+client:
+  anonymised: Built for a used-car dealership in Denpasar, Bali.
+year: 2026
+metrics:
+  - label: Cars at launch
+    value: 23
+  - label: Catalogue filters
+    value: 5
+  - label: Cloudflare services
+    value: 3
+stack: [Next.js 15, React 19, TypeScript, OpenNext, Cloudflare Workers, D1, KV, Drizzle ORM, Zod, Framer Motion, Tailwind CSS]
+featured: true
+order: 3
+---
+
+## The Challenge
+
+A used-car dealer needed more than a brochure site. Inventory changes every week, cars sell, prices move — and the owner had to be able to update all of it from a phone, with photos, without calling a developer. The site also had to rank locally and push buyers straight into WhatsApp.
+
+## My Approach
+
+I ran **Next.js 15** on **Cloudflare Workers** through OpenNext, with **D1** (SQLite) for inventory and **KV** for uploaded photos — no origin server, no separate storage bucket. Drizzle ORM keeps the D1 queries type-safe, and sold cars are filtered out at the query layer so they disappear from the public site but stay in the admin panel.
+
+The admin panel uses a small custom auth — PBKDF2-SHA256 password hashes and HMAC-signed session cookies behind middleware — instead of a heavy dependency. Owners add, edit, delete and mark cars as sold, and drag-and-drop photos with a chosen cover image. The public side has a catalogue with five filters that can be shared by URL, detail pages with a lightbox gallery, WhatsApp deep links per car, and structured data (AutoDealer + Product), a dynamic sitemap and per-page metadata for SEO.
+
+## The Results
+
+A live showroom at makmurmotor.biz.id that the dealer runs on their own: inventory, photos and sold status are all self-serve, pages render fresh from D1 on every request, and there is no server for anyone to patch.

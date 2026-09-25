@@ -1,0 +1,39 @@
+---
+title: Vensix
+summary: An OpenAI-compatible AI gateway for the Indonesian market — one key for Claude, GPT, Gemini, DeepSeek and Kimi, metered from real upstream cost and paid from a single Rupiah balance topped up by QRIS.
+category: ai-automation
+metric: 500+ tests
+tags: [LLM Gateway, FastAPI, Metering, QRIS]
+cover:
+  gradient: ['#667eea', '#764ba2']
+  icon: network
+links:
+  live: https://vensix.biz.id
+status: Running, pre-launch — not yet open for commercial sign-ups
+year: 2026
+metrics:
+  - label: Automated tests
+    value: 500
+    suffix: '+'
+  - label: Curated models
+    value: 7
+  - label: Model providers
+    value: 5
+stack: [Python, FastAPI, httpx, SQLite (WAL), OpenRouter, Pakasir QRIS, WHM API, pytest, Cloudflare Tunnel]
+featured: true
+order: 2
+---
+
+## The Challenge
+
+Indonesian developers who want Claude or GPT in their editor usually need a foreign credit card, accounts at several providers and a bill in dollars. I wanted one account, one Rupiah balance topped up by QRIS, and a key that works anywhere an OpenAI key works — without the gateway ever inventing an answer or charging for a failed request.
+
+## My Approach
+
+Vensix exposes `/v1/chat/completions` (streaming and non-streaming) and `/v1/models`, so a `sk-vsx-` key drops straight into Cursor, Cline, Claude Code or any OpenAI SDK by changing `base_url`. Requests are validated against hashed keys, mapped to one of seven curated models and forwarded through a pooled async client to OpenRouter. Upstream errors are passed through **as they are** — no fake success.
+
+Pricing is live, not a spreadsheet: the real per-request cost from the upstream `usage` data is multiplied by a live USD→IDR rate plus a tiered markup, and a ledger records cost against sale price so margins are visible per model. Balance is deducted **only on success**. The same balance buys cPanel hosting, provisioned automatically through the WHM API, and QRIS top-ups reconcile through webhook plus polling so a payment is never counted twice.
+
+## The Results
+
+A working gateway, customer dashboard with ⌘K, admin panel with per-model margins, and automated hosting provisioning — covered by more than 500 automated tests that run without touching the network. Products that aren't ready yet are labelled "coming soon" rather than faked. Moving from a Cloudflare-Tunnel dev host to an always-on server is the next step before commercial launch.

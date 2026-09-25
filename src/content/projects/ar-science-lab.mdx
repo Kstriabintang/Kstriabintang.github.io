@@ -1,0 +1,39 @@
+---
+title: AR Science Lab
+summary: A no-install browser AR teaching suite for primary and middle-school science — 3D magnetic fields over a printed card, animated circuits, six energy-transformation scenes, and an auto-graded quiz with a live teacher dashboard.
+category: web
+metric: 245 quiz questions
+tags: [WebAR, MindAR, Three.js, Supabase]
+cover:
+  gradient: ['#ea580c', '#facc15']
+  icon: atom
+links:
+  live: https://utamiii.my.id
+client:
+  anonymised: Built for an education-thesis client as classroom teaching media.
+year: 2026
+metrics:
+  - label: Quiz questions
+    value: 245
+  - label: Energy scenes
+    value: 6
+  - label: Magnet setups
+    value: 3
+stack: [A-Frame, MindAR, Three.js, Vanilla JS, Supabase (REST, Auth, RLS), Web Speech API, GitHub Pages, Cloudflare]
+featured: true
+order: 7
+---
+
+## The Challenge
+
+Magnetism, circuits and energy transformation are hard to teach from a textbook — students can't see field lines or electrons. The brief was classroom teaching media that runs on the phones students already have, with no app to install and no login, plus a way for the teacher to see how the class did.
+
+## My Approach
+
+I built the suite as static pages with the AR libraries self-hosted, so nothing depends on an external CDN. Point a phone at a printed **magnet card** and a 3D bar magnet appears with field lines traced from its poles, in three configurations (single, attract, repel). The circuit module has three ways in — an interactive 2D diagram, a rotatable 3D view, and an AR mode where electrons travel the wire and the bulb lights only when they arrive.
+
+Six energy-transformation scenes — from battery-to-phone to hydro and coal power plants — each run as a 3D viewer or AR, markerless or on printed marker cards, with staged narration in text and voice. A 245-question quiz bank across ten packs grades automatically and saves results to **Supabase** behind row-level security, feeding a teacher dashboard with CSV export and a no-login demo mode.
+
+## The Results
+
+A live teaching portal at utamiii.my.id that works on ordinary student phones from 320px up, respects reduced-motion settings, and closes the loop from AR lesson to quiz to class analytics.
