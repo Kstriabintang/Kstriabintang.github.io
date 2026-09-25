@@ -19,3 +19,7 @@
 .skills-pill--advanced {border-left-color:#02aab073}
 .skills-pill--advanced:before {background:#02aab08c}
 .skills-pill--glow,.skills-pill--accent {font-weight:500}
+
+.skills-wrap {max-width:960px; margin:0 auto}
+@keyframes expertPulse{0%,to{opacity:1}50%{opacity:.4}}
+@media(prefers-reduced-motion:reduce) { .skills-pill--expert:before {animation:none} }

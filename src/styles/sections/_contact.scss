@@ -1,41 +1,8 @@
 // Ported design values — see README › Design System
 [data-theme=dark] #contact {background-color:#0a0a12}
 html:not([data-theme=dark]) #contact {background-color:var(--bg-secondary); background-image:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(2,170,176,.06) 0%,transparent 70%); color:var(--text-primary)}
-html:not([data-theme=dark]) #contact .section-title {color:var(--text-primary)!important}
-html:not([data-theme=dark]) #contact .section-title:after {background:#0000001a}
-html:not([data-theme=dark]) #contact .contact-split__cta-text {color:#555}
-html:not([data-theme=dark]) #contact .contact-split__funfact {color:#666; border-top-color:#0000001a}
-html:not([data-theme=dark]) #contact .contact-split__meta {color:#666}
-html:not([data-theme=dark]) #contact .contact-action {color:var(--text-primary); border-bottom-color:#0000001a}
-html:not([data-theme=dark]) #contact .contact-action:first-child {border-top-color:#0000001a}
-html:not([data-theme=dark]) #contact .contact-action__arrow {color:#00000059}
 #contact {background-color:#0a0a0f; background-image:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(2,170,176,.08) 0%,transparent 70%); padding:8rem 0; margin-bottom:-1px; color:#fff; position:relative}
-#contact .section-title {color:#fff!important}
-#contact .section-title:after {background:#fff3}
-#contact .contact-wrapper {margin-top:3.2rem; padding:0 2rem; backface-visibility:hidden}
-#contact .contact-wrapper__text {margin-bottom:2.5rem}
-#contact .contact-wrapper__text,#contact .contact-wrapper a {font-size:2.4rem}
-@media(max-width:37.5em) { #contact .contact-wrapper__text,#contact .contact-wrapper a {font-size:2rem} }
-#contact .contact-split {display:flex; gap:6rem; max-width:900px; margin:4rem auto 0; align-items:flex-start}
-@media(max-width:56.25em) { #contact .contact-split {flex-direction:column; gap:4rem; align-items:center} }
-#contact .contact-split__left {flex:1; text-align:left}
-@media(max-width:56.25em) { #contact .contact-split__left {text-align:center} }
-#contact .contact-split__heading {font-size:3.2rem; font-weight:700; margin-bottom:1.5rem; line-height:1.3}
-@media(max-width:37.5em) { #contact .contact-split__heading {font-size:2.6rem} }
-#contact .contact-split__cta-text {font-size:1.8rem; color:#ffffffb3; line-height:1.6; margin-bottom:2rem}
-@media(max-width:37.5em) { #contact .contact-split__cta-text {font-size:1.6rem} }
-#contact .contact-split__funfact {font-size:1.5rem; font-style:italic; color:#ffffff80; margin-top:2rem; padding-top:2rem; border-top:1px solid rgba(255,255,255,.08)}
-#contact .contact-split__meta {font-size:1.4rem; color:#ffffff80; margin-top:1rem}
-#contact .contact-split__right {flex:1; display:flex; flex-direction:column; gap:0}
-#contact .contact-action {display:flex; align-items:center; justify-content:space-between; padding:2rem 0; border-bottom:1px solid rgba(255,255,255,.08); text-decoration:none; color:#fff; transition:all .3s ease}
-#contact .contact-action:first-child {border-top:1px solid rgba(255,255,255,.08)}
-#contact .contact-action:hover {padding-left:1rem; color:#02aab0}
-#contact .contact-action:hover .contact-action__arrow {transform:translate(4px); color:#02aab0}
-#contact .contact-action__label {font-size:2rem; font-weight:600}
-@media(max-width:37.5em) { #contact .contact-action__label {font-size:1.7rem} }
-#contact .contact-action__arrow {font-size:2rem; transition:transform .3s ease,color .3s ease; color:#fff6}
 .contact-v2 {background:var(--bg-primary)}
-.contact-v2 .section-title {color:var(--text-primary)}
 .contact-v2__split {display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start}
 @media(max-width:56.25em) { .contact-v2__split {grid-template-columns:1fr; gap:3rem} }
 .contact-v2__left {display:flex; flex-direction:column; gap:1.2rem; text-align:left}
@@ -78,3 +45,7 @@ html:not([data-theme=dark]) #contact .contact-action__arrow {color:#00000059}
 .contact-v2__checkmark {color:#02aab0; animation:contactCheckIn .5s ease-out; margin-bottom:1.5rem}
 @keyframes contactCheckIn{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2)}to{transform:scale(1);opacity:1}}
 .contact-v2__success-text {font-size:1.6rem; font-weight:600; color:var(--text-primary)}
+
+.contact-v2__form[hidden],.contact-v2__success[hidden] {display:none}
+.contact-v2__hp {position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden}
+.contact-v2__right {position:relative}

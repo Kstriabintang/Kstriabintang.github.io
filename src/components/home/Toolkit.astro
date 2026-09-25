@@ -1,3 +1,28 @@
 ---
-// Placeholder — replaced by the section work.
+import SectionHead from '../ui/SectionHead.astro';
+import { toolkit } from '../../data/toolkit';
 ---
+
+<section id="skills">
+  <div class="container">
+    <SectionHead num="02" lead="My" em="toolkit" />
+
+    <div class="skills-wrap">
+      <div class="skills-grid">
+        {toolkit.map((group, i) => (
+          <div class:list={['sr', 'sr--fade-up', group.highlighted && 'skills-grid__full']} style={`transition-delay: ${300 + i * 80}ms`}>
+            <div class:list={['skills-category', group.highlighted && 'skills-category--highlighted']}>
+              <span class="skills-category__kicker">{group.kicker}</span>
+              <h3 class="skills-category__title">{group.title}</h3>
+              <div class="skills-category__pills">
+                {group.skills.map((skill) => (
+                  <span class={`skills-pill skills-pill--${skill.level}`}>{skill.name}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
