@@ -16,8 +16,8 @@ export const site = {
   headline: { lead: 'AI systems,', em: 'shipped', tail: '.' },
   availability: 'Open to remote work',
   proof: ['15+ live products', '39 public repos', 'QRIS-native payments'],
-  footerTagline: 'Building intelligent systems. Still on the equator.',
-  footerNote: 'Made with coffee and curiosity in Pontianak.',
+  footerTagline: 'Shipping real systems from the equator.',
+  footerNote: 'Designed, built and shipped in Pontianak, Indonesia.',
   socials: {
     github: 'https://github.com/Kstriabintang',
     linkedin: 'https://www.linkedin.com/in/ksatria-bintang-samudra-265952313',

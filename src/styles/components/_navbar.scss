@@ -136,3 +136,10 @@ html:not([data-theme='dark']) .theme-toggle__moon {
 .navbar-custom__search-kbd {
   font-style: normal;
 }
+
+// Mobile drawer sits above its scrim.
+@media (max-width: 56.25em) {
+  .navbar-custom__links {
+    z-index: 999;
+  }
+}
