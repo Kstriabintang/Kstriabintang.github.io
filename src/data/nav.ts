@@ -64,6 +64,7 @@ export const navGroups: NavGroup[] = [
         heading: 'Me',
         items: [
           { label: 'About', desc: 'Who I am', href: '/about', icon: 'user' },
+          { label: 'Certifications', desc: 'Credentials & courses', href: '/certifications', icon: 'file' },
           { label: 'Uses', desc: 'My gear & setup', href: '/uses', icon: 'cpu' },
         ],
       },
@@ -100,6 +101,7 @@ export const footerColumns = [
     title: 'About Me',
     links: [
       { label: 'About', href: '/about' },
+      { label: 'Certifications', href: '/certifications' },
       { label: 'Uses', href: '/uses' },
       { label: 'GitHub', href: 'https://github.com/Kstriabintang' },
     ],

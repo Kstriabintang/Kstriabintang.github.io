@@ -19,6 +19,7 @@ const pages: SearchItem[] = [
   { title: 'About', href: '/about', kind: 'Page', keywords: 'bio who story' },
   { title: 'Uses', href: '/uses', kind: 'Page', keywords: 'gear setup stack tools hardware' },
   { title: 'Resume', href: '/resume', kind: 'Page', keywords: 'cv experience credentials pdf' },
+  { title: 'Certifications', href: '/certifications', kind: 'Page', keywords: 'certificates credentials courses google ai essentials isc2 ethical hacking linux python excel toefl' },
   { title: 'Privacy', href: '/privacy', kind: 'Page', keywords: 'data policy contact form chat' },
 ];
 

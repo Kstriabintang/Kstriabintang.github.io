@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/ui/Icon.astro';
+import { credentialGroups, credentialCount } from '../data/certificates';
+import '../styles/pages/_tool-page.scss';
+import '../styles/pages/_certifications.scss';
+---
+
+<BaseLayout
+  title="Certifications"
+  description="Ksatria Bintang Samudra's certifications, assessments and course completions — Google AI Essentials (verifiable), ISC2 Certified in Cybersecurity, and self-paced security & development courses. Every credential is labelled truthfully."
+>
+  <main class="tool-page">
+    <div class="tool-page__container tool-page__container--wide">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li>Certifications</li>
+        </ol>
+      </nav>
+
+      <header class="tool-page__header">
+        <h1>Certifications &amp; Courses</h1>
+        <p>
+          {credentialCount} credentials — labelled honestly. Certifications are issued credentials
+          (the Google one is independently verifiable); course completions are self-paced courses.
+          Open any one to view the certificate.
+        </p>
+      </header>
+
+      {credentialGroups.map((group) => (
+        <section class="cred-group">
+          <div class="cred-group__head">
+            <h2 class="cred-group__title">{group.heading}</h2>
+            <p class="cred-group__blurb">{group.blurb}</p>
+          </div>
+          <div class="cred-grid">
+            {group.items.map((c) => (
+              <article class="cred-card spotlight-card">
+                <div class="cred-card__top">
+                  <span class="cred-card__badge" style={`--cred-accent:${c.accent}`}>{c.initials}</span>
+                  <div class="cred-card__meta">
+                    <span class="cred-card__kind">{c.kind}</span>
+                    <span class="cred-card__year">{c.year}</span>
+                  </div>
+                </div>
+                <h3 class="cred-card__title">{c.title}</h3>
+                <p class="cred-card__issuer">{c.issuer}</p>
+                {c.credentialId && <p class="cred-card__id">{c.credentialId}</p>}
+                {c.note && <p class="cred-card__note">{c.note}</p>}
+                <div class="cred-card__links">
+                  <a class="cred-card__link" href={c.file} target="_blank" rel="noopener">
+                    View certificate <Icon name="arrow-up-right" size={15} />
+                  </a>
+                  {c.verifyUrl && (
+                    <a class="cred-card__link cred-card__link--verify" href={c.verifyUrl} target="_blank" rel="noopener">
+                      <Icon name="check" size={14} /> Verify
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
