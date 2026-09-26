@@ -20,7 +20,8 @@
 .project-card__shot {position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top center; z-index:1; transition:transform .5s cubic-bezier(.16,1,.3,1)}
 .project-card--clickable:hover .project-card__shot {transform:scale(1.05)}
 @media(prefers-reduced-motion:reduce) { .project-card__shot {transition:none} .project-card--clickable:hover .project-card__shot {transform:none} }
-.project-card__body {padding:var(--space-3) var(--space-4) var(--space-4); text-align:left}
+.project-card__body {padding:var(--space-3) var(--space-4) var(--space-4); text-align:left; background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 55%)}
+html:not([data-theme=dark]) .project-card__body {background:linear-gradient(180deg,rgba(0,0,0,.02),transparent 55%)}
 .project-card__title {font-family:Fraunces,Georgia,serif; font-size:2rem; font-weight:600; margin-bottom:.8rem; color:var(--text-primary, #272341)}
 .project-card__info {font-size:1.4rem; color:var(--text-secondary, #333333); line-height:1.6; margin-bottom:1.2rem; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
 .project-card__tags {display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.5rem}

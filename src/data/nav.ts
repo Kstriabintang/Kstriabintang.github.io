@@ -109,7 +109,6 @@ export const footerColumns = [
     links: [
       { label: 'Contact', href: '/#contact' },
       { label: 'Privacy', href: '/privacy' },
-      { label: 'Sitemap', href: '/sitemap-index.xml' },
     ],
   },
 ];

@@ -394,6 +394,11 @@
   flex-direction: column;
   flex: 1;
   padding: 1.8rem;
+  /* subtle sheen so the body doesn't read as flat black */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 55%);
+}
+html:not([data-theme='dark']) .projects-index .projects-index__card-body {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), transparent 55%);
 }
 .projects-index .projects-index__card-title {
   font-size: 1.8rem;
