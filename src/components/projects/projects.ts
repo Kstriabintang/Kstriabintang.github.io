@@ -40,7 +40,7 @@ export function heroGradient(p: Project): string {
 }
 
 /** Projects that have a real desktop screenshot under /images/shots/<id>/desktop.jpg. */
-const SHOT_IDS = new Set(['coaltrack', 'vensix', 'makmur-motor', 'lavelle', 'wedding-saving', 'ar-science-lab']);
+const SHOT_IDS = new Set(['coaltrack', 'vensix', 'makmur-motor', 'lavelle', 'wedding-saving', 'ar-science-lab', 'cendekia', 'daily-kost', 'wifisiapa', 'venmail']);
 
 /** Card-cover screenshot for a project, or undefined to fall back to the gradient + icon. */
 export function projectPoster(p: Project): string | undefined {

@@ -1,0 +1,36 @@
+---
+title: Telegram Auto-Order Bot
+summary: A 24/7 automated digital-store bot — customers order in chat, pay via QRIS, and get instant delivery, with race-condition-safe stock claims and auto-expiring orders. No human admin in the loop.
+category: ai-automation
+metric: Unattended QRIS storefront
+tags: [Node.js, Telegraf, Supabase, QRIS]
+cover:
+  gradient: ['#0369a1', '#38bdf8']
+  icon: bot
+links:
+  source: https://github.com/Kstriabintang/telegram-autoorder-bot
+year: 2026
+metrics:
+  - label: Runs unattended
+    value: 24
+    suffix: /7
+  - label: Manual admin steps
+    value: 0
+  - label: Stock race conditions
+    value: 0
+stack: [Node.js 18, Telegraf, Supabase (Postgres), QRIS payments]
+featured: false
+order: 13
+---
+
+## The Challenge
+
+Selling digital products by hand doesn't scale — someone has to confirm each payment and send each item, around the clock. The hard part isn't the chat flow; it's making sure two buyers can't claim the last unit at the same moment, and that unpaid orders don't lock stock forever.
+
+## My Approach
+
+The bot runs the whole store in Telegram: browse, order, pay by QRIS, receive instantly — with no admin on shift. Stock is claimed atomically in Postgres with `SELECT ... FOR UPDATE SKIP LOCKED`, so concurrent buyers can never oversell the same item, and unpaid orders auto-expire to release their hold. Built on Node 18 + Telegraf + Supabase.
+
+## The Results
+
+A self-running storefront that takes payment and delivers without a person in the loop — a clean showcase of the automation-engineering side of my work (and, at the time of writing, my most-starred public repo).

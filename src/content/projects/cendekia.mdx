@@ -1,0 +1,38 @@
+---
+title: Cendekia
+summary: A paired campus platform — a full academic information system (KRS, grades, transcripts, UKT billing) and a gamified LMS (auto-graded quizzes, XP, streaks, live attendance), both installable PWAs running on the edge.
+category: web
+metric: 2 live campus systems
+tags: [Vue 3, Supabase, Tailwind v4, PWA]
+cover:
+  gradient: ['#0f766e', '#2dd4bf']
+  icon: file
+links:
+  live: https://siakad.learningsystem.my.id
+  demo: https://lms.learningsystem.my.id
+year: 2026
+metrics:
+  - label: Paired systems
+    value: 2
+  - label: Access roles
+    value: 3
+  - label: Servers to manage
+    value: 0
+stack: [Vue 3.5, Vite 7, Tailwind CSS v4, Pinia, Supabase (Postgres, Auth, RLS), PWA, Cloudflare Pages]
+featured: true
+order: 8
+---
+
+## The Challenge
+
+A campus runs on two very different jobs. Administration needs a system of record — course registration (KRS), grades and transcripts, advising, and tuition (UKT) billing — where every number is correct and every role sees only what it should. Teaching needs the opposite: something light and motivating that students actually want to open. Bolting both onto one clunky portal is how most campus software ends up unloved.
+
+## My Approach
+
+I built Cendekia as two paired products that share one design language and one backend model. **SIAKAD** is the system of record: online KRS, KHS and transcripts, digital advising, and UKT billing, split cleanly across three roles — student, lecturer/advisor, and admin — with access enforced at the database, not just hidden in the UI. **The LMS** is the teaching side: auto-graded quizzes, XP, streaks and badges, and live attendance, designed to feel like an app rather than a form.
+
+Both are built in Vue 3.5 + Vite 7 with Tailwind v4, backed by Supabase (Postgres, Auth and row-level security), and ship as installable PWAs so a student can add them to their home screen. There are no servers to babysit — everything runs on Supabase and the Cloudflare edge.
+
+## The Results
+
+Two deployed, role-based systems live at siakad.learningsystem.my.id and lms.learningsystem.my.id — the largest full-stack work I've shipped. Both run a **demo mode** seeded with representative personas (student, advisor, admin), so anyone can log in and click through without any real student data ever being involved.

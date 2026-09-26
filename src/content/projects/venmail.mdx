@@ -1,0 +1,35 @@
+---
+title: Venmail
+summary: A privacy-first disposable inbox on the Cloudflare edge — a working address in about a second, no sign-up, real-time mail with automatic OTP extraction, and a developer API. A Luxavero product.
+category: web
+metric: Inbox in ~1 second
+tags: [Next.js, Cloudflare Workers, TypeScript, Edge]
+cover:
+  gradient: ['#0891b2', '#22d3ee']
+  icon: mail
+links:
+  live: https://venmail.my.id
+year: 2026
+metrics:
+  - label: Second to an inbox
+    value: 1
+  - label: Sign-up required
+    value: 0
+  - label: Call to fetch the OTP
+    value: 1
+stack: [Next.js 14, Cloudflare Workers, Email Routing, TypeScript]
+featured: false
+order: 11
+---
+
+## The Challenge
+
+Testing sign-up and verification flows needs a throwaway inbox instantly — but most temp-mail services are slow, ad-heavy, or (worse) never actually deliver the verification code you're waiting for. Developers also need to pull those one-time codes programmatically, not copy them by hand.
+
+## My Approach
+
+Venmail runs on the Cloudflare edge: Workers with Email Routing and an email worker that parses MIME the moment mail arrives. Addresses are generated on the fly, messages stream in over a live connection, and OTP codes are extracted automatically. A small REST API exposes the latest message and its code so automated flows can fetch it in a single call.
+
+## The Results
+
+A usable inbox appears in about a second with no account, incoming mail shows in real time, and codes are pulled out for you. Venmail runs today at venmail.my.id with a public developer API — one of the live products under my company, Luxavero.

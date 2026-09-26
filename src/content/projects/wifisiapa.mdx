@@ -1,0 +1,38 @@
+---
+title: WiFiSiapa
+summary: A self-hosted dashboard for your own network — see every device on your WiFi, watch its live bandwidth, throttle or cut it, and get a Telegram alert when someone new joins, all without touching the router.
+category: security
+metric: No router config needed
+tags: [Vue 3, Python, Flask, Telegram]
+cover:
+  gradient: ['#1d4ed8', '#60a5fa']
+  icon: network
+links:
+  demo: https://wifisiapa.pages.dev
+  source: https://github.com/Kstriabintang/wifisiapa
+year: 2026
+metrics:
+  - label: Router config
+    value: 0
+  - label: Interfaces (web + Telegram)
+    value: 2
+  - label: Live device controls
+    value: 3
+stack: [Vue 3, Vite, Tailwind CSS v4, Python, Flask, Telegram Bot API]
+featured: false
+order: 10
+---
+
+## The Challenge
+
+You give out your WiFi password once and a month later you have no idea who's still connected or who's eating your bandwidth. Consumer routers barely help — the admin page is a bare table of IPs with no usage, no history and no alerts. I wanted proper visibility and control over my *own* network without flashing firmware or trusting a cloud service.
+
+## My Approach
+
+WiFiSiapa runs from a laptop on the network — a Python/Flask backend discovers devices, measures per-device bandwidth in real time, and can throttle or cut a device's internet (a whitelist-based "lockdown" mode). A Vue 3 + Tailwind v4 dashboard, reachable from any phone or PC on the same network, shows it all live; a Telegram bot pings you when a new device joins.
+
+It ships as a clean public/private split that matches how I release things: a **public showcase** front-end (`wifisiapa`) runs in demo mode with simulated data so anyone can explore it, while the real backend lives in a **private** repo.
+
+## The Results
+
+A working network-admin tool that gives a home network the kind of visibility routers don't — live per-device bandwidth, history, alerts and access control — with a browser dashboard and Telegram notifications, and a demo at wifisiapa.pages.dev that's honest about running on simulated data.

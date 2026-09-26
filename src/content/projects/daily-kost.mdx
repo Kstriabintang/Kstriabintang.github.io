@@ -1,0 +1,37 @@
+---
+title: Daily Kost
+summary: A transit-stay booking platform for Pontianak — rent a room by the 3, 6 or 12 hours or by the day, book with no sign-up, and run the whole operation from a full owner panel.
+category: web
+metric: Book by the hour or the day
+tags: [Vue 3, Supabase, Pinia, Cloudflare Pages]
+cover:
+  gradient: ['#065f46', '#10b981']
+  icon: calendar
+links:
+  live: https://kostpontianak.web.id
+year: 2026
+metrics:
+  - label: Rental windows
+    value: 4
+  - label: Logins to book
+    value: 0
+  - label: Owner ops panel
+    value: 1
+stack: [Vue 3, Vite, Tailwind CSS v4, Pinia, Supabase, Cloudflare Pages]
+featured: false
+order: 9
+---
+
+## The Challenge
+
+Most room-rental sites assume you want a place for a month. But people passing through a city need a room for a few hours — to rest, to freshen up, to wait out a layover — and they want to book it in seconds, without making yet another account. The owner, meanwhile, needs a real back office: rooms, pricing, availability and bookings, all in one place.
+
+## My Approach
+
+I built Daily Kost as a two-sided product. The guest side is a fast, no-login flow: pick a location, a check-in time and a duration — 3, 6 or 12 hours, or a full day — and book. The owner side is a complete operations panel at `/app` for managing rooms, rates, availability and incoming bookings.
+
+It's a Vue 3 + Vite single-page app with Pinia for state and Tailwind v4 for the interface, backed by Supabase and deployed to Cloudflare Pages.
+
+## The Results
+
+A live, polished product at kostpontianak.web.id with a genuinely different booking model for the market — hourly transit stays — and an owner panel that runs the business end to end, from a stack that costs almost nothing to operate.

@@ -1,0 +1,37 @@
+---
+title: adb-kit
+summary: A no-root Android debloat & optimization CLI over wireless ADB — fully reversible, with a measured before/after case study (fewer packages, faster frames, zero jank).
+category: mobile
+metric: Measured before/after
+tags: [Bash, ADB, Android, CLI]
+cover:
+  gradient: ['#166534', '#4ade80']
+  icon: smartphone
+links:
+  source: https://github.com/Kstriabintang/adb-kit
+year: 2026
+metrics:
+  - label: Packages removed (vivo V21)
+    value: 52
+  - label: Frame time
+    value: 12
+    suffix: ms
+  - label: Janky frames after
+    value: 0
+    suffix: '%'
+stack: [Bash / Shell, Android Debug Bridge (wireless), gfxinfo profiling]
+featured: false
+order: 14
+---
+
+## The Challenge
+
+Phones ship full of bloat that no one asked for, and the usual "fixes" mean rooting (which voids warranties and breaks banking apps) or trusting sketchy one-tap "boosters." I wanted a way to debloat and tune a device that needs no root, is fully reversible, and — crucially — proves it actually helped.
+
+## My Approach
+
+adb-kit is a shell toolkit that drives **wireless ADB**: it disables or uninstalls bloat per-user (no root), and every change is reversible, so nothing is permanent. It profiles the result with `gfxinfo` so the effect is measured, not guessed.
+
+## The Results
+
+On a vivo V21 the toolkit took the package count from 327 down to 275 (**52 removed**), cut average frame time from **18 ms to 12 ms**, and drove janky frames from 0.27% to **0.00%** — real before/after numbers, documented in the repo with screenshots. An honest, metric-backed utility rather than a placebo "booster."
