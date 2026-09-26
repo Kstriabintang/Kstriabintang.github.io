@@ -1,0 +1,33 @@
+---
+title: Shipping a whole business on Cloudflare Workers
+description: No servers to patch, no region to pick, and a bill that rounds to zero at low traffic. How I run real products — a dealership CMS, a temp-mail service, this very site — on Cloudflare's edge.
+date: 2026-08-28
+category: Infrastructure
+tags: [Cloudflare Workers, Edge, D1, Serverless]
+readingMinutes: 5
+cover: /images/blog/shipping-on-the-edge.jpg
+---
+
+For a solo builder, the traditional server is a tax you pay forever: patching, scaling, monitoring, a monthly bill whether anyone shows up or not. For most of what I ship, I've stopped paying it. I run on **Cloudflare Workers** — code that executes at the edge, close to the user, with no server to babysit.
+
+Makmur Motor (a Denpasar dealership's showroom + inventory CMS) runs on Workers with D1 and KV. Venmail (a privacy-first temporary inbox) runs on Workers. This portfolio — including its contact form and a Workers-AI chat assistant — is a Worker serving static assets. Three different products, one operational model.
+
+## What the edge actually buys you
+
+- **No servers to manage.** There's no VM to keep alive, no OS to patch, no region to choose. The code runs in hundreds of locations automatically.
+- **Latency is low by default** because the code runs near the visitor, not in one distant data centre.
+- **The bill rounds to zero at low traffic.** A dealership site or a niche tool doesn't need to cost real money to keep online — that changes which projects are even worth shipping.
+
+The storage primitives make it a real platform, not just a CDN: **D1** (SQLite at the edge) for relational data, **KV** for fast key-value reads, **R2** for files, and Workers AI for inference right where the request lands.
+
+## The trade-offs I plan around
+
+The edge is not a normal server, and pretending otherwise causes pain:
+
+- **No long-lived connections or big background jobs.** A Worker is short-lived and request-scoped. Anything long-running belongs in a queue or a durable object, not a "just keep it running" process.
+- **D1 is SQLite, not Postgres.** It's excellent for edge-native apps, but when a product needs heavy relational work, row-level security and complex queries, I reach for Postgres/Supabase instead. Right tool, right job.
+- **Cold, distributed state** means you design for eventual consistency where it's fine and strong consistency (a transaction) only where money or correctness demands it.
+
+## The honest summary
+
+The edge isn't magic and it isn't right for everything — a data-heavy system of record still wants Postgres. But for the long tail of real products a small team ships, "no servers, low latency, near-zero idle cost" is a genuinely better default. It's why I can run several live products at once without a server bill or a pager.

@@ -1,0 +1,32 @@
+---
+title: Access control belongs in the database, not the UI
+description: Hiding a button is not security. How I enforce who-can-see-what with Postgres row-level security — and back it with an audit trail the app is not allowed to rewrite.
+date: 2026-08-05
+category: Security
+tags: [Security, Supabase, RLS, PostgreSQL]
+readingMinutes: 6
+cover: /images/blog/access-control-in-the-database.jpg
+---
+
+The most common access-control bug I see isn't exotic. It's this: the app hides a button, and the developer calls it done. But the data is still one crafted request away. If authorization only lives in the UI, it doesn't really exist.
+
+So I push access control down to where the data actually is — the database — using Postgres **row-level security (RLS)**. I've built this into a campus platform (Cendekia), an ISP operations portal, and a mining workforce app, each with several roles that must only ever see their own slice.
+
+## What RLS actually does
+
+With RLS on, a table doesn't return rows a user isn't allowed to see — even if the query asks for them. The policy is attached to the table, so it holds no matter which screen, endpoint, or ad-hoc query does the asking. A student sees their own grades; a lecturer sees their classes; an admin sees the registry — and the rule is enforced by Postgres, not by remembering to add a `WHERE` clause in every handler.
+
+That's the key shift: **authorization becomes a property of the data, not a habit of the code.** New endpoints inherit it for free. A forgotten filter can't leak anything, because the database refuses.
+
+## Two lessons from doing it for real
+
+- **RLS has a performance cost — design for it.** A policy is evaluated per row. On one production system a Supabase slowdown traced straight to missing indexes and per-row policy evaluation; I fixed it with a handful of well-chosen indexes and a policy rewrite. RLS is not free, but it is optimisable — treat the policy like the hot path it is.
+- **Roles and regions compose.** Real orgs aren't just "admin vs user." Access is role *and* scope (which region, which class, which site). Modelling that in the policy — rather than in scattered app logic — keeps it consistent as the app grows.
+
+## Then make the record refuse to lie
+
+Access control decides who can read and write. The other half is making sure what was written can't be quietly rewritten later. For attendance and approvals in the mining app, the audit trail is **append-only at the database level**: Postgres triggers reject `UPDATE` and `DELETE` on those tables. The app can add facts; it cannot edit history. When payroll or a dispute depends on those records, "trust me, nobody changed it" isn't good enough — the database guarantees it.
+
+## The principle
+
+Hiding a control is UX. Enforcing access in the database is security. Do the second one, index it properly, and back it with records the application isn't allowed to alter — then the guarantee holds no matter what the front end does.

@@ -1,0 +1,39 @@
+---
+title: Payment-native from day one — building with QRIS in Indonesia
+description: Cards are the wrong default for the Indonesian market. Here's how I make apps take money natively with QRIS — and why verification has to happen on the server, never the client.
+date: 2026-09-14
+category: Payments
+tags: [QRIS, Payments, Indonesia, Backend]
+readingMinutes: 5
+cover: /images/blog/payments-native-qris.jpg
+---
+
+Most payment tutorials assume a credit card and a Western checkout. In Indonesia that assumption quietly blocks a huge share of your users. The default here is **QRIS** — one QR standard that every bank and e-wallet accepts. If your product can't take a QRIS payment, for many people it simply can't take their money.
+
+So I build payment-native from day one. Vensix tops up its balance with QRIS. A Telegram storefront bot I built takes QRIS orders. An ISP I work with collects subscriber bills over QRIS. Same primitive, three very different products.
+
+## The one rule: verify on the server
+
+The single most important thing about payments is also the easiest to get wrong: **the client is not allowed to decide that a payment succeeded.** A "payment complete" message in the app is a UI state, not a fact. The fact lives on the server, confirmed against the payment provider.
+
+Concretely, the flow I use is:
+
+- The server creates the charge and stores it as `pending` with the exact amount and an order reference.
+- The user pays by scanning the QRIS code.
+- The provider notifies my server (webhook) **and** my server independently re-checks the charge status against the provider's API — never trusting the webhook payload alone.
+- Only when the server confirms the amount and reference does the order flip to `paid` and the goods get released.
+
+If the app crashes, if the webhook is spoofed, if the user closes the tab — the truth is still correct, because it was never the client's to decide.
+
+## Idempotency and race conditions are the real work
+
+Two things bite everyone building payments:
+
+- **Duplicate events.** Providers retry webhooks. If your handler isn't idempotent, one payment can credit a balance twice. Every charge gets a unique reference, and applying it is a no-op the second time.
+- **Races.** Two requests for the last unit in stock, or two top-ups landing at once. I settle these in the database — a transaction plus a uniqueness constraint — so the outcome can't depend on timing.
+
+## Why this matters for the market
+
+Building payment-native isn't just a technical nicety here — it's the difference between a product Indonesians can actually use and one they can't. QRIS removes the card requirement, the foreign-currency friction, and the sign-up-for-a-processor barrier. The engineering discipline — server-side truth, idempotency, transactional settlement — is what keeps it trustworthy once real money is moving.
+
+Money is the one place where "it works on my machine" is never good enough. Verify on the server, make it idempotent, settle it in the database.
