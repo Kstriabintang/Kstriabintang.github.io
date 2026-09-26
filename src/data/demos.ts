@@ -1,0 +1,176 @@
+// Live demos hub: everything a client can open and try right now.
+// Credentials here are REAL demo accounts (isolated from production data) —
+// never invent logins. `open`/`persona` demos need no credentials.
+
+export interface DemoAccess {
+  kind: 'login' | 'key' | 'persona' | 'open';
+  email?: string;
+  password?: string;
+  key?: string;
+  note?: string;
+}
+
+export interface DemoItem {
+  title: string;
+  category: string;
+  stack: string;
+  desc: string;
+  href: string;
+  poster: string;
+  emoji: string;
+  status: 'Live demo' | 'Live' | 'In development';
+  access: DemoAccess;
+  caseStudy?: string;
+}
+
+export interface DemoBand {
+  name: string;
+  emoji: string;
+  blurb: string;
+  items: DemoItem[];
+}
+
+export const demos = {
+  eyebrow: 'Live demos',
+  title: { lead: 'See everything I build —', em: 'try it live' },
+  sub: 'Real, running products. Open any one, log in with the demo account, and click around. Each demo is isolated from real client data.',
+  bands: [
+    {
+      name: 'Products & apps',
+      emoji: '🚀',
+      blurb: 'Full apps with dashboards and admin panels. Use the demo login shown on each card.',
+      items: [
+        {
+          title: 'CoalTrack',
+          category: 'Workforce & payroll',
+          stack: 'Flutter · Laravel 12 · PostgreSQL',
+          desc: 'Anti-fraud attendance and Indonesian statutory payroll for mining — tamper-proof clock-ins, bank files and payslips in 7 languages.',
+          href: 'https://demo.coaltrack.id',
+          poster: '/images/shots/coaltrack/desktop.jpg',
+          emoji: '⛏️',
+          status: 'Live demo',
+          access: {
+            kind: 'persona',
+            note: 'No login needed — tap a demo persona (Employee, Head, HR or Superadmin) to enter instantly.',
+          },
+          caseStudy: '/projects/coaltrack',
+        },
+        {
+          title: 'VenWave',
+          category: 'Music streaming',
+          stack: 'Next.js 15 · Prisma · Postgres',
+          desc: 'A full music-streaming app — multi-source catalogue, gapless player, live visualiser, and a dashboard that learns your taste per visit.',
+          href: 'https://venwave.ksatriabintangsamudra.com',
+          poster: '/images/tools/venwave.jpg',
+          emoji: '🎧',
+          status: 'Live demo',
+          access: {
+            kind: 'login',
+            email: 'demo@ksatriabintangsamudra.com',
+            password: 'VenWaveDemo2026',
+          },
+        },
+        {
+          title: 'Lavelle',
+          category: 'Wedding invitations',
+          stack: 'Vue 3 · Supabase · Cloudflare',
+          desc: 'A digital wedding-invitation studio — each invitation publishes to its own subdomain, with RSVP and a guest gallery.',
+          href: 'https://lavelle.my.id/demo/',
+          poster: '/images/shots/lavelle/desktop.jpg',
+          emoji: '💍',
+          status: 'Live',
+          access: {
+            kind: 'open',
+            note: 'Fully interactive invitation demos — no login. Staff-portal walkthrough available on request.',
+          },
+          caseStudy: '/projects/lavelle',
+        },
+        {
+          title: 'Makmur Motor',
+          category: 'Showroom & CMS',
+          stack: 'Next.js · Cloudflare D1 · KV',
+          desc: 'An edge-native car showroom a dealership runs itself — inventory, photos and SEO managed from an admin panel.',
+          href: 'https://makmurmotor.biz.id',
+          poster: '/images/shots/makmur-motor/desktop.jpg',
+          emoji: '🚗',
+          status: 'Live',
+          access: {
+            kind: 'open',
+            note: 'Browse the live showroom. Admin CMS demo available on request.',
+          },
+          caseStudy: '/projects/makmur-motor',
+        },
+        {
+          title: 'Vensix',
+          category: 'AI gateway',
+          stack: 'OpenAI-compatible · QRIS',
+          desc: 'One key, one Rupiah balance — routes to Claude, GPT, Gemini, DeepSeek and Kimi with live cost-based metering.',
+          href: 'https://vensix.biz.id',
+          poster: '/images/shots/vensix/desktop.jpg',
+          emoji: '🔀',
+          status: 'Live',
+          access: {
+            kind: 'open',
+            note: 'Live site — pre-launch, not yet open for commercial sign-ups.',
+          },
+          caseStudy: '/projects/vensix',
+        },
+        {
+          title: 'PalmTrack',
+          category: 'Plantation management',
+          stack: 'React · Vite · Laravel 12',
+          desc: 'A palm-oil plantation & weighbridge manager for Indonesian growers — weighing, harvests, workers and finance in one place, with a satellite plot map.',
+          href: 'https://ksatriabintangsamudra.my.id/palmtrack/',
+          poster: '/images/shots/palmtrack/desktop.jpg',
+          emoji: '🌴',
+          status: 'In development',
+          access: {
+            kind: 'key',
+            key: 'PLMT-PALM-TR26-FPPY',
+            note: 'Paste the demo license key to enter. UI demo with sample data — Laravel backend in active development.',
+          },
+        },
+      ],
+    },
+    {
+      name: 'Free browser tools',
+      emoji: '🛠️',
+      blurb: 'No sign-up, no login — these run entirely in your browser.',
+      items: [
+        {
+          title: 'DevSec Toolbox',
+          category: 'Security · Dev',
+          stack: '34 tools · 100% client-side',
+          desc: 'JWT, AES, hashing, regex, JSON and more — every tool runs on-device, nothing leaves your browser.',
+          href: 'https://ksatriabintangsamudra.my.id/devsec/',
+          poster: '/images/tools/devsec.jpg',
+          emoji: '🧰',
+          status: 'Live',
+          access: { kind: 'open', note: 'Runs in your browser — no sign-up.' },
+        },
+        {
+          title: 'HAND//TRACE',
+          category: 'AR · Computer vision',
+          stack: 'MediaPipe · WebGL',
+          desc: 'Real-time hand-tracking AR — paint with light and bend particles with gestures, fully on-device.',
+          href: 'https://ksatriabintangsamudra.my.id/handtrace/',
+          poster: '/images/tools/handtrace.jpg',
+          emoji: '✋',
+          status: 'Live',
+          access: { kind: 'open', note: 'Allow the camera, then wave — nothing is recorded or uploaded.' },
+        },
+        {
+          title: 'ResumeKita',
+          category: 'Career · PDF',
+          stack: 'Client-side PDF',
+          desc: 'ATS-friendly CV builder — fill a form, download a real-text PDF. Your data never leaves the device.',
+          href: 'https://resumekita.my.id',
+          poster: '/images/tools/resumekita.jpg',
+          emoji: '📄',
+          status: 'Live',
+          access: { kind: 'open', note: 'No login — your data stays on your device.' },
+        },
+      ],
+    },
+  ] satisfies DemoBand[],
+};

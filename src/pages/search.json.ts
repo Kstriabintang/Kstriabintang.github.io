@@ -14,6 +14,7 @@ export interface SearchItem {
 const pages: SearchItem[] = [
   { title: 'Home', href: '/', kind: 'Page', keywords: 'start landing hero' },
   { title: 'Projects', href: '/projects', kind: 'Page', keywords: 'work case studies portfolio shipped' },
+  { title: 'Live Demos', href: '/demos', kind: 'Page', keywords: 'try apps demo login coaltrack venwave lavelle makmur vensix palmtrack playground' },
   { title: 'Services', href: '/services', kind: 'Page', keywords: 'hire work with me consulting freelance' },
   { title: 'About', href: '/about', kind: 'Page', keywords: 'bio who story' },
   { title: 'Uses', href: '/uses', kind: 'Page', keywords: 'gear setup stack tools hardware' },

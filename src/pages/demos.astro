@@ -1,0 +1,157 @@
+---
+import '../styles/pages/_demos.scss';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { demos } from '../data/demos';
+
+const statusClass = (s: string) =>
+  s === 'In development' ? 'is-dev' : s === 'Live demo' ? 'is-demo' : 'is-live';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Live demos — Ksatria Bintang Samudra',
+  description: demos.sub,
+  hasPart: demos.bands.flatMap((b) =>
+    b.items.map((i) => ({
+      '@type': 'SoftwareApplication',
+      name: i.title,
+      applicationCategory: i.category,
+      url: i.href,
+    })),
+  ),
+};
+---
+
+<BaseLayout
+  title="Live demos"
+  description="Open and try every product Ksatria has built — CoalTrack, VenWave, Lavelle, Makmur Motor, Vensix, PalmTrack and more. Live demos with ready-to-use accounts."
+  jsonLd={jsonLd}
+>
+  <section class="pg-section" id="main-content">
+    <div class="pg-section__container">
+      <header class="pg-section__head">
+        <p class="pg-section__eyebrow">{demos.eyebrow}</p>
+        <h2 class="pg-section__title">{demos.title.lead} <em>{demos.title.em}</em></h2>
+        <p class="pg-section__sub">{demos.sub}</p>
+      </header>
+
+      {demos.bands.map((band) => (
+        <>
+          <div class="pg-band">
+            <h3 class="pg-band__name"><span aria-hidden="true">{band.emoji}</span> {band.name}</h3>
+          </div>
+          <p class="demos-band__blurb">{band.blurb}</p>
+
+          <div class="demos-grid">
+            {band.items.map((d) => (
+              <article class="demo-card">
+                <div class="demo-card__art">
+                  <span class="demo-card__fallback" aria-hidden="true">{d.emoji}</span>
+                  <img class="demo-card__img" src={d.poster} alt={`${d.title} screenshot`} width="800" height="500" loading="lazy" decoding="async" />
+                  <span class={`demo-card__badge ${statusClass(d.status)}`}>{d.status}</span>
+                </div>
+
+                <div class="demo-card__body">
+                  <div class="demo-card__head">
+                    <h4 class="demo-card__title">{d.title}</h4>
+                    <span class="demo-card__tag">{d.category}</span>
+                  </div>
+                  <p class="demo-card__stack">{d.stack}</p>
+                  <p class="demo-card__desc">{d.desc}</p>
+
+                  {d.access.kind === 'login' ? (
+                    <div class="demo-cred">
+                      <p class="demo-cred__label">Demo login</p>
+                      <button type="button" class="demo-cred__row" data-copy={d.access.email} aria-label={`Copy email ${d.access.email}`}>
+                        <span class="demo-cred__k">Email</span>
+                        <code class="demo-cred__v">{d.access.email}</code>
+                        <span class="demo-cred__copy" aria-hidden="true">Copy</span>
+                      </button>
+                      <button type="button" class="demo-cred__row" data-copy={d.access.password} aria-label="Copy password">
+                        <span class="demo-cred__k">Password</span>
+                        <code class="demo-cred__v">{d.access.password}</code>
+                        <span class="demo-cred__copy" aria-hidden="true">Copy</span>
+                      </button>
+                    </div>
+                  ) : d.access.kind === 'key' ? (
+                    <div class="demo-cred">
+                      <p class="demo-cred__label">Demo license key</p>
+                      <button type="button" class="demo-cred__row" data-copy={d.access.key} aria-label="Copy license key">
+                        <span class="demo-cred__k">Key</span>
+                        <code class="demo-cred__v">{d.access.key}</code>
+                        <span class="demo-cred__copy" aria-hidden="true">Copy</span>
+                      </button>
+                      {d.access.note && <p class="demo-cred__hint">{d.access.note}</p>}
+                    </div>
+                  ) : (
+                    <p class={`demo-note ${d.access.kind === 'persona' ? 'is-persona' : ''}`}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                      {d.access.note}
+                    </p>
+                  )}
+
+                  <div class="demo-card__actions">
+                    <a class="demo-btn demo-btn--primary" href={d.href} target="_blank" rel="noopener">
+                      Try it live
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                    </a>
+                    {d.caseStudy && (
+                      <a class="demo-btn demo-btn--ghost" href={d.caseStudy}>
+                        Case study
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
+      ))}
+
+      <p class="demos-foot">
+        Want a guided walkthrough, or access to an admin panel not shown here?
+        <a href="/#contact">Get in touch</a> — I'll set up a private demo for you.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Hide a broken poster so the emoji fallback shows through.
+  document.querySelectorAll<HTMLImageElement>('.demo-card__img').forEach((img) => {
+    const fail = () => img.classList.add('demo-card__img--missing');
+    if (img.complete && img.naturalWidth === 0) fail();
+    else img.addEventListener('error', fail, { once: true });
+  });
+
+  // Copy demo credentials to the clipboard.
+  document.querySelectorAll<HTMLButtonElement>('.demo-cred__row').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const value = btn.getAttribute('data-copy') ?? '';
+      const tag = btn.querySelector('.demo-cred__copy');
+      try {
+        await navigator.clipboard.writeText(value);
+        if (tag) {
+          const prev = tag.textContent;
+          tag.textContent = 'Copied ✓';
+          btn.classList.add('is-copied');
+          setTimeout(() => {
+            tag.textContent = prev;
+            btn.classList.remove('is-copied');
+          }, 1400);
+        }
+      } catch {
+        // Clipboard blocked — select the text as a fallback.
+        const code = btn.querySelector('.demo-cred__v');
+        if (code) {
+          const range = document.createRange();
+          range.selectNodeContents(code);
+          const sel = window.getSelection();
+          sel?.removeAllRanges();
+          sel?.addRange(range);
+        }
+      }
+    });
+  });
+</script>
