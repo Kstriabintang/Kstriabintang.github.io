@@ -22,4 +22,14 @@ export const games: Game[] = [
     badge: 'New',
     ctaLabel: 'Play',
   },
+  {
+    title: 'IT Quiz',
+    meta: 'Levels · Tech exam',
+    desc: 'A fast IT exam — Junior, Mid and Senior levels, eight shuffled questions that never repeat, and a timer that tightens as you climb.',
+    href: '/games/it-quiz',
+    emoji: '🧠',
+    poster: '/images/games/it-quiz.jpg',
+    badge: 'New',
+    ctaLabel: 'Play',
+  },
 ];

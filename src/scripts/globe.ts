@@ -126,25 +126,25 @@ export function initGlobe() {
     if (!raf) frame();
   });
 
-  // Prefetch the cobe chunk during idle time so it is downloaded (and the map
-  // pre-generated) well before the visitor scrolls the globe into view.
+  // Build the globe eagerly during idle time — draw it once and keep it ready —
+  // BEFORE the visitor reaches it. This does not depend on the IntersectionObserver
+  // firing on scroll, which is unreliable with transform-based smooth-scrolling and
+  // was leaving the globe blank until interaction.
+  const boot = () => loadCobe().then(build);
   const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
-  if (ric) ric(() => loadCobe(), { timeout: 2500 });
-  else window.setTimeout(() => loadCobe(), 1200);
+  if (ric) ric(boot, { timeout: 2000 });
+  else window.setTimeout(boot, 600);
+  // Safety net: also build on the first user scroll, in case idle never fires.
+  window.addEventListener('scroll', () => { if (!globe) boot(); }, { once: true, passive: true });
 
-  // Build the globe as the section nears the viewport; pause it off-screen.
+  // The observer only pauses/resumes the auto-spin for performance.
   const io = new IntersectionObserver(
     (entries) => {
       visible = entries[0]?.isIntersecting ?? false;
-      if (visible && !globe) {
-        loadCobe().then(build);
-      } else if (visible) {
-        start();
-      } else {
-        stop();
-      }
+      if (visible) start();
+      else stop();
     },
-    { rootMargin: '600px 0px' },
+    { rootMargin: '200px 0px' },
   );
   io.observe(canvas);
 

@@ -1,0 +1,251 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_it-quiz.scss';
+---
+
+<BaseLayout
+  title="IT Quiz — a levelled tech exam"
+  description="IT Quiz by Ksatria Bintang Samudra: a fast tech exam with Junior, Mid and Senior levels. Questions are shuffled and never repeat, and the timer tightens as you level up."
+  lockZoom
+>
+  <main class="tool-page quiz-page">
+    <div class="tool-page__container">
+      <!-- Start / level select -->
+      <section class="quiz-start" data-quiz-start>
+        <p class="quiz__eyebrow">root@ksatria:~$ ./exam</p>
+        <h1 class="quiz__title">IT <span class="quiz__accent">Quiz</span></h1>
+        <p class="quiz__lead">A quick tech exam — 8 questions, four choices each, instant feedback. Questions are shuffled and don't repeat, so every run is different. Pick your level:</p>
+        <div class="quiz-levels">
+          <button class="quiz-level" data-level="junior">
+            <span class="quiz-level__tag">Junior</span>
+            <span class="quiz-level__desc">Fundamentals — HTML, CSS, JS, general IT.</span>
+            <span class="quiz-level__meta">20s / question</span>
+          </button>
+          <button class="quiz-level" data-level="mid">
+            <span class="quiz-level__tag">Mid</span>
+            <span class="quiz-level__desc">Web, Git, HTTP, SQL, React.</span>
+            <span class="quiz-level__meta">15s / question</span>
+          </button>
+          <button class="quiz-level" data-level="senior">
+            <span class="quiz-level__tag">Senior</span>
+            <span class="quiz-level__desc">Security, systems, algorithms, AI.</span>
+            <span class="quiz-level__meta">12s / question</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Play -->
+      <section class="quiz-play" data-quiz-play hidden>
+        <div class="quiz-hud">
+          <span class="quiz-hud__level" data-quiz-level></span>
+          <span class="quiz-hud__progress" data-quiz-progress></span>
+          <span class="quiz-hud__score" data-quiz-score></span>
+        </div>
+        <div class="quiz-timer"><span class="quiz-timer__bar" data-quiz-timerbar></span></div>
+        <h2 class="quiz-question" data-quiz-question></h2>
+        <div class="quiz-options" data-quiz-options></div>
+        <div class="quiz-foot">
+          <p class="quiz-explain" data-quiz-explain></p>
+          <button class="quiz-next" type="button" data-quiz-next hidden>Next <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
+
+      <!-- Result -->
+      <section class="quiz-end" data-quiz-end hidden>
+        <p class="quiz-end__grade" data-quiz-grade></p>
+        <h2 class="quiz-end__score" data-quiz-endscore></h2>
+        <p class="quiz-end__best" data-quiz-best></p>
+        <div class="quiz-end__actions">
+          <button class="quiz-btn quiz-btn--primary" type="button" data-quiz-again>Play again</button>
+          <button class="quiz-btn" type="button" data-quiz-change>Change level</button>
+        </div>
+        <button class="quiz-share" type="button" data-quiz-share>Share score</button>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    type Q = { id: string; q: string; opts: string[]; a: number; e: string };
+    const BANK: Record<string, { label: string; time: number; pool: Q[] }> = {
+      junior: {
+        label: 'Junior', time: 20,
+        pool: [
+          { id: 'j1', q: 'What does HTML stand for?', opts: ['HyperText Markup Language', 'HighText Machine Language', 'Hyperlink Markup Logic', 'Home Tool Markup Language'], a: 0, e: 'HTML = HyperText Markup Language — the structure of web pages.' },
+          { id: 'j2', q: 'Which CSS property sets the text colour?', opts: ['font-color', 'text-style', 'color', 'foreground'], a: 2, e: '`color` sets text colour; `background-color` sets the background.' },
+          { id: 'j3', q: 'How do you start a single-line comment in JavaScript?', opts: ['#', '<!-- -->', '//', '/* */'], a: 2, e: '`//` is a single-line comment; `/* */` is multi-line.' },
+          { id: 'j4', q: 'What does CPU stand for?', opts: ['Central Processing Unit', 'Computer Personal Unit', 'Central Power Unit', 'Core Processing Utility'], a: 0, e: 'The CPU — Central Processing Unit — executes instructions.' },
+          { id: 'j5', q: 'Which of these is NOT a programming language?', opts: ['Python', 'Java', 'HTTP', 'Ruby'], a: 2, e: 'HTTP is a protocol, not a programming language.' },
+          { id: 'j6', q: 'An HTTP 404 status means…', opts: ['Server error', 'Not Found', 'Unauthorized', 'Redirect'], a: 1, e: '404 = the requested resource was Not Found.' },
+          { id: 'j7', q: 'Which HTML tag creates a hyperlink?', opts: ['<link>', '<a>', '<href>', '<url>'], a: 1, e: 'The `<a>` (anchor) tag creates links via its `href`.' },
+          { id: 'j8', q: 'What does RAM stand for?', opts: ['Rapid Access Memory', 'Random Access Memory', 'Read Access Module', 'Runtime Allocated Memory'], a: 1, e: 'RAM = Random Access Memory — fast, volatile working memory.' },
+          { id: 'j9', q: 'Which of these is a version-control system?', opts: ['Docker', 'Git', 'Nginx', 'Redis'], a: 1, e: 'Git tracks changes to code over time.' },
+          { id: 'j10', q: 'In an IP address, what does "IP" stand for?', opts: ['Internet Protocol', 'Internal Path', 'Input Port', 'Instance Pointer'], a: 0, e: 'IP = Internet Protocol — how devices are addressed on a network.' },
+          { id: 'j11', q: 'Binary 1010 equals which decimal number?', opts: ['8', '10', '12', '20'], a: 1, e: '1010₂ = 8 + 0 + 2 + 0 = 10.' },
+          { id: 'j12', q: 'Which language runs natively in web browsers?', opts: ['Python', 'PHP', 'JavaScript', 'C++'], a: 2, e: 'Browsers natively run JavaScript.' },
+        ],
+      },
+      mid: {
+        label: 'Mid', time: 15,
+        pool: [
+          { id: 'm1', q: 'In Git, which command creates a branch AND switches to it?', opts: ['git branch new', 'git checkout -b new', 'git merge new', 'git clone new'], a: 1, e: '`git checkout -b new` (or `git switch -c new`) creates and switches.' },
+          { id: 'm2', q: 'What does a SQL JOIN do?', opts: ['Deletes rows', 'Combines rows from multiple tables', 'Sorts a table', 'Creates an index'], a: 1, e: 'A JOIN combines rows from two or more tables on a related column.' },
+          { id: 'm3', q: 'Which HTTP method is safe/idempotent for retrieving data?', opts: ['POST', 'GET', 'DELETE', 'PATCH'], a: 1, e: 'GET retrieves data and does not change server state.' },
+          { id: 'm4', q: 'Time complexity of binary search on a sorted array?', opts: ['O(n)', 'O(n²)', 'O(log n)', 'O(1)'], a: 2, e: 'Binary search halves the range each step → O(log n).' },
+          { id: 'm5', q: 'What does JSON stand for?', opts: ['Java Standard Output Node', 'JavaScript Object Notation', 'Joined Serial Object Names', 'Just Simple Object Naming'], a: 1, e: 'JSON = JavaScript Object Notation — a data-interchange format.' },
+          { id: 'm6', q: 'Which port does HTTPS use by default?', opts: ['80', '21', '443', '8080'], a: 2, e: 'HTTPS uses port 443; plain HTTP uses 80.' },
+          { id: 'm7', q: 'Which of these is a NoSQL database?', opts: ['MySQL', 'PostgreSQL', 'MongoDB', 'SQLite'], a: 2, e: 'MongoDB is a document (NoSQL) database; the others are relational.' },
+          { id: 'm8', q: 'In React, which hook manages local state in a function component?', opts: ['useEffect', 'useState', 'useRef', 'useMemo'], a: 1, e: '`useState` holds component state; `useEffect` runs side effects.' },
+          { id: 'm9', q: 'What does "CI/CD" stand for?', opts: ['Code Inspection / Code Delivery', 'Continuous Integration / Continuous Delivery', 'Central Init / Central Deploy', 'Compile Iterate / Compile Deploy'], a: 1, e: 'CI/CD = Continuous Integration / Continuous Delivery (or Deployment).' },
+          { id: 'm10', q: 'Which status code means "Too Many Requests"?', opts: ['500', '403', '429', '301'], a: 2, e: '429 signals rate limiting — too many requests.' },
+          { id: 'm11', q: 'In CSS, which layout system uses `justify-content` and `align-items`?', opts: ['float', 'Flexbox', 'table', 'position'], a: 1, e: 'Those properties align items along Flexbox (and Grid) axes.' },
+          { id: 'm12', q: 'What is the result type of `typeof null` in JavaScript?', opts: ['"null"', '"object"', '"undefined"', '"boolean"'], a: 1, e: '`typeof null` is "object" — a long-standing JavaScript quirk.' },
+        ],
+      },
+      senior: {
+        label: 'Senior', time: 12,
+        pool: [
+          { id: 's1', q: 'Which attack injects malicious SQL through unsanitised input?', opts: ['XSS', 'SQL injection', 'CSRF', 'Clickjacking'], a: 1, e: 'SQL injection exploits unsanitised input concatenated into queries.' },
+          { id: 's2', q: 'What does the OWASP Top 10 describe?', opts: ['Top 10 languages', 'Most critical web-app security risks', 'Top 10 frameworks', 'Cloud pricing tiers'], a: 1, e: 'The OWASP Top 10 ranks the most critical web-application security risks.' },
+          { id: 's3', q: 'For large n, which complexity is fastest?', opts: ['O(n)', 'O(log n)', 'O(1)', 'O(n²)'], a: 2, e: 'O(1) is constant time — independent of input size.' },
+          { id: 's4', q: 'An API request is "idempotent" when…', opts: ['It is fast', 'Repeating it has the same effect as doing it once', 'It requires auth', 'It returns JSON'], a: 1, e: 'Idempotent = repeating the call yields the same end state (e.g. PUT).' },
+          { id: 's5', q: 'Which hashing algorithm is considered broken for security use?', opts: ['SHA-256', 'MD5', 'Argon2', 'bcrypt'], a: 1, e: 'MD5 is cryptographically broken (collisions) — avoid it for security.' },
+          { id: 's6', q: 'What is a "race condition"?', opts: ['A slow query', 'A bug from unsynchronised concurrent access', 'A CPU overheating', 'A network timeout'], a: 1, e: 'A race condition is a defect where outcome depends on timing of concurrent operations.' },
+          { id: 's7', q: 'In ACID transactions, what does the "I" stand for?', opts: ['Integrity', 'Isolation', 'Indexing', 'Inheritance'], a: 1, e: 'ACID = Atomicity, Consistency, Isolation, Durability.' },
+          { id: 's8', q: 'Which HTTP header enables cross-origin requests (CORS)?', opts: ['Content-Type', 'Access-Control-Allow-Origin', 'Cache-Control', 'X-Frame-Options'], a: 1, e: '`Access-Control-Allow-Origin` tells the browser which origins may read the response.' },
+          { id: 's9', q: 'A JWT is primarily used for…', opts: ['Compressing images', 'Stateless authentication tokens', 'Database indexing', 'Load balancing'], a: 1, e: 'A JSON Web Token carries signed claims for stateless auth.' },
+          { id: 's10', q: 'Which is a symmetric encryption algorithm?', opts: ['RSA', 'AES', 'ECDSA', 'SHA-256'], a: 1, e: 'AES is symmetric (one shared key); RSA/ECDSA are asymmetric; SHA-256 is a hash.' },
+          { id: 's11', q: 'In DNS and caching, what does TTL control?', opts: ['Encryption strength', 'How long a record/response is cached', 'The number of hops', 'The packet size'], a: 1, e: 'TTL (time to live) sets how long a record or response may be cached.' },
+          { id: 's12', q: 'In an LLM, what does the "temperature" parameter affect?', opts: ['Token cost', 'Randomness/creativity of output', 'Context window size', 'Training data'], a: 1, e: 'Higher temperature → more random/creative output; lower → more deterministic.' },
+        ],
+      },
+    };
+
+    const RUN = 8;
+    const $ = (s: string) => document.querySelector(s) as HTMLElement | null;
+    const startEl = $('[data-quiz-start]'), playEl = $('[data-quiz-play]'), endEl = $('[data-quiz-end]');
+    const qEl = $('[data-quiz-question]'), optsEl = $('[data-quiz-options]'), explainEl = $('[data-quiz-explain]');
+    const nextEl = $('[data-quiz-next]') as HTMLButtonElement | null;
+    const levelEl = $('[data-quiz-level]'), progressEl = $('[data-quiz-progress]'), scoreEl = $('[data-quiz-score]');
+    const timerBar = $('[data-quiz-timerbar]');
+
+    let levelKey = 'junior', questions: Q[] = [], idx = 0, score = 0, locked = false;
+    let timer = 0, timeLeft = 0, perQ = 20;
+
+    const shuffle = <T,>(a: T[]): T[] => { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
+
+    function pick(levelK: string): Q[] {
+      const pool = BANK[levelK].pool;
+      const seenKey = 'itquiz:seen:' + levelK;
+      let seen: string[] = [];
+      try { seen = JSON.parse(localStorage.getItem(seenKey) || '[]'); } catch {}
+      let unseen = pool.filter((q) => !seen.includes(q.id));
+      if (unseen.length < RUN) { seen = []; unseen = pool.slice(); } // exhausted → reset for freshness
+      const chosen = shuffle(unseen).slice(0, RUN);
+      try { localStorage.setItem(seenKey, JSON.stringify([...seen, ...chosen.map((q) => q.id)])); } catch {}
+      return chosen;
+    }
+
+    function show(el: HTMLElement | null, on: boolean) { if (el) el.hidden = !on; }
+
+    function startRun(levelK: string) {
+      levelKey = levelK; perQ = BANK[levelK].time;
+      questions = pick(levelK); idx = 0; score = 0;
+      show(startEl, false); show(endEl, false); show(playEl, true);
+      if (levelEl) levelEl.textContent = BANK[levelK].label;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      locked = false;
+      const q = questions[idx];
+      if (progressEl) progressEl.textContent = `Q ${idx + 1} / ${RUN}`;
+      if (scoreEl) scoreEl.textContent = `Score ${score}`;
+      if (qEl) qEl.textContent = q.q;
+      if (explainEl) { explainEl.textContent = ''; explainEl.classList.remove('quiz-explain--show'); }
+      show(nextEl, false);
+      // shuffle options while tracking the correct index
+      const order = shuffle(q.opts.map((_, i) => i));
+      if (optsEl) {
+        optsEl.innerHTML = '';
+        order.forEach((origIdx) => {
+          const b = document.createElement('button');
+          b.className = 'quiz-option';
+          b.type = 'button';
+          b.textContent = q.opts[origIdx];
+          b.dataset.correct = String(origIdx === q.a);
+          b.addEventListener('click', () => answer(b));
+          optsEl.appendChild(b);
+        });
+      }
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timeLeft = perQ;
+      if (timerBar) { timerBar.style.transition = 'none'; timerBar.style.width = '100%'; }
+      // force reflow then animate
+      requestAnimationFrame(() => { if (timerBar) { timerBar.style.transition = `width ${perQ}s linear`; timerBar.style.width = '0%'; } });
+      timer = window.setInterval(() => {
+        timeLeft -= 0.1;
+        if (timeLeft <= 0) { clearInterval(timer); timeUp(); }
+      }, 100);
+    }
+
+    function reveal() {
+      optsEl?.querySelectorAll<HTMLButtonElement>('.quiz-option').forEach((o) => {
+        o.disabled = true;
+        if (o.dataset.correct === 'true') o.classList.add('quiz-option--correct');
+      });
+      if (explainEl) { explainEl.textContent = questions[idx].e; explainEl.classList.add('quiz-explain--show'); }
+      show(nextEl, true);
+      if (nextEl) nextEl.textContent = idx + 1 >= RUN ? 'See result →' : 'Next →';
+    }
+
+    function answer(btn: HTMLButtonElement) {
+      if (locked) return;
+      locked = true;
+      clearInterval(timer);
+      const correct = btn.dataset.correct === 'true';
+      if (correct) { score++; btn.classList.add('quiz-option--correct'); }
+      else btn.classList.add('quiz-option--wrong');
+      if (scoreEl) scoreEl.textContent = `Score ${score}`;
+      reveal();
+    }
+
+    function timeUp() {
+      if (locked) return;
+      locked = true;
+      reveal();
+    }
+
+    function nextQ() {
+      idx++;
+      if (idx >= RUN) endRun();
+      else renderQuestion();
+    }
+
+    function endRun() {
+      show(playEl, false); show(endEl, true);
+      const bestKey = 'itquiz:best:' + levelKey;
+      let best = 0; try { best = parseInt(localStorage.getItem(bestKey) || '0', 10) || 0; } catch {}
+      const isBest = score > best;
+      if (isBest) { try { localStorage.setItem(bestKey, String(score)); } catch {} best = score; }
+      const pct = Math.round((100 * score) / RUN);
+      const grade = pct >= 88 ? 'Outstanding 🏆' : pct >= 63 ? 'Solid 👏' : pct >= 38 ? 'Getting there 💪' : 'Keep practising 📚';
+      $('[data-quiz-grade]')!.textContent = grade;
+      $('[data-quiz-endscore]')!.innerHTML = `${score}<span>/ ${RUN}</span>`;
+      $('[data-quiz-best]')!.textContent = `${BANK[levelKey].label} level · Best ${best}/${RUN}${isBest ? ' · new best!' : ''}`;
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('[data-level]').forEach((b) => b.addEventListener('click', () => startRun(b.dataset.level!)));
+    nextEl?.addEventListener('click', nextQ);
+    $('[data-quiz-again]')?.addEventListener('click', () => startRun(levelKey));
+    $('[data-quiz-change]')?.addEventListener('click', () => { show(endEl, false); show(startEl, true); });
+    $('[data-quiz-share]')?.addEventListener('click', async () => {
+      const text = `I scored ${score}/${RUN} on the ${BANK[levelKey].label} IT Quiz 🧠\nTry it: https://ksatriabintangsamudra.com/games/it-quiz`;
+      try { if (navigator.share) await navigator.share({ text }); else { await navigator.clipboard.writeText(text); const s = $('[data-quiz-share]'); if (s) { const t = s.textContent; s.textContent = 'Copied!'; setTimeout(() => (s.textContent = t), 1500); } } } catch {}
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,71 @@
+// IT Quiz — levelled tech exam. Matches the site design system.
+
+.quiz-page {padding-bottom:4rem; touch-action:manipulation}
+.quiz-page * {-webkit-tap-highlight-color:transparent}
+.quiz-page .tool-page__container {max-width:720px}
+
+/* ---- start / level select ---- */
+.quiz-start {text-align:center; padding-top:1rem}
+.quiz__eyebrow {font-family:ui-monospace,SF Mono,Menlo,Consolas,monospace; font-size:1.1rem; color:#02aab0; letter-spacing:.06em; margin:0 0 .6rem}
+.quiz__title {font-family:Fraunces,Georgia,serif; font-size:3.4rem; font-weight:600; color:var(--text-primary); margin:0 0 .8rem}
+.quiz__accent {background:linear-gradient(120deg,#02aab0,#00cdac); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
+.quiz__lead {font-size:1.5rem; color:var(--text-secondary); line-height:1.6; max-width:560px; margin:0 auto 2.4rem}
+.quiz-levels {display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem}
+@media(max-width:44em) { .quiz-levels {grid-template-columns:1fr} }
+.quiz-level {
+  display:flex; flex-direction:column; gap:.5rem; text-align:left; padding:1.6rem 1.6rem 1.4rem; cursor:pointer;
+  background:var(--card-bg); border:1px solid var(--card-border); border-radius:16px; color:var(--text-primary);
+  transition:transform .25s cubic-bezier(.16,1,.3,1), border-color .25s ease, box-shadow .25s ease;
+}
+.quiz-level:hover {transform:translateY(-4px); border-color:#02aab066; box-shadow:0 10px 30px rgba(2,170,176,.14)}
+.quiz-level__tag {font-family:Fraunces,Georgia,serif; font-size:1.9rem; font-weight:600}
+.quiz-level__desc {font-size:1.25rem; color:var(--text-secondary); line-height:1.5; flex:1}
+.quiz-level__meta {font-family:ui-monospace,Menlo,monospace; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; color:#02aab0}
+
+/* ---- play ---- */
+.quiz-hud {display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; font-family:ui-monospace,Menlo,monospace; font-size:1.15rem; color:var(--text-secondary)}
+.quiz-hud__level {color:#02aab0; font-weight:600; letter-spacing:.08em; text-transform:uppercase}
+.quiz-hud__score {font-weight:600; color:var(--text-primary)}
+.quiz-timer {height:6px; border-radius:99px; background:var(--card-border); overflow:hidden; margin-bottom:2rem}
+.quiz-timer__bar {display:block; height:100%; width:100%; background:linear-gradient(90deg,#02aab0,#00cdac); border-radius:99px}
+.quiz-question {font-family:Fraunces,Georgia,serif; font-size:2.3rem; font-weight:600; line-height:1.3; color:var(--text-primary); margin:0 0 1.8rem; min-height:3.2em}
+@media(max-width:44em) { .quiz-question {font-size:1.95rem; min-height:0} }
+.quiz-options {display:grid; gap:.9rem}
+.quiz-option {
+  text-align:left; padding:1.3rem 1.5rem; border-radius:12px; cursor:pointer;
+  background:var(--card-bg); border:1px solid var(--card-border); color:var(--text-primary);
+  font-family:inherit; font-size:1.5rem; line-height:1.4; transition:background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.quiz-option:hover:not(:disabled) {border-color:#02aab080; background:#02aab00d}
+.quiz-option:active:not(:disabled) {transform:scale(.99)}
+.quiz-option:disabled {cursor:default}
+.quiz-option--correct {background:#02aab01f !important; border-color:#02aab0 !important; color:var(--text-primary)}
+.quiz-option--wrong {background:#e0402a1a !important; border-color:#e0402a !important}
+.quiz-foot {margin-top:1.4rem; min-height:3rem}
+.quiz-explain {font-size:1.3rem; color:var(--text-secondary); line-height:1.55; margin:0 0 1.2rem; opacity:0; transform:translateY(4px); transition:opacity .25s ease, transform .25s ease}
+.quiz-explain--show {opacity:1; transform:none}
+.quiz-next {
+  display:inline-flex; align-items:center; gap:.5rem; padding:.95rem 2rem; border-radius:50px; cursor:pointer;
+  font-family:ui-monospace,Menlo,monospace; font-size:1.2rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  color:#fff; background:linear-gradient(135deg,#02aab0,#00cdac); border:none; box-shadow:0 8px 24px rgba(2,170,176,.3);
+  transition:transform .2s ease;
+}
+.quiz-next:hover {transform:translateY(-2px)}
+
+/* ---- end ---- */
+.quiz-end {text-align:center; padding-top:2rem}
+.quiz-end__grade {font-family:ui-monospace,Menlo,monospace; font-size:1.3rem; letter-spacing:.1em; text-transform:uppercase; color:#02aab0; margin:0 0 .6rem}
+.quiz-end__score {font-family:Fraunces,Georgia,serif; font-size:5rem; font-weight:600; color:var(--text-primary); margin:0 0 .4rem; line-height:1}
+.quiz-end__score span {font-size:2.4rem; color:var(--text-secondary); margin-left:.4rem}
+.quiz-end__best {font-family:ui-monospace,Menlo,monospace; font-size:1.2rem; color:var(--text-secondary); margin:0 0 2rem}
+.quiz-end__actions {display:flex; gap:.9rem; justify-content:center; margin-bottom:1.4rem; flex-wrap:wrap}
+.quiz-btn {
+  display:inline-flex; align-items:center; padding:.95rem 2rem; border-radius:50px; cursor:pointer;
+  font-family:ui-monospace,Menlo,monospace; font-size:1.15rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--text-primary); background:transparent; border:1px solid var(--card-border);
+  transition:transform .2s ease, border-color .2s ease;
+}
+.quiz-btn:hover {transform:translateY(-2px); border-color:#02aab080}
+.quiz-btn--primary {color:#fff; background:linear-gradient(135deg,#02aab0,#00cdac); border-color:transparent; box-shadow:0 8px 24px rgba(2,170,176,.3)}
+.quiz-share {background:none; border:none; cursor:pointer; font-family:ui-monospace,Menlo,monospace; font-size:1.1rem; letter-spacing:.06em; text-transform:uppercase; color:#02aab0}
+.quiz-share:hover {opacity:.82}

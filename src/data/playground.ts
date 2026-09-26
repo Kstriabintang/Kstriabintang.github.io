@@ -76,6 +76,16 @@ export const playground = {
           badge: 'New',
           ctaLabel: 'Play',
         },
+        {
+          title: 'IT Quiz',
+          meta: 'Levels · Tech exam',
+          desc: 'A fast IT exam with Junior, Mid and Senior levels — eight shuffled questions that never repeat, and a timer that tightens as you level up.',
+          href: '/games/it-quiz',
+          poster: '/images/games/it-quiz.jpg',
+          emoji: '🧠',
+          badge: 'New',
+          ctaLabel: 'Play',
+        },
       ],
     },
     {

@@ -22,6 +22,7 @@ const pages: SearchItem[] = [
   { title: 'Certifications', href: '/certifications', kind: 'Page', keywords: 'certificates credentials courses google ai essentials isc2 ethical hacking linux python excel toefl' },
   { title: 'Games', href: '/games', kind: 'Page', keywords: 'play browser fun termle wordle puzzle' },
   { title: 'Termle — daily tech word game', href: '/games/termle', kind: 'Page', keywords: 'wordle game puzzle daily word tech play' },
+  { title: 'IT Quiz — levelled tech exam', href: '/games/it-quiz', kind: 'Page', keywords: 'quiz game exam test it tech levels junior mid senior questions play' },
   { title: 'Notebook', href: '/blog', kind: 'Page', keywords: 'blog writing articles posts notes notebook' },
   { title: 'Privacy', href: '/privacy', kind: 'Page', keywords: 'data policy contact form chat' },
 ];
