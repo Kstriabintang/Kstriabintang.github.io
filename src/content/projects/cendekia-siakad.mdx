@@ -1,0 +1,37 @@
+---
+title: Cendekia SIAKAD
+summary: A full academic information system for a campus — online course registration (KRS), grades and transcripts (KHS), digital advising, and UKT tuition billing — with student, lecturer and admin roles enforced at the database, shipped as an installable PWA on the edge.
+category: web
+metric: Campus system of record
+tags: [Vue 3, Supabase, RLS, PWA]
+cover:
+  gradient: ['#0f766e', '#2dd4bf']
+  icon: file
+links:
+  live: https://siakad.learningsystem.my.id
+year: 2026
+metrics:
+  - label: Access roles
+    value: 3
+  - label: Core modules
+    value: 4
+  - label: Servers to manage
+    value: 0
+stack: [Vue 3.5, Vite 7, Tailwind CSS v4, Pinia, Supabase (Postgres, Auth, RLS), PWA, Cloudflare Pages]
+featured: true
+order: 8
+---
+
+## The Challenge
+
+A campus administration needs a true system of record — course registration (KRS), grades and transcripts (KHS), academic advising, and tuition (UKT) billing — where every number is correct and every role sees only what it should. Most campus portals bolt these onto one clunky screen and enforce access with nothing more than a hidden menu, which is exactly how student data ends up in the wrong hands.
+
+## My Approach
+
+SIAKAD is the record-keeping half of Cendekia. It splits cleanly across three roles — student, lecturer/advisor, and admin — with access enforced at the database through Supabase row-level security, not just hidden in the UI. Students file KRS, view KHS and transcripts, and see their UKT bills; advisors approve plans and record grades; admins run the whole registry.
+
+It's built in Vue 3.5 + Vite 7 with Tailwind v4, backed by Supabase (Postgres, Auth and RLS), and ships as an installable PWA — so there are no servers to babysit; everything runs on Supabase and the Cloudflare edge.
+
+## The Results
+
+A deployed, role-based academic system live at siakad.learningsystem.my.id. It runs a **demo mode** seeded with representative personas (student, advisor, admin), so anyone can log in and click through the real flows without any actual student data ever being involved. Its teaching-side counterpart is [Cendekia LMS](/projects/cendekia-lms).

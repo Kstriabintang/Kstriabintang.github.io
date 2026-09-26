@@ -11,7 +11,7 @@ interface Scene {
   destroy(): void;
 }
 
-const START_DELAY_MS = 1400;
+const START_DELAY_MS = 350;
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -472,7 +472,7 @@ export function initHeroBackground(host: HTMLElement) {
   };
   timer = window.setTimeout(() => {
     const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
-    if (ric) ric(begin, { timeout: 1000 });
+    if (ric) ric(begin, { timeout: 500 });
     else begin();
   }, START_DELAY_MS);
   triggers.forEach((t) => window.addEventListener(t, begin, { once: true, passive: true }));

@@ -136,14 +136,14 @@ export const demos = {
           stack: 'Vue 3.5 · Supabase · PWA',
           desc: 'A full academic information system — online KRS, grades & transcripts, digital advising and UKT billing, split across student, lecturer and admin roles.',
           href: 'https://siakad.learningsystem.my.id',
-          poster: '/images/shots/cendekia/desktop.jpg',
+          poster: '/images/shots/cendekia-siakad/desktop.jpg',
           emoji: '🎓',
           status: 'Live',
           access: {
             kind: 'persona',
             note: 'Demo mode — tap a persona (Student, Lecturer or Admin) and use any password. Seeded with sample data, no real student info.',
           },
-          caseStudy: '/projects/cendekia',
+          caseStudy: '/projects/cendekia-siakad',
         },
         {
           title: 'Cendekia — LMS',
@@ -158,7 +158,7 @@ export const demos = {
             kind: 'open',
             note: 'Demo mode with sample data — open and click around, no real login needed.',
           },
-          caseStudy: '/projects/cendekia',
+          caseStudy: '/projects/cendekia-lms',
         },
         {
           title: 'Daily Kost',

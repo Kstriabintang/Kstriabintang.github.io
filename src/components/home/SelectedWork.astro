@@ -2,9 +2,12 @@
 // Home section 04 — "Selected work": filter pills + project cards linking to case studies.
 import SectionHead from '../ui/SectionHead.astro';
 import ProjectCard from '../projects/ProjectCard.astro';
+import Icon from '../ui/Icon.astro';
 import { getProjects, categoryLabels, filterOrder } from '../projects/projects';
 
-const projects = (await getProjects()).filter((p) => p.data.featured);
+const all = await getProjects();
+const projects = all.filter((p) => p.data.featured);
+const total = all.length;
 const used = new Set(projects.map((p) => p.data.category));
 const filters = filterOrder.filter((c) => used.has(c));
 ---
@@ -26,6 +29,13 @@ const filters = filterOrder.filter((c) => used.has(c));
           <ProjectCard project={project} />
         </div>
       ))}
+    </div>
+
+    <div class="projects-v2__all">
+      <a href="/projects" class="projects-v2__all-link">
+        See all {total} projects
+        <Icon name="arrow-right" size={18} />
+      </a>
     </div>
   </div>
 </section>

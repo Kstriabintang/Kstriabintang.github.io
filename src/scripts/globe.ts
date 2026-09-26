@@ -55,6 +55,18 @@ export function initGlobe() {
   let dragOffset = 0;
   let pointerStart: number | null = null;
   let createGlobeFn: typeof import('cobe').default | null = null;
+  let cobePromise: Promise<typeof import('cobe').default> | null = null;
+
+  // Warm the cobe chunk (kept out of the initial bundle) so it is ready before scroll.
+  const loadCobe = () => {
+    if (!cobePromise) {
+      cobePromise = import('cobe').then((mod) => {
+        createGlobeFn = mod.default;
+        return mod.default;
+      });
+    }
+    return cobePromise;
+  };
 
   const size = () => (canvas.parentElement?.offsetWidth || canvas.offsetWidth || 420) * dpr;
 
@@ -114,22 +126,25 @@ export function initGlobe() {
     if (!raf) frame();
   });
 
-  // Lazy-load cobe when the section approaches the viewport; pause off-screen.
+  // Prefetch the cobe chunk during idle time so it is downloaded (and the map
+  // pre-generated) well before the visitor scrolls the globe into view.
+  const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+  if (ric) ric(() => loadCobe(), { timeout: 2500 });
+  else window.setTimeout(() => loadCobe(), 1200);
+
+  // Build the globe as the section nears the viewport; pause it off-screen.
   const io = new IntersectionObserver(
     (entries) => {
       visible = entries[0]?.isIntersecting ?? false;
-      if (visible && !createGlobeFn) {
-        import('cobe').then((mod) => {
-          createGlobeFn = mod.default;
-          build();
-        });
+      if (visible && !globe) {
+        loadCobe().then(build);
       } else if (visible) {
         start();
       } else {
         stop();
       }
     },
-    { rootMargin: '200px 0px' },
+    { rootMargin: '600px 0px' },
   );
   io.observe(canvas);
 

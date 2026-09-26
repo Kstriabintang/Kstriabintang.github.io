@@ -1,0 +1,37 @@
+---
+title: Cendekia LMS
+summary: The gamified teaching side of the Cendekia campus platform — auto-graded quizzes, XP, streaks and badges, and live attendance — built to feel like an app students actually want to open, as an installable PWA on the edge.
+category: web
+metric: Gamified learning platform
+tags: [Vue 3, Supabase, Gamification, PWA]
+cover:
+  gradient: ['#0891b2', '#22d3ee']
+  icon: sparkles
+links:
+  live: https://lms.learningsystem.my.id
+year: 2026
+metrics:
+  - label: Gamification systems
+    value: 3
+  - label: Access roles
+    value: 3
+  - label: Servers to manage
+    value: 0
+stack: [Vue 3.5, Vite 7, Tailwind CSS v4, Pinia, Supabase (Postgres, Auth, RLS), PWA, Cloudflare Pages]
+featured: false
+order: 9
+---
+
+## The Challenge
+
+Teaching software fails in the opposite way to an administrative portal: it has to be light and motivating, something students actually want to open. A learning platform that feels like yet another form to fill in gets ignored — the engagement has to be designed in, not bolted on.
+
+## My Approach
+
+The LMS is the teaching half of Cendekia, sharing one design language and one backend model with [SIAKAD](/projects/cendekia-siakad). It leans into engagement: auto-graded quizzes give instant feedback, and progress is driven by three gamification systems — XP, streaks and badges — while lecturers run live attendance. The whole thing is designed to feel like an app rather than a spreadsheet.
+
+It's built in Vue 3.5 + Vite 7 with Tailwind v4, backed by Supabase (Postgres, Auth and row-level security), and ships as an installable PWA — so a student can add it to their home screen, and there are no servers to babysit.
+
+## The Results
+
+A deployed learning platform live at lms.learningsystem.my.id, paired with SIAKAD as the two halves of Cendekia — the largest full-stack work I've shipped. It runs a **demo mode** seeded with representative personas, so anyone can log in and try the quizzes, streaks and attendance without any real student data being involved.

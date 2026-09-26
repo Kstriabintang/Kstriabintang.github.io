@@ -18,7 +18,9 @@ function inline(text: string): string {
     codes.push(`<code>${c}</code>`);
     return `\u0000${codes.length - 1}\u0000`;
   });
-  out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]+)\)/g, (_m, label: string, href: string) =>
+    /^https?:/.test(href) ? `<a href="${href}" target="_blank" rel="noopener">${label}</a>` : `<a href="${href}">${label}</a>`,
+  );
   out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   out = out.replace(/(^|[\s(])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>');
   out = out.replace(/\u0000(\d+)\u0000/g, (_, i: string) => codes[Number(i)]);
