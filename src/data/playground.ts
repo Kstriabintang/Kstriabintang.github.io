@@ -58,5 +58,22 @@ export const playground = {
         },
       ],
     },
+    {
+      name: 'Apps',
+      emoji: '🎧',
+      allLabel: 'All projects',
+      allHref: '/projects',
+      items: [
+        {
+          title: 'VenWave',
+          meta: 'Music · Next.js',
+          desc: 'A full music-streaming app — multi-source catalogue, gapless player, live visualiser. Try it: demo@ksatriabintangsamudra.com / VenWaveDemo2026',
+          href: 'https://venwave.ksatriabintangsamudra.com',
+          poster: '/images/tools/venwave.jpg',
+          emoji: '🎧',
+          badge: 'Live',
+        },
+      ],
+    },
   ] satisfies PlaygroundBand[],
 };
