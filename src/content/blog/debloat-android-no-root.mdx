@@ -1,0 +1,34 @@
+---
+title: Debloating Android without root — and proving it worked
+description: A no-root, fully reversible debloat toolkit over wireless ADB, with real before/after numbers from a vivo V21. No placebo "boosters" — measured frames.
+date: 2026-07-28
+category: Android
+tags: [Android, ADB, Performance, CLI]
+readingMinutes: 4
+---
+
+Phones ship full of software nobody asked for, and the usual "fixes" are worse than the problem: rooting voids warranties and breaks banking apps, and one-tap "boosters" mostly just show you an animation. I wanted a third option — remove bloat **without root**, keep every change **reversible**, and then **prove** the phone actually got faster. That's adb-kit.
+
+## No root, fully reversible
+
+adb-kit drives **wireless ADB**. It disables or uninstalls packages *per-user*, which needs no root and touches nothing in the system partition. Because the operations are per-user, every change is reversible — you can bring any package back. Nothing is permanent, so there's no "I bricked my phone" failure mode.
+
+## Measure, don't vibe
+
+The part I care about most: adb-kit profiles the result with `gfxinfo` so the effect is a number, not a feeling. Anyone can claim a phone "feels snappier." I'd rather show frame times.
+
+On a **vivo V21**, here's the measured before/after:
+
+- **Packages:** 327 → 275 (**52 removed**)
+- **Average frame time:** 18 ms → **12 ms**
+- **Janky frames:** 0.27% → **0.00%**
+
+Those are documented in the repo with screenshots, on the same device, same workload. A ~33% drop in frame time is the difference between "mostly smooth" and "smooth."
+
+## Why reversibility changes the psychology
+
+The honest reason most people never debloat is fear — fear of removing the wrong thing. Making every action reversible removes the fear, which is what makes the toolkit actually usable rather than just technically correct. You can be aggressive precisely because you can undo it.
+
+## The principle
+
+I don't ship "boosters." I ship tools that make a claim and then back it with a measurement you can reproduce. If I can't show the before and after, I don't get to say it got faster.

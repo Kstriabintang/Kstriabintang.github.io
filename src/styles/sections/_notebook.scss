@@ -1,0 +1,32 @@
+// Home "From the notebook" band — three recent posts.
+
+.notebook-section {padding:6rem 0}
+.notebook-grid {display:grid; grid-template-columns:repeat(3,1fr); gap:1.6rem; max-width:1180px; margin:0 auto}
+@media(max-width:64em) { .notebook-grid {grid-template-columns:1fr 1fr} }
+@media(max-width:44em) { .notebook-grid {grid-template-columns:1fr} }
+
+.notebook-card {
+  display:flex; flex-direction:column; text-decoration:none; text-align:left; padding:1.8rem 1.9rem; border-radius:16px;
+  background:var(--card-bg); border:1px solid var(--card-border);
+  transition:transform .35s cubic-bezier(.16,1,.3,1), border-color .35s ease, box-shadow .35s ease;
+}
+.notebook-card:hover {transform:translateY(-5px); border-color:#02aab059; box-shadow:0 12px 34px rgba(0,0,0,.1); text-decoration:none}
+.notebook-card__meta {display:flex; align-items:center; gap:.55rem; flex-wrap:wrap; font-family:ui-monospace,SF Mono,Menlo,Consolas,monospace; font-size:1rem; color:var(--text-secondary); margin-bottom:.9rem}
+.notebook-card__cat {color:#02aab0; font-weight:600; letter-spacing:.08em; text-transform:uppercase}
+.notebook-card__dot {opacity:.5}
+.notebook-card__title {font-family:Fraunces,Georgia,serif; font-size:1.9rem; font-weight:600; line-height:1.24; color:var(--text-primary); margin:0 0 .7rem}
+.notebook-card__desc {font-size:1.35rem; color:var(--text-secondary); line-height:1.6; margin:0 0 1.3rem; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+.notebook-card__more {display:inline-flex; align-items:center; gap:.4rem; margin-top:auto; font-family:ui-monospace,Menlo,monospace; font-size:1.05rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#02aab0}
+.notebook-card__more svg {transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.notebook-card:hover .notebook-card__more svg {transform:translateX(4px)}
+
+.notebook-all {display:flex; justify-content:center; margin-top:3rem}
+.notebook-all__link {
+  display:inline-flex; align-items:center; gap:.7rem; padding:1.1rem 2.4rem; border-radius:50px;
+  font-family:ui-monospace,Menlo,monospace; font-size:1.25rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--text-primary); background:transparent; border:1px solid var(--card-border); text-decoration:none;
+  transition:transform .25s cubic-bezier(.16,1,.3,1), border-color .25s ease, color .25s ease, box-shadow .25s ease;
+}
+.notebook-all__link svg {transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.notebook-all__link:hover {color:#02aab0; border-color:#02aab080; transform:translateY(-2px); box-shadow:0 8px 24px rgba(2,170,176,.14); text-decoration:none}
+.notebook-all__link:hover svg {transform:translateX(4px)}

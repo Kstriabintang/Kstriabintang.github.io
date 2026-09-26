@@ -1,0 +1,32 @@
+---
+title: One key, five LLMs — building Vensix, an OpenAI-compatible gateway
+description: Why I put a single billing-and-routing layer in front of Claude, GPT, Gemini, DeepSeek and Kimi — and what an OpenAI-compatible API buys you for the Indonesian market.
+date: 2026-09-05
+category: AI
+tags: [AI, LLM, API design, Payments]
+readingMinutes: 5
+---
+
+Every model provider wants to be your only provider. Different keys, different SDKs, different billing, different dashboards. If you build anything real on top of LLMs, you feel that friction fast — and your users feel it worse.
+
+Vensix is my answer: **one API key that routes to Claude, GPT, Gemini, DeepSeek and Kimi**, speaks the OpenAI-compatible protocol, and meters cost as you go.
+
+## Why OpenAI-compatible
+
+The single best interoperability decision you can make in this space is to expose the OpenAI Chat Completions shape. Almost every client library, framework and no-code tool already speaks it. So Vensix doesn't ask developers to learn anything new — you point your existing OpenAI client at a new base URL, swap the key, and change the model string. That's the whole migration.
+
+Behind that familiar surface, Vensix decides where a request actually goes. The model name selects the upstream; the gateway normalises the request, forwards it, and translates the response back into the shape the caller expects.
+
+## Metering is the hard part, not routing
+
+Routing is easy. **Honest, real-time cost metering is the feature.** Each upstream prices tokens differently, and prompt versus completion tokens are priced differently again. Vensix reads the usage from every response, prices it against the specific model that served it, and debits a balance — so a user sees one number going down, not five invoices arriving later.
+
+For the Indonesian market that balance is topped up with **QRIS**, verified server-side. No cards required, no foreign-currency friction — the thing that quietly blocks a lot of local developers from using frontier models at all.
+
+## What I'd tell someone building the same
+
+- **Pick the compatible protocol first.** Your integration surface is your moat, and "works with what people already have" beats "elegant but new."
+- **Treat usage accounting as core, not telemetry.** If money moves, the numbers have to be right and reconcilable, not approximate.
+- **Fail predictably.** When an upstream is down, the caller should get a clear, typed error in the shape they already handle — not a surprise.
+
+A gateway is unglamorous infrastructure. But making five models feel like one, billed in local money, is exactly the kind of plumbing that lets other people build.

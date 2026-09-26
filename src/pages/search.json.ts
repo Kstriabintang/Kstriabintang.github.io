@@ -22,6 +22,7 @@ const pages: SearchItem[] = [
   { title: 'Certifications', href: '/certifications', kind: 'Page', keywords: 'certificates credentials courses google ai essentials isc2 ethical hacking linux python excel toefl' },
   { title: 'Games', href: '/games', kind: 'Page', keywords: 'play browser fun termle wordle puzzle' },
   { title: 'Termle — daily tech word game', href: '/games/termle', kind: 'Page', keywords: 'wordle game puzzle daily word tech play' },
+  { title: 'Notebook', href: '/blog', kind: 'Page', keywords: 'blog writing articles posts notes notebook' },
   { title: 'Privacy', href: '/privacy', kind: 'Page', keywords: 'data policy contact form chat' },
 ];
 
@@ -76,8 +77,31 @@ async function projectsFromCollection(): Promise<SearchItem[]> {
   }
 }
 
+async function postsFromCollection(): Promise<SearchItem[]> {
+  try {
+    const content = (await import('astro:content')) as unknown as {
+      getCollection: (name: string) => Promise<{ id: string; data: Record<string, unknown> }[]>;
+    };
+    const entries = await content.getCollection('blog');
+    return entries
+      .filter((e) => !(e.data as { draft?: boolean }).draft)
+      .map((entry) => {
+        const data = entry.data as { title?: string; description?: string; tags?: string[]; category?: string };
+        const slug = entry.id.replace(/\.(md|mdx)$/, '');
+        return {
+          title: data.title ?? slug,
+          href: `/blog/${slug}`,
+          kind: 'Page' as const,
+          keywords: ['blog post', data.category, data.description, ...(data.tags ?? [])].filter(Boolean).join(' '),
+        };
+      });
+  } catch {
+    return [];
+  }
+}
+
 export const GET: APIRoute = async () => {
-  const items: SearchItem[] = [...pages, ...sections, ...(await projectsFromCollection()), ...toolsFromNav(), ...socials, ...actions];
+  const items: SearchItem[] = [...pages, ...sections, ...(await projectsFromCollection()), ...(await postsFromCollection()), ...toolsFromNav(), ...socials, ...actions];
   return new Response(JSON.stringify(items), {
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
   });

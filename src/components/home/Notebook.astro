@@ -1,0 +1,39 @@
+---
+// Home section — "From the notebook": three most recent posts.
+import SectionHead from '../ui/SectionHead.astro';
+import Icon from '../ui/Icon.astro';
+import { getPosts, postSlug, formatDate } from '../blog/posts';
+
+const posts = (await getPosts()).slice(0, 3);
+---
+
+{posts.length > 0 && (
+  <section id="notebook" class="notebook-section">
+    <div class="container">
+      <SectionHead num="05" lead="From the" em="notebook" />
+
+      <div class="sr sr--scale notebook-grid">
+        {posts.map((post, i) => (
+          <a class="notebook-card sr__child" href={`/blog/${postSlug(post)}`} style={`--sr-i:${i};transition-delay:${i * 120}ms`}>
+            <div class="notebook-card__meta">
+              <span class="notebook-card__cat">{post.data.category}</span>
+              <span class="notebook-card__dot" aria-hidden="true">·</span>
+              <span>{formatDate(post.data.date)}</span>
+              <span class="notebook-card__dot" aria-hidden="true">·</span>
+              <span>{post.data.readingMinutes} min</span>
+            </div>
+            <h3 class="notebook-card__title">{post.data.title}</h3>
+            <p class="notebook-card__desc">{post.data.description}</p>
+            <span class="notebook-card__more">Read <Icon name="arrow-right" size={15} /></span>
+          </a>
+        ))}
+      </div>
+
+      <div class="notebook-all">
+        <a href="/blog" class="notebook-all__link">
+          Browse all posts <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+    </div>
+  </section>
+)}

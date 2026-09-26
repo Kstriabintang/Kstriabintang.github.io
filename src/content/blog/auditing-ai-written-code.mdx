@@ -1,0 +1,39 @@
+---
+title: How I audit AI-written code — and the bug that proved why
+description: I ship as an AI-augmented solo builder, but I never trust what the model produces. Here's the review discipline that caught a missing Android permission in every earlier release build.
+date: 2026-09-20
+category: AI · Workflow
+tags: [AI, Workflow, Code review, Flutter]
+readingMinutes: 5
+---
+
+I build most of my software as an AI-augmented solo developer. I write the spec, I own the architecture, and I drive Claude Code and Cursor through the implementation. But there is one rule I never break: **I audit what actually ships, not what the model tells me it produced.**
+
+Here is the bug that turned that rule into a habit.
+
+## The symptom that shouldn't exist
+
+CoalTrack is an attendance and payroll app for coal-mining crews. During closed testing, a handful of devices simply could not reach the server — no error, no retry loop that recovered, just silence. The code looked correct. The API was up. Every earlier build had "worked on my machine."
+
+So I stopped reading the source and started reading the **artifact**. I pulled apart the signed app bundle and inspected the merged `AndroidManifest.xml` that Google Play actually receives.
+
+The `android.permission.INTERNET` line wasn't there.
+
+## Why the source lied
+
+In a multi-module Flutter build, the manifest you write is not the manifest that ships. Plugins, build types and manifest merging all rewrite it. A change somewhere upstream had dropped the INTERNET permission from the merged result — so on a fresh install with no cached grant, the app had no network at all. On my phone it worked because the permission had been granted by an earlier build and survived the upgrade.
+
+Reading the source would never have found this. Reading the shipped bundle found it in minutes.
+
+## The discipline
+
+That is the whole point of AI-augmented work done responsibly. The model accelerates the typing; it does not absolve me of verification. Concretely, that means:
+
+- **Verify the artifact, not the intent.** Inspect the built bundle, the merged manifest, the generated SQL migration — the thing that actually runs.
+- **Write the risky logic twice, on purpose.** CoalTrack computes Indonesian statutory payroll in a PHP service *and* a Dart mirror, then cross-checks them with mirrored tests. If the model drifts on one side, the other catches it.
+- **Gate everything with tests.** 400+ automated tests run in CI before any signed build. AI writing more code is only safe if more code is also checked.
+- **Read the diff like a reviewer, not an author.** The model is an eager junior engineer. Treat its output that way.
+
+## The takeaway
+
+"AI wrote it" is not a defect and it is not a badge. The engineering is still mine — the spec, the review, the decision about what is correct. The productivity is real, but so is the responsibility. Ship the audit, not the optimism.

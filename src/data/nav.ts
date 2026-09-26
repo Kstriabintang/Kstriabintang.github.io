@@ -38,6 +38,7 @@ export const navGroups: NavGroup[] = [
     items: [
       { label: 'Projects', desc: 'Case studies & shipped', href: '/projects', icon: 'folder' },
       { label: 'Live Demos', desc: 'Open & try my apps now', href: '/demos', icon: 'sparkles', badge: 'New' },
+      { label: 'Notebook', desc: 'Writing & field notes', href: '/blog', icon: 'file' },
       { label: 'Services', desc: 'Work with me', href: '/services', icon: 'briefcase' },
       { label: 'Resume', desc: 'Experience & credentials', href: '/resume', icon: 'file' },
       { label: 'GitHub', desc: '39 public repositories', href: 'https://github.com/Kstriabintang', icon: 'github', external: true },
@@ -86,6 +87,7 @@ export const footerColumns = [
     links: [
       { label: 'Projects', href: '/projects' },
       { label: 'Live Demos', href: '/demos' },
+      { label: 'Notebook', href: '/blog' },
       { label: 'Services', href: '/services' },
       { label: 'Resume', href: '/resume' },
     ],

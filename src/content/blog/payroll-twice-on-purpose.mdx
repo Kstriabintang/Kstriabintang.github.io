@@ -1,0 +1,36 @@
+---
+title: I wrote Indonesian payroll twice on purpose
+description: CoalTrack computes statutory payroll on the server in PHP and again on the handset in Dart. Duplicating the logic sounds wrong — here's why it's the safest thing I did.
+date: 2026-08-15
+category: Engineering
+tags: [Payroll, Laravel, Flutter, Testing]
+readingMinutes: 6
+---
+
+"Don't repeat yourself" is good advice right up until the moment a wrong number costs someone their correct wage. CoalTrack calculates payroll for coal-mining crews, and I implemented the same statutory logic **twice** — once in a Laravel/PHP service, once in a Dart mirror on the phone. On purpose. Here's the reasoning.
+
+## The rules are law, not preference
+
+Indonesian payroll isn't a formula you invent. It's legislation:
+
+- **PPh21** income tax under the TER scheme (PMK 168/2023),
+- **BPJS** health and employment contributions,
+- overtime under **Kepmenaker 102/2004**.
+
+Each has brackets, caps and rounding rules that have to be applied in a specific order. Get the order wrong and the total is wrong in a way that's hard to spot and easy to dispute.
+
+## Why two implementations, not one
+
+A payroll figure shows up in two places: computed authoritatively on the server, and previewed instantly on the worker's handset — including when the handset is offline down a mine access road. I could have made the phone a dumb display that waits for the server, but a preview that's blank without signal is useless exactly when people want it.
+
+So the phone computes too. And the moment you have two implementations of a legal calculation, you have a new risk: **they can disagree.** That risk is also the safety net. If the PHP service and the Dart mirror ever produce different numbers for the same inputs, something is wrong — and I want to know at build time, not at payday.
+
+## Mirrored tests are the contract
+
+The two implementations are held together by **mirrored test suites**: the same input fixtures, the same expected outputs, run against both languages. The tests are the real specification. When the tax rule changes, I change the fixtures first, watch both sides fail, then fix both until they agree. Neither implementation is allowed to be "close enough."
+
+This is also why the numbers can be trusted after the fact. Attendance events and approvals live behind an **append-only audit trail** — PostgreSQL triggers reject `UPDATE` and `DELETE` on those tables — so the inputs to payroll can't be quietly rewritten later.
+
+## When duplication is the right call
+
+Duplication is a cost, and most of the time DRY is right. But when a calculation is (a) defined by an external authority, (b) needed in two runtimes for real reasons, and (c) expensive to get wrong, a second implementation checked against the first isn't waste — it's a proof. I'd take a redundant, cross-verified payroll engine over a single elegant one every single payday.

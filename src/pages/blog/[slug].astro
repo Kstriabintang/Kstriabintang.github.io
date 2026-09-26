@@ -1,0 +1,71 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getPosts, postSlug, formatDate } from '../../components/blog/posts';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_blog.scss';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: postSlug(post) }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const all = await getPosts();
+const related = all.filter((p) => postSlug(p) !== postSlug(post)).slice(0, 2);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <main class="tool-page">
+    <article class="tool-page__container blog-post">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a href="/blog">Notebook</a></li>
+          <li aria-hidden="true">›</li>
+          <li>{post.data.category}</li>
+        </ol>
+      </nav>
+
+      <header class="blog-post__head">
+        <div class="blog-post__meta">
+          <span class="blog-card__cat">{post.data.category}</span>
+          <span class="blog-card__dot" aria-hidden="true">·</span>
+          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          <span class="blog-card__dot" aria-hidden="true">·</span>
+          <span>{post.data.readingMinutes} min read</span>
+        </div>
+        <h1 class="blog-post__title">{post.data.title}</h1>
+        <p class="blog-post__lede">{post.data.description}</p>
+        <div class="blog-post__tags">
+          {post.data.tags.map((t) => <span class="blog-post__tag">{t}</span>)}
+        </div>
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <footer class="blog-post__foot">
+        <a class="blog-post__back" href="/blog"><Icon name="arrow-right" size={15} /> All posts</a>
+        {related.length > 0 && (
+          <div class="blog-post__related">
+            <h2 class="blog-post__related-title">Keep reading</h2>
+            <div class="blog-post__related-grid">
+              {related.map((p) => (
+                <a class="blog-card blog-card--sm" href={`/blog/${postSlug(p)}`}>
+                  <span class="blog-card__cat">{p.data.category}</span>
+                  <h3 class="blog-card__title">{p.data.title}</h3>
+                  <span class="blog-card__more">Read <Icon name="arrow-right" size={14} /></span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </footer>
+    </article>
+  </main>
+</BaseLayout>
