@@ -1,7 +1,7 @@
 ---
 // Home "Selected work" card — gradient placeholder, impact badge, tags and link row.
 import Icon from '../ui/Icon.astro';
-import { heroGradient, primaryLink, type Project } from './projects';
+import { heroGradient, primaryLink, projectPoster, type Project } from './projects';
 
 interface Props {
   project: Project;
@@ -11,15 +11,20 @@ const { project } = Astro.props;
 const { title, summary, metric, tags, cover, links } = project.data;
 const href = `/projects/${project.id}/`;
 const primary = primaryLink(project);
+const poster = projectPoster(project);
 ---
 
 <div class="project-card project-card--clickable" data-card-href={href}>
   <div class="project-card__visual">
     <div class="project-card__placeholder" style={`background:${heroGradient(project)}`}>
       <div class="project-card__placeholder-grid"></div>
-      <div class="project-card__placeholder-icon">
-        <Icon name={cover.icon} size={40} strokeWidth={1.2} />
-      </div>
+      {poster ? (
+        <img class="project-card__shot" src={poster} alt={`${title} screenshot`} width="800" height="500" loading="lazy" decoding="async" />
+      ) : (
+        <div class="project-card__placeholder-icon">
+          <Icon name={cover.icon} size={40} strokeWidth={1.2} />
+        </div>
+      )}
     </div>
     <span class="project-card__impact-badge">{metric}</span>
   </div>

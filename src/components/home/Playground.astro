@@ -19,9 +19,20 @@ import { playground } from '../../data/playground';
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
           </a>
         </div>
-        <div class="pg-grid pg-grid--tri">
+        <div class={`pg-grid ${band.items.length >= 3 ? 'pg-grid--tri' : 'pg-grid--duo'}`}>
           {band.items.map((tool) => (
-            <a class="showcard showcard--tool" href={tool.href} target="_blank" rel="noopener">
+            <button
+              type="button"
+              class="showcard showcard--tool"
+              data-demo
+              data-title={tool.title}
+              data-meta={tool.meta}
+              data-desc={tool.desc}
+              data-href={tool.href}
+              data-cta={tool.ctaLabel ?? 'Open'}
+              data-login-email={tool.login?.email ?? ''}
+              data-login-pass={tool.login?.password ?? ''}
+            >
               <div class="showcard__art">
                 <span class="showcard__fallback" aria-hidden="true">{tool.emoji}</span>
                 <img class="showcard__img" src={tool.poster} alt="" width="800" height="500" loading="lazy" decoding="async" />
@@ -32,23 +43,119 @@ import { playground } from '../../data/playground';
                 <p class="showcard__meta">{tool.meta}</p>
                 <p class="showcard__desc">{tool.desc}</p>
                 <span class="showcard__cta">
-                  Open
+                  Details
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                 </span>
               </div>
-            </a>
+            </button>
           ))}
         </div>
       </>
     ))}
   </div>
+
+  <!-- Detail modal: full info first, then a button to open the demo (no blind redirect). -->
+  <div class="pg-modal" data-pg-modal hidden>
+    <div class="pg-modal__backdrop" data-pg-close></div>
+    <div class="pg-modal__panel" role="dialog" aria-modal="true" aria-labelledby="pg-modal-title">
+      <button class="pg-modal__close" type="button" data-pg-close aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+      </button>
+      <span class="pg-modal__badge" data-pg-badge hidden></span>
+      <h3 class="pg-modal__title" id="pg-modal-title" data-pg-title></h3>
+      <p class="pg-modal__meta" data-pg-meta></p>
+      <p class="pg-modal__desc" data-pg-desc></p>
+      <div class="pg-modal__login" data-pg-login hidden>
+        <p class="pg-modal__login-label">Demo login</p>
+        <button type="button" class="pg-modal__cred" data-pg-copy="email">
+          <span class="pg-modal__cred-k">Email</span>
+          <code class="pg-modal__cred-v" data-pg-email></code>
+          <span class="pg-modal__cred-copy">Copy</span>
+        </button>
+        <button type="button" class="pg-modal__cred" data-pg-copy="pass">
+          <span class="pg-modal__cred-k">Password</span>
+          <code class="pg-modal__cred-v" data-pg-pass></code>
+          <span class="pg-modal__cred-copy">Copy</span>
+        </button>
+      </div>
+      <a class="pg-modal__cta" data-pg-cta href="#" target="_blank" rel="noopener">
+        <span data-pg-cta-label>Open</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+      </a>
+    </div>
+  </div>
 </section>
 
 <script>
-  // Hide the poster (show the emoji fallback) if an image fails to load.
-  document.querySelectorAll<HTMLImageElement>('#playground .showcard__img').forEach((img) => {
-    const fail = () => img.classList.add('showcard__img--missing');
-    if (img.complete && img.naturalWidth === 0) fail();
-    else img.addEventListener('error', fail, { once: true });
-  });
+  function initPlayground() {
+    document.querySelectorAll<HTMLImageElement>('#playground .showcard__img').forEach((img) => {
+      const fail = () => img.classList.add('showcard__img--missing');
+      if (img.complete && img.naturalWidth === 0) fail();
+      else img.addEventListener('error', fail, { once: true });
+    });
+
+    const modal = document.querySelector<HTMLElement>('[data-pg-modal]');
+    if (!modal) return;
+    const q = <T extends HTMLElement>(s: string) => modal.querySelector<T>(s)!;
+    const elBadge = q<HTMLElement>('[data-pg-badge]');
+    const elTitle = q<HTMLElement>('[data-pg-title]');
+    const elMeta = q<HTMLElement>('[data-pg-meta]');
+    const elDesc = q<HTMLElement>('[data-pg-desc]');
+    const elLogin = q<HTMLElement>('[data-pg-login]');
+    const elEmail = q<HTMLElement>('[data-pg-email]');
+    const elPass = q<HTMLElement>('[data-pg-pass]');
+    const elCta = q<HTMLAnchorElement>('[data-pg-cta]');
+    const elCtaLabel = q<HTMLElement>('[data-pg-cta-label]');
+    let lastFocus: HTMLElement | null = null;
+
+    const copy = async (btn: HTMLElement, value: string) => {
+      const tag = btn.querySelector('.pg-modal__cred-copy');
+      try {
+        await navigator.clipboard.writeText(value);
+        if (tag) {
+          const prev = tag.textContent;
+          tag.textContent = 'Copied ✓';
+          btn.classList.add('is-copied');
+          setTimeout(() => { tag.textContent = prev; btn.classList.remove('is-copied'); }, 1400);
+        }
+      } catch { /* clipboard blocked */ }
+    };
+
+    const open = (card: HTMLElement) => {
+      const d = card.dataset;
+      elTitle.textContent = d.title ?? '';
+      elMeta.textContent = d.meta ?? '';
+      elDesc.textContent = d.desc ?? '';
+      const badge = card.querySelector('.showcard__badge')?.textContent?.trim();
+      if (badge) { elBadge.textContent = badge; elBadge.hidden = false; } else elBadge.hidden = true;
+      if (d.loginEmail) {
+        elEmail.textContent = d.loginEmail;
+        elPass.textContent = d.loginPass ?? '';
+        elLogin.hidden = false;
+      } else elLogin.hidden = true;
+      elCta.href = d.href ?? '#';
+      elCtaLabel.textContent = d.cta ?? 'Open';
+      lastFocus = card;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => modal.classList.add('is-open'));
+      (modal.querySelector('.pg-modal__close') as HTMLElement)?.focus();
+    };
+
+    const close = () => {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      setTimeout(() => { modal.hidden = true; }, 200);
+      lastFocus?.focus();
+    };
+
+    document.querySelectorAll<HTMLElement>('#playground [data-demo]').forEach((card) => {
+      card.addEventListener('click', () => open(card));
+    });
+    modal.querySelectorAll('[data-pg-close]').forEach((el) => el.addEventListener('click', close));
+    modal.querySelector('[data-pg-copy="email"]')?.addEventListener('click', (e) => copy(e.currentTarget as HTMLElement, elEmail.textContent ?? ''));
+    modal.querySelector('[data-pg-copy="pass"]')?.addEventListener('click', (e) => copy(e.currentTarget as HTMLElement, elPass.textContent ?? ''));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) close(); });
+  }
+  initPlayground();
 </script>

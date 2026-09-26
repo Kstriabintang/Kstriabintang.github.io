@@ -8,6 +8,8 @@ export interface PlaygroundTool {
   poster: string;
   emoji: string;
   badge?: 'Live' | 'New';
+  ctaLabel?: string;
+  login?: { email: string; password: string };
 }
 
 export interface PlaygroundBand {
@@ -76,11 +78,13 @@ export const playground = {
         {
           title: 'VenWave',
           meta: 'Music · Next.js',
-          desc: 'A full music-streaming app — multi-source catalogue, gapless player, live visualiser. Try it: demo@ksatriabintangsamudra.com / VenWaveDemo2026',
+          desc: 'A full music-streaming app — multi-source catalogue, gapless player, live visualiser, and a dashboard that learns your taste on each visit.',
           href: 'https://venwave.ksatriabintangsamudra.com',
           poster: '/images/tools/venwave.jpg',
           emoji: '🎧',
           badge: 'Live',
+          ctaLabel: 'Check the demo',
+          login: { email: 'demo@ksatriabintangsamudra.com', password: 'VenWaveDemo2026' },
         },
       ],
     },

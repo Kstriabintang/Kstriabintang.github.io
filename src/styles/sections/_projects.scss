@@ -17,6 +17,9 @@
 .project-card__placeholder {width:100%; height:100%; display:flex; align-items:center; justify-content:center; position:relative}
 .project-card__placeholder-grid {position:absolute; inset:0; background-image:radial-gradient(circle,rgba(255,255,255,.07) 1.5px,transparent 1.5px); background-size:20px 20px}
 .project-card__placeholder-icon {position:relative; z-index:1; color:#ffffffd9; filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
+.project-card__shot {position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top center; z-index:1; transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.project-card--clickable:hover .project-card__shot {transform:scale(1.05)}
+@media(prefers-reduced-motion:reduce) { .project-card__shot {transition:none} .project-card--clickable:hover .project-card__shot {transform:none} }
 .project-card__body {padding:var(--space-3) var(--space-4) var(--space-4); text-align:left}
 .project-card__title {font-family:Fraunces,Georgia,serif; font-size:2rem; font-weight:600; margin-bottom:.8rem; color:var(--text-primary, #272341)}
 .project-card__info {font-size:1.4rem; color:var(--text-secondary, #333333); line-height:1.6; margin-bottom:1.2rem; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}

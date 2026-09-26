@@ -39,6 +39,14 @@ export function heroGradient(p: Project): string {
   return `linear-gradient(135deg, ${from} 0%, ${to} 100%)`;
 }
 
+/** Projects that have a real desktop screenshot under /images/shots/<id>/desktop.jpg. */
+const SHOT_IDS = new Set(['coaltrack', 'vensix', 'makmur-motor', 'lavelle', 'wedding-saving', 'ar-science-lab']);
+
+/** Card-cover screenshot for a project, or undefined to fall back to the gradient + icon. */
+export function projectPoster(p: Project): string | undefined {
+  return SHOT_IDS.has(p.id) ? `/images/shots/${p.id}/desktop.jpg` : undefined;
+}
+
 export function primaryLink(p: Project): { href: string; label: string } | undefined {
   if (p.data.links.live) return { href: p.data.links.live, label: 'Live' };
   if (p.data.links.demo) return { href: p.data.links.demo, label: 'Demo' };

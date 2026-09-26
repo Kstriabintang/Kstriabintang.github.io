@@ -116,17 +116,6 @@
       background: #0b0b12;
     }
     .device__screen img { border-radius: 22px; }
-    .device__notch {
-      position: absolute;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 66px;
-      height: 16px;
-      border-radius: 99px;
-      background: #0b0b12;
-      z-index: 3;
-    }
   }
 
   // Tablet: wider, thinner bezel.
