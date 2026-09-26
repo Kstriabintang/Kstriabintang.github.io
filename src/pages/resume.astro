@@ -124,9 +124,18 @@ const pdf = '/cv/ksatria-bintang-samudra-resume.pdf';
         </div>
       </section>
 
+      <section class="block">
+        <h2 class="h2">Selected projects</h2>
+        {resume.projects.map((p) => (
+          <p class="earlier__row"><span set:html={p.html} /> <span class="earlier__when">{p.when}</span></p>
+        ))}
+      </section>
+
       <div class="two-col">
         <section class="block">
-          <h2 class="h2">Certifications &amp; courses</h2>
+          <h2 class="h2">Education</h2>
+          {resume.education.map((e) => <p class="edu" set:html={e.html} />)}
+          <h2 class="h2" style="margin-top: 1.4rem;">Certifications &amp; courses</h2>
           <ul class="awards">
             {resume.certifications.map((c) => <li><span class="awards__ic">🎓</span><span set:html={c.html} /></li>)}
           </ul>

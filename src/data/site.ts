@@ -20,7 +20,7 @@ export const site = {
   footerNote: 'Designed, built and shipped in Pontianak, Indonesia.',
   socials: {
     github: 'https://github.com/Kstriabintang',
-    linkedin: 'https://www.linkedin.com/in/ksatria-bintang-samudra-265952313',
+    linkedin: 'https://www.linkedin.com/in/ksatriabintangsamudra',
     instagram: 'https://instagram.com/ven_0day',
     whatsapp: 'https://wa.me/6285264402640',
   },

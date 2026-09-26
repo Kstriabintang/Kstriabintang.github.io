@@ -14,7 +14,7 @@ export interface AboutPhoto {
 export const about = {
   headline: { lead: 'AI Engineer. Automation Builder.', em: 'Solutions Architect.' },
   intro:
-    "I'm Ksatria — an AI-native engineer from Pontianak, Indonesia who ships production systems end to end. Right now that means an OpenAI-compatible LLM gateway with live cost metering (Vensix), an anti-fraud attendance and payroll platform for mining crews (CoalTrack), and payment-native automation that runs on QRIS webhooks and Telegram bots.",
+    "I'm Ksatria — an AI-native product engineer from Pontianak, Indonesia who ships production systems end to end. Right now that means CoalTrack, an anti-fraud attendance and payroll platform for mining crews; the internal systems of a live internet service provider; Vensix, an OpenAI-compatible LLM gateway; and Luxavero LLC, the US company behind my products.",
   personality:
     'Before I built products I broke them — penetration testing for clients on Upwork — and then kept a multi-domain Google Workspace running for a mining company. That habit stuck: I treat every webhook as hostile, every number as something a customer will check, and every deploy as something I will have to support at 3 AM.',
   closer:

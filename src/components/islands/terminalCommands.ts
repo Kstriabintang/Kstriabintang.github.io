@@ -29,7 +29,7 @@ const R = '\x1B[reset]';
 export const EMAIL = 'hello@ksatriabintangsamudra.com';
 export const LINKS: Record<string, string> = {
   github: 'https://github.com/Kstriabintang',
-  linkedin: 'https://www.linkedin.com/in/ksatria-bintang-samudra-265952313',
+  linkedin: 'https://www.linkedin.com/in/ksatriabintangsamudra',
   instagram: 'https://instagram.com/ven_0day',
   whatsapp: 'https://wa.me/6285264402640',
   resume: '/resume',
@@ -97,10 +97,13 @@ ${B}About Ksatria${R}
   for mining, payment-native automation on QRIS, and edge-native web apps
   on Cloudflare.
 
-  Before going independent I ran IT systems and Google Workspace for a
-  mining company (Sep 2024 – Mar 2026), did freelance penetration testing
-  on Upwork (Jul 2023 – Jan 2024) and social-media data analysis
-  (May 2020 – Mar 2022).
+  Today: Systems Developer at an internet service provider (Rimba Raya),
+  founder of CoalTrack, and founder of Luxavero LLC (Wyoming, USA).
+  Before that I ran IT systems and Google Workspace for a mining
+  company (Sep 2024 – Mar 2026), did freelance penetration testing on
+  Upwork (Jul 2023 – Jan 2024) and social-media data analysis
+  (May 2020 – Mar 2022). Studying management at STIE Anindya Guna
+  (expected 2027).
 `,
   'contact.txt': `
 ${B}Contact${R}

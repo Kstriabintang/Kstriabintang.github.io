@@ -38,6 +38,15 @@ const INTENTS: Intent[] = [
     answer: 'Ksatria is based in Pontianak, West Kalimantan, Indonesia — right on the equator (UTC+7) — and works remotely with clients anywhere.',
   },
   {
+    keywords: ['job', 'work now', 'current', 'role', 'employer', 'rimba', 'luxavero', 'company', 'llc'],
+    answer:
+      'Right now Ksatria is a Systems Developer at Rimba Raya, an internet service provider (since Mar 2026), the founder and sole developer of CoalTrack, and the founder of Luxavero LLC — his company registered in Wyoming, USA.',
+  },
+  {
+    keywords: ['education', 'study', 'degree', 'university', 'college', 'kuliah'],
+    answer: 'Ksatria is studying for a Bachelor of Management at STIE Anindya Guna Semarang, expected to graduate in late 2027.',
+  },
+  {
     keywords: ['security', 'pentest', 'phishing', 'hacker'],
     answer:
       'Security is part of the background: freelance penetration testing on Upwork (Jul 2023 – Jan 2024) and a passive, defensive forensic write-up of a large WhatsApp phishing campaign, published as case files on GitHub.',

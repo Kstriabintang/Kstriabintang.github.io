@@ -6,18 +6,21 @@ IDENTITY
 - Based in Pontianak, West Kalimantan, Indonesia — a city on the equator (UTC+7). Open to remote work worldwide.
 - Has travelled to 3 countries: Indonesia (Pontianak, Pekanbaru, Tembilahan, Batam, Jakarta, Tangerang, Bogor, Bandung, Malang, Bali), India (Kasol, Delhi) and Malaysia (Sepang).
 - Website: https://ksatriabintangsamudra.com · Email: hello@ksatriabintangsamudra.com · WhatsApp: +62 852-6440-2640
-- GitHub: https://github.com/Kstriabintang (39 public repositories) · LinkedIn: https://www.linkedin.com/in/ksatria-bintang-samudra-265952313
+- GitHub: https://github.com/Kstriabintang (39 public repositories) · LinkedIn: https://www.linkedin.com/in/ksatriabintangsamudra
 - More than 15 products and sites are live today. Payments are QRIS-native (Indonesian QR payments).
 
 EXPERIENCE
-- Independent AI & automation engineer since March 2026, building client and own products.
+- Systems Developer at Rimba Raya, an internet service provider, Mar 2026 – present, remote: built and operates five internal systems — an operations portal (Vue 3 + Supabase/PostgreSQL, row-level security, 46 production migrations), a barcode inventory system (Next.js 14, 2FA, role-based access), a payslip generator and an employee data intake form; integrated RADIUS/MikroTik provisioning, QRIS billing and WhatsApp Business notifications.
+- Founder and sole developer of CoalTrack (independent product), Jul 2026 – present.
+- Founder of Luxavero LLC, a single-member company registered in Wyoming, USA (Articles filed Aug 2026) — home of Lavelle and Venmail. Website: luxavero.net.
 - IT Systems & Google Workspace Administrator, Kalimantan Tambang Mandiri (mining), Sep 2024 – Mar 2026, remote.
 - Freelance Penetration Tester on Upwork, Jul 2023 – Jan 2024 (web application security assessments).
 - Social Media Data Analyst on Upwork, May 2020 – Mar 2022.
 - Credential: Google AI Essentials (Google, via Coursera, July 2024).
+- Education: studying for a Bachelor of Management at STIE Anindya Guna Semarang (expected Nov–Dec 2027); high school at SMAN 1 Rengat Barat, Riau (science track, 2020).
 
 SELECTED PROJECTS
-- CoalTrack — anti-fraud workforce attendance and payroll platform for a mining company. Flutter app (Android, iOS, web), Laravel 12 API with PostgreSQL, Filament admin, Codemagic CI. Server-time and GPS checks, one device per employee, attendance records that cannot be edited, Indonesian payroll rules (PPh21 TER, BPJS, overtime), bank transfer files, payslips by email and Telegram, 7 languages. Showcase: coaltrack.id, demo: demo.coaltrack.id.
+- CoalTrack — anti-fraud workforce attendance and payroll platform for coal-mining operations (independent product, sole developer, in TestFlight and Google Play closed testing). Flutter app (Android, iOS, web), Laravel 12 API with PostgreSQL, Filament admin, Codemagic CI. Server-time and GPS checks, one device per employee, attendance records that cannot be edited, Indonesian payroll rules (PPh21 TER, BPJS, overtime), bank transfer files, payslips by email and Telegram, 7 languages. Showcase: coaltrack.id, demo: demo.coaltrack.id.
 - Vensix — OpenAI-compatible AI gateway: one API key routes to Claude, GPT, Gemini, DeepSeek and Kimi, with live cost-based metering, a Rupiah balance topped up by QRIS, and automated hosting provisioning. FastAPI + SQLite. vensix.biz.id.
 - Makmur Motor — car showroom and inventory CMS for a dealer in Denpasar, Bali. Next.js 15 on Cloudflare Workers with D1 and KV. makmurmotor.biz.id.
 - Lavelle — digital wedding invitation platform (own business) with a staff portal that publishes each invitation to its own subdomain; Vue 3, Supabase, Cloudflare. lavelle.my.id.
