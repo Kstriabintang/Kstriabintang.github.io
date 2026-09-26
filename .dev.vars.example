@@ -1,0 +1,11 @@
+# Local development variables for `wrangler dev` (copy to .dev.vars — git-ignored).
+#
+# Nothing secret is required: the Worker only uses platform bindings declared in wrangler.jsonc
+#   AI     — Workers AI (chat + "Explain it")
+#   EMAIL  — send_email via Cloudflare Email Routing (contact form)
+#   KV     — rate limits, chat leads, explain cache
+#   ASSETS — the static Astro build in ./dist
+#
+# Non-secret vars live in wrangler.jsonc → "vars". Override any of them here for local testing:
+# SITE_URL=http://localhost:8787
+# CONTACT_TO=you@example.com

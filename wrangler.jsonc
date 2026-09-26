@@ -1,0 +1,38 @@
+{
+  // Cloudflare Worker serving the static Astro build (./dist) plus /api/* endpoints.
+  // Deploy: npm run deploy  (astro build && wrangler deploy)
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ksatriabintangsamudra",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "observability": { "enabled": true },
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash",
+    // The Worker runs first on every request so it can redirect www → apex and
+    // add security headers to static pages too (static-first would skip both).
+    "run_worker_first": true
+  },
+
+  // Workers AI — chat assistant and the hero "Explain it" feature.
+  "ai": { "binding": "AI" },
+
+  // Contact form delivery through Cloudflare Email Routing (destination must be verified).
+  "send_email": [{ "name": "EMAIL", "destination_address": "ksatriabintangsamudra2022@gmail.com" }],
+
+  // Rate limits, chat leads, explain cache.
+  "kv_namespaces": [{ "binding": "KV", "id": "REPLACE_WITH_KV_ID" }],
+
+  "vars": {
+    "SITE_URL": "https://ksatriabintangsamudra.com",
+    "CONTACT_FROM": "hello@ksatriabintangsamudra.com",
+    "CONTACT_TO": "ksatriabintangsamudra2022@gmail.com",
+    "CHAT_MODEL": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "EXPLAIN_MODEL": "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+  }
+}
