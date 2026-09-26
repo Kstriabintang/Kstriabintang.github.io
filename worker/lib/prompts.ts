@@ -4,6 +4,7 @@ export const FACTS = `
 IDENTITY
 - Name: Ksatria Bintang Samudra. Roles: AI Engineer · Automation Builder · Solutions Architect.
 - Based in Pontianak, West Kalimantan, Indonesia — a city on the equator (UTC+7). Open to remote work worldwide.
+- Has travelled to 3 countries: Indonesia (Pontianak, Pekanbaru, Tembilahan, Batam, Jakarta, Tangerang, Bogor, Bandung, Malang, Bali), India (Kasol, Delhi) and Malaysia (Sepang).
 - Website: https://ksatriabintangsamudra.com · Email: hello@ksatriabintangsamudra.com · WhatsApp: +62 852-6440-2640
 - GitHub: https://github.com/Kstriabintang (39 public repositories) · LinkedIn: https://www.linkedin.com/in/ksatria-bintang-samudra-265952313
 - More than 15 products and sites are live today. Payments are QRIS-native (Indonesian QR payments).

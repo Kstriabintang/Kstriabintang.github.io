@@ -3,9 +3,10 @@ import SectionHead from '../ui/SectionHead.astro';
 import { travel } from '../../data/travel';
 
 const cityLabel = (n: number) => `${n} ${n === 1 ? 'city' : 'cities'}`;
-const markers = travel.places
-  .filter((p) => typeof p.lat === 'number' && typeof p.lng === 'number')
-  .map((p) => ({ location: [p.lat, p.lng], size: Math.min(0.07, 0.03 + p.cities.length * 0.01) }));
+// One marker per city; the home base gets a larger dot and is the globe's starting view.
+const markers = travel.places.flatMap((p) =>
+  p.spots.map((s) => ({ location: [s.lat, s.lng], size: s.home ? 0.08 : 0.045 })),
+);
 ---
 
 <section id="travel-globe" class="travel-globe-section">
@@ -14,7 +15,7 @@ const markers = travel.places
 
     <div class="travel-globe__layout">
       <div class="travel-globe__canvas-wrap">
-        <canvas class="travel-globe__canvas" data-globe data-markers={JSON.stringify(markers)} style="cursor:grab;contain:layout" aria-label="Interactive globe showing where my work runs" role="img"></canvas>
+        <canvas class="travel-globe__canvas" data-globe data-markers={JSON.stringify(markers)} style="cursor:grab;contain:layout" aria-label={travel.ariaLabel} role="img"></canvas>
       </div>
 
       <div class="travel-globe__sidebar">
