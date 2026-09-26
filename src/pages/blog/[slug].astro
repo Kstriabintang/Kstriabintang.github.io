@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/ui/Icon.astro';
+import { site } from '../../data/site';
 import { getPosts, postSlug, formatDate } from '../../components/blog/posts';
 import '../../styles/pages/_tool-page.scss';
 import '../../styles/pages/_blog.scss';
@@ -15,9 +16,38 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const all = await getPosts();
 const related = all.filter((p) => postSlug(p) !== postSlug(post)).slice(0, 2);
+
+const url = new URL(`/blog/${postSlug(post)}/`, site.url).toString();
+const coverAbs = post.data.cover ? new URL(post.data.cover, site.url).toString() : undefined;
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    description: post.data.description,
+    datePublished: post.data.date.toISOString(),
+    dateModified: post.data.date.toISOString(),
+    author: { '@type': 'Person', name: site.name, url: site.url },
+    publisher: { '@type': 'Person', name: site.name, url: site.url },
+    ...(coverAbs ? { image: coverAbs } : {}),
+    mainEntityOfPage: url,
+    articleSection: post.data.category,
+    keywords: post.data.tags.join(', '),
+    inLanguage: 'en',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Notebook', item: new URL('/blog/', site.url).toString() },
+      { '@type': 'ListItem', position: 3, name: post.data.title, item: url },
+    ],
+  },
+];
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.description} type="article" image={post.data.cover} jsonLd={jsonLd}>
   <main class="tool-page">
     <article class="tool-page__container blog-post">
       <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
@@ -44,6 +74,12 @@ const related = all.filter((p) => postSlug(p) !== postSlug(post)).slice(0, 2);
           {post.data.tags.map((t) => <span class="blog-post__tag">{t}</span>)}
         </div>
       </header>
+
+      {post.data.cover && (
+        <figure class="blog-post__cover">
+          <img src={post.data.cover} alt={`Cover image for ${post.data.title}`} width="1280" height="800" loading="eager" decoding="async" />
+        </figure>
+      )}
 
       <div class="prose">
         <Content />

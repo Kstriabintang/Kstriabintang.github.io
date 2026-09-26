@@ -133,6 +133,12 @@
 }
 
 @media (max-width: 40em) {
+  // A full desktop UI can't be read when scaled to phone width, so let it stay
+  // legible and swipe horizontally instead of forcing the visitor to pinch-zoom.
+  .showcase__browser { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .showcase__browser-img { width: 720px; max-width: none; }
+  .showcase__bar { min-width: 720px; }
+
   .showcase__handhelds {
     gap: 1.6rem;
     margin-top: 2rem;

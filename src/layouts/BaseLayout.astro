@@ -14,6 +14,8 @@ interface Props {
   type?: 'website' | 'article' | 'profile';
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
+  /** Lock pinch/double-tap zoom — only for app-like interactive pages (e.g. the game). */
+  lockZoom?: boolean;
 }
 
 const {
@@ -23,7 +25,12 @@ const {
   type = 'website',
   jsonLd,
   noindex = false,
+  lockZoom = false,
 } = Astro.props;
+
+const viewportContent = lockZoom
+  ? 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+  : 'width=device-width, initial-scale=1';
 
 const pageTitle = title ? `${title} — ${site.name}` : site.title;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
@@ -32,24 +39,51 @@ const ogImage = new URL(image, site.url).toString();
 const personLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': `${site.url}/#person`,
   name: site.name,
   url: site.url,
   image: new URL('/images/profile.jpg', site.url).toString(),
   jobTitle: 'AI Engineer',
+  hasOccupation: [
+    { '@type': 'Occupation', name: 'AI Engineer' },
+    { '@type': 'Occupation', name: 'Founder & CEO, Luxavero LLC' },
+  ],
+  worksFor: { '@type': 'Organization', name: 'Luxavero LLC', url: 'https://luxavero.net' },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'STIE Anindya Guna Semarang' },
   description: site.description,
   email: `mailto:${site.email}`,
   address: { '@type': 'PostalAddress', addressLocality: 'Pontianak', addressRegion: 'West Kalimantan', addressCountry: 'ID' },
   knowsAbout: ['AI Engineering', 'LLM Integration', 'Automation', 'Solutions Architecture', 'Payment Integration', 'Cloudflare Workers', 'Flutter', 'Laravel', 'React'],
   sameAs: [site.socials.github, site.socials.linkedin, site.socials.instagram],
 };
-const ldBlocks = [personLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://luxavero.net/#org',
+  name: 'Luxavero LLC',
+  alternateName: 'Luxavero',
+  url: 'https://luxavero.net',
+  foundingDate: '2026',
+  foundingLocation: { '@type': 'Place', name: 'Wyoming, USA' },
+  founder: { '@id': `${site.url}/#person`, '@type': 'Person', name: site.name, url: site.url },
+};
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${site.url}/#website`,
+  name: site.name,
+  url: site.url,
+  inLanguage: 'en',
+  publisher: { '@id': `${site.url}/#person` },
+};
+const ldBlocks = [personLd, orgLd, websiteLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
 ---
 
 <!doctype html>
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content={viewportContent} />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />

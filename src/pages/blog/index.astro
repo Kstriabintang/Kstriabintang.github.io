@@ -1,16 +1,35 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/ui/Icon.astro';
+import { site } from '../../data/site';
 import { getPosts, postSlug, formatDate } from '../../components/blog/posts';
 import '../../styles/pages/_tool-page.scss';
 import '../../styles/pages/_blog.scss';
 
 const posts = await getPosts();
+const blogUrl = new URL('/blog/', site.url).toString();
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': blogUrl,
+  name: `Notebook — ${site.name}`,
+  url: blogUrl,
+  inLanguage: 'en',
+  author: { '@id': `${site.url}/#person` },
+  blogPost: posts.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    url: new URL(`/blog/${postSlug(p)}/`, site.url).toString(),
+    datePublished: p.data.date.toISOString(),
+    ...(p.data.cover ? { image: new URL(p.data.cover, site.url).toString() } : {}),
+  })),
+};
 ---
 
 <BaseLayout
   title="Notebook"
   description="Writing by Ksatria Bintang Samudra on AI-augmented engineering, LLM infrastructure, payments and shipping real software from Indonesia."
+  jsonLd={jsonLd}
 >
   <main class="tool-page">
     <div class="tool-page__container tool-page__container--wide">
@@ -33,16 +52,23 @@ const posts = await getPosts();
         <div class="blog-list">
           {posts.map((post) => (
             <a class="blog-card" href={`/blog/${postSlug(post)}`}>
-              <div class="blog-card__meta">
-                <span class="blog-card__cat">{post.data.category}</span>
-                <span class="blog-card__dot" aria-hidden="true">·</span>
-                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-                <span class="blog-card__dot" aria-hidden="true">·</span>
-                <span>{post.data.readingMinutes} min read</span>
+              {post.data.cover && (
+                <div class="blog-card__thumb">
+                  <img src={post.data.cover} alt="" width="480" height="300" loading="lazy" decoding="async" />
+                </div>
+              )}
+              <div class="blog-card__text">
+                <div class="blog-card__meta">
+                  <span class="blog-card__cat">{post.data.category}</span>
+                  <span class="blog-card__dot" aria-hidden="true">·</span>
+                  <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                  <span class="blog-card__dot" aria-hidden="true">·</span>
+                  <span>{post.data.readingMinutes} min read</span>
+                </div>
+                <h2 class="blog-card__title">{post.data.title}</h2>
+                <p class="blog-card__desc">{post.data.description}</p>
+                <span class="blog-card__more">Read <Icon name="arrow-right" size={15} /></span>
               </div>
-              <h2 class="blog-card__title">{post.data.title}</h2>
-              <p class="blog-card__desc">{post.data.description}</p>
-              <span class="blog-card__more">Read <Icon name="arrow-right" size={15} /></span>
             </a>
           ))}
         </div>

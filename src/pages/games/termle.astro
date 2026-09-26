@@ -10,24 +10,18 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 
 <BaseLayout
   title="Termle — a daily tech Wordle"
-  description="Termle: guess the 5-letter tech word in six tries. A new word every day — built by Ksatria Bintang Samudra. Share your result."
+  description="Termle: guess the 5-letter tech word in six tries. A new word every day, built by Ksatria Bintang Samudra. Share your result."
+  lockZoom
 >
   <main class="tool-page termle-page">
     <div class="tool-page__container">
-      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
-        <ol class="tool-page__breadcrumb-list">
-          <li><a href="/">Home</a></li>
-          <li aria-hidden="true">›</li>
-          <li><a href="/games">Games</a></li>
-          <li aria-hidden="true">›</li>
-          <li>Termle</li>
-        </ol>
-      </nav>
-
       <header class="termle__header">
         <h1 class="termle__title">Termle <span class="termle__prompt">$</span></h1>
-        <p class="termle__tag">Guess the 5-letter <strong>tech word</strong> in six tries. A new word every day.</p>
-        <p class="termle__no" data-tm-no></p>
+        <p class="termle__tag">Guess the 5-letter <strong>tech word</strong> in six tries.</p>
+        <div class="termle__subrow">
+          <span class="termle__no" data-tm-no></span>
+          <button class="termle__help" type="button" data-tm-help>How to play</button>
+        </div>
       </header>
 
       <div class="termle__board" data-tm-board aria-label="Guess grid">
@@ -55,7 +49,28 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
       </div>
     </div>
 
-    <!-- Result modal -->
+    <!-- How to play -->
+    <div class="termle-modal" data-tm-help-modal hidden>
+      <div class="termle-modal__backdrop" data-tm-help-close></div>
+      <div class="termle-modal__panel termle-help" role="dialog" aria-modal="true" aria-labelledby="tm-help-title">
+        <button class="termle-modal__close" type="button" data-tm-help-close aria-label="Close">✕</button>
+        <h2 class="termle-modal__result" id="tm-help-title">How to play</h2>
+        <ul class="termle-help__list">
+          <li>Guess the <strong>5-letter tech word</strong> in <strong>6 tries</strong>.</li>
+          <li>Type a word, then press <strong>Enter</strong> (or the <strong>Enter</strong> key below).</li>
+          <li>After each guess the tiles change colour:</li>
+        </ul>
+        <div class="termle-help__legend">
+          <div class="termle-help__ex"><span class="termle__tile termle__tile--correct termle__tile--filled">R</span><p><strong>Green</strong> — right letter, right spot.</p></div>
+          <div class="termle-help__ex"><span class="termle__tile termle__tile--present termle__tile--filled">E</span><p><strong>Gold</strong> — in the word, wrong spot.</p></div>
+          <div class="termle-help__ex"><span class="termle__tile termle__tile--absent termle__tile--filled">Z</span><p><strong>Grey</strong> — not in the word at all.</p></div>
+        </div>
+        <p class="termle-help__foot">A new word drops every day. Share your result to compare with friends.</p>
+        <button class="termle-modal__btn termle-modal__btn--primary" type="button" data-tm-help-close>Got it — let's play</button>
+      </div>
+    </div>
+
+    <!-- Result -->
     <div class="termle-modal" data-tm-modal hidden>
       <div class="termle-modal__backdrop" data-tm-close></div>
       <div class="termle-modal__panel" role="dialog" aria-modal="true" aria-labelledby="tm-result">
@@ -91,13 +106,11 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
     const KEY = 'termle:' + DAY;
 
     const $ = (s: string) => document.querySelector(s) as HTMLElement | null;
-    const board = $('[data-tm-board]');
     const kb = $('[data-tm-kb]');
     const msgEl = $('[data-tm-msg]');
     const noEl = $('[data-tm-no]');
     if (noEl) noEl.textContent = 'No. ' + PUZZLE;
 
-    type Cell = { row: number; col: number };
     let guesses: string[] = [];
     let current = '';
     let done = false;
@@ -124,7 +137,6 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
           t.classList.add('termle__tile--' + s[c], 'termle__tile--filled');
           const kEl = key(guess[c]);
           if (kEl) {
-            // Don't downgrade a key already marked correct.
             if (s[c] === 'correct') kEl.classList.add('termle__key--correct');
             else if (s[c] === 'present' && !kEl.classList.contains('termle__key--correct')) kEl.classList.add('termle__key--present');
             else if (s[c] === 'absent' && !kEl.classList.contains('termle__key--correct') && !kEl.classList.contains('termle__key--present')) kEl.classList.add('termle__key--absent');
@@ -151,22 +163,14 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
       setTimeout(() => msgEl.classList.remove('termle__msg--show'), 1400);
     }
 
-    // ---- persistence & stats ----
     function loadState() {
-      try {
-        const raw = localStorage.getItem(KEY);
-        if (raw) { const d = JSON.parse(raw); guesses = d.guesses || []; done = !!d.done; }
-      } catch {}
+      try { const raw = localStorage.getItem(KEY); if (raw) { const d = JSON.parse(raw); guesses = d.guesses || []; done = !!d.done; } } catch {}
     }
-    function saveState() {
-      try { localStorage.setItem(KEY, JSON.stringify({ guesses, done })); } catch {}
-    }
-    function readStats() {
-      try { return JSON.parse(localStorage.getItem('termle:stats') || '{}'); } catch { return {}; }
-    }
+    function saveState() { try { localStorage.setItem(KEY, JSON.stringify({ guesses, done })); } catch {} }
+    function readStats() { try { return JSON.parse(localStorage.getItem('termle:stats') || '{}'); } catch { return {}; } }
     function writeStats(won: boolean) {
       const s = readStats();
-      if (s.lastDay === DAY) return s; // already recorded
+      if (s.lastDay === DAY) return s;
       s.played = (s.played || 0) + 1;
       if (won) { s.wins = (s.wins || 0) + 1; s.streak = s.lastDay === DAY - 1 ? (s.streak || 0) + 1 : 1; }
       else s.streak = 0;
@@ -179,23 +183,16 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
     function emojiGrid(): string {
       return guesses.map((g) => score(g).map((x) => (x === 'correct' ? '🟩' : x === 'present' ? '🟨' : '⬛')).join('')).join('\n');
     }
-
     function nextCountdown(): string {
-      const now = new Date();
-      const t = new Date(now); t.setHours(24, 0, 0, 0);
+      const now = new Date(); const t = new Date(now); t.setHours(24, 0, 0, 0);
       const ms = t.getTime() - now.getTime();
-      const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000);
-      return `Next word in ${h}h ${m}m`;
+      return `Next word in ${Math.floor(ms / 3600000)}h ${Math.floor((ms % 3600000) / 60000)}m`;
     }
 
     function showResult(won: boolean, recordNow: boolean) {
       const stats = recordNow ? writeStats(won) : readStats();
       const modal = $('[data-tm-modal]');
-      const resEl = $('[data-tm-result]');
-      const ansEl = $('[data-tm-answer]');
-      const statsEl = $('[data-tm-stats]');
-      const emojiEl = $('[data-tm-emoji]');
-      const nextEl = $('[data-tm-next]');
+      const resEl = $('[data-tm-result]'), ansEl = $('[data-tm-answer]'), statsEl = $('[data-tm-stats]'), emojiEl = $('[data-tm-emoji]'), nextEl = $('[data-tm-next]');
       if (resEl) resEl.textContent = won ? 'Access granted 🔓' : 'Out of tries';
       if (ansEl) ansEl.innerHTML = won ? `Solved in <strong>${guesses.length}/6</strong>` : `The word was <strong>${ANSWER}</strong>`;
       const winRate = stats.played ? Math.round((100 * (stats.wins || 0)) / stats.played) : 0;
@@ -208,23 +205,7 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
       if (nextEl) nextEl.textContent = nextCountdown();
       if (modal) modal.hidden = false;
     }
-
-    function finish(won: boolean) {
-      done = true;
-      saveState();
-      setTimeout(() => showResult(won, true), guesses.length ? 900 : 0);
-    }
-
-    function submit() {
-      if (current.length !== COLS) { flash('Not enough letters'); shakeRow(); return; }
-      const guess = current;
-      guesses.push(guess);
-      paintRow(guesses.length - 1, guess, true);
-      current = '';
-      saveState();
-      if (guess === ANSWER) { finish(true); return; }
-      if (guesses.length >= ROWS) { finish(false); return; }
-    }
+    function finish(won: boolean) { done = true; saveState(); setTimeout(() => showResult(won, true), guesses.length ? 900 : 0); }
 
     function shakeRow() {
       const row = document.querySelector(`[data-tm-row="${guesses.length}"]`);
@@ -232,19 +213,19 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
       row.classList.add('termle__row--shake');
       setTimeout(() => row.classList.remove('termle__row--shake'), 450);
     }
-
-    function type(ch: string) {
-      if (done || current.length >= COLS) return;
-      current += ch;
-      drawCurrent();
+    function submit() {
+      if (current.length !== COLS) { flash('Not enough letters'); shakeRow(); return; }
+      const guess = current;
+      guesses.push(guess);
+      paintRow(guesses.length - 1, guess, true);
+      current = '';
+      saveState();
+      if (guess === ANSWER) return finish(true);
+      if (guesses.length >= ROWS) return finish(false);
     }
-    function backspace() {
-      if (done || !current.length) return;
-      current = current.slice(0, -1);
-      drawCurrent();
-    }
+    function type(ch: string) { if (done || current.length >= COLS) return; current += ch; drawCurrent(); }
+    function backspace() { if (done || !current.length) return; current = current.slice(0, -1); drawCurrent(); }
 
-    // ---- input ----
     kb?.addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest('[data-tm-key]') as HTMLElement | null;
       if (!b) return;
@@ -260,7 +241,7 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
       else if (/^[a-zA-Z]$/.test(e.key)) type(e.key.toUpperCase());
     });
 
-    // Result modal open/close + share
+    // Result modal + share
     $('[data-tm-modal]')?.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).hasAttribute('data-tm-close')) ($('[data-tm-modal]') as HTMLElement).hidden = true;
     });
@@ -272,13 +253,23 @@ const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
       } catch { try { await navigator.clipboard.writeText(text); flash('Copied to clipboard'); } catch {} }
     });
 
-    // ---- boot: replay any saved guesses ----
+    // How-to-play modal
+    const helpModal = $('[data-tm-help-modal]');
+    const openHelp = () => { if (helpModal) helpModal.hidden = false; };
+    const closeHelp = () => { if (helpModal) helpModal.hidden = true; try { localStorage.setItem('termle:helped', '1'); } catch {} };
+    $('[data-tm-help]')?.addEventListener('click', openHelp);
+    helpModal?.addEventListener('click', (e) => { if ((e.target as HTMLElement).hasAttribute('data-tm-help-close')) closeHelp(); });
+
+    // Boot
     loadState();
     guesses.forEach((g, i) => paintRow(i, g, false));
+    let helped = false;
+    try { helped = localStorage.getItem('termle:helped') === '1'; } catch {}
     if (done) {
       const won = guesses[guesses.length - 1] === ANSWER;
-      // Show result without re-recording stats.
       setTimeout(() => showResult(won, false), 250);
+    } else if (!helped) {
+      setTimeout(openHelp, 350); // first-time players get the rules automatically
     }
   </script>
 </BaseLayout>

@@ -55,6 +55,7 @@ const blog = defineCollection({
     category: z.string(),
     tags: z.array(z.string()).min(1).max(6),
     readingMinutes: z.number().int().positive(),
+    cover: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });
