@@ -114,6 +114,7 @@ export const footerColumns = [
     title: 'Meta',
     links: [
       { label: 'Contact', href: '/#contact' },
+      { label: 'RSS', href: '/rss.xml' },
       { label: 'Privacy', href: '/privacy' },
     ],
   },
