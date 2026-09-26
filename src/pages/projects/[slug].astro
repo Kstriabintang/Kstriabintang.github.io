@@ -8,6 +8,7 @@ import {
   categoryShort,
   categoryModifier,
   heroGradient,
+  projectPoster,
   type Project,
 } from '../../components/projects/projects';
 import { caseSections } from '../../components/projects/markdown';
@@ -161,6 +162,7 @@ const jsonLd = [
             {related.map((r) => (
               <a class={`project-detail__related-card project-detail__related-card--${categoryModifier[r.data.category]}`} href={`/projects/${r.id}/`}>
                 <div class="project-detail__related-hero" style={`background: ${heroGradient(r)}`}>
+                  {projectPoster(r) && <img class="project-detail__related-shot" src={projectPoster(r)} alt="" width="800" height="500" loading="lazy" decoding="async" />}
                   <span class="project-detail__related-category">{categoryShort[r.data.category]}</span>
                 </div>
                 <div class="project-detail__related-body">
