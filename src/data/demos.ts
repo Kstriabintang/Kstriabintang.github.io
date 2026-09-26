@@ -120,7 +120,7 @@ export const demos = {
           category: 'Plantation management',
           stack: 'React · Vite · Laravel 12',
           desc: 'A palm-oil plantation & weighbridge manager for Indonesian growers — weighing, harvests, workers and finance in one place, with a satellite plot map.',
-          href: 'https://ksatriabintangsamudra.my.id/palmtrack/',
+          href: 'https://palmtrack.ksatriabintangsamudra.com/',
           poster: '/images/shots/palmtrack/desktop.jpg',
           emoji: '🌴',
           status: 'In development',
