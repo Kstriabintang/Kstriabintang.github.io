@@ -18,12 +18,26 @@ function cleanLabel(label: string): string {
     .slice(0, 48);
 }
 
+const ARROW = '(?:-->|---|==>|-\\.->)';
+
+/**
+ * Models in JSON mode often flatten the diagram onto one line:
+ * "flowchart TD A[X] --> B[Y] B[Y] --> C[Z]". Re-insert statement breaks.
+ */
+export function splitStatements(text: string): string {
+  return text
+    .replace(/^((?:flowchart|graph)\s+(?:TD|TB|LR|RL|BT))\s+/i, '$1\n')
+    .replace(new RegExp(`([\\])}])\\s+(?=[A-Za-z]\\w*\\s*(?:[[({]|${ARROW}))`, 'g'), '$1\n')
+    .replace(new RegExp(`(${ARROW}\\s*(?:\\|[^|]*\\|)?\\s*[A-Za-z]\\w*)\\s+(?=[A-Za-z]\\w*\\s*(?:[[({]|${ARROW}))`, 'g'), '$1\n');
+}
+
 /** Returns a safe "flowchart TD" definition, or null if nothing usable remains. */
 export function sanitizeMermaid(input: unknown): string | null {
   if (typeof input !== 'string') return null;
   let text = input.replace(/\r/g, '').trim();
   // Strip a surrounding ```mermaid fence if the model added one.
   text = text.replace(/^```(?:mermaid)?\s*/i, '').replace(/```\s*$/i, '').trim();
+  if (!text.includes('\n')) text = splitStatements(text);
   if (!text || text.length > MAX_LENGTH * 2) return null;
 
   const lines = text

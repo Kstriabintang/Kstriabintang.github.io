@@ -77,6 +77,11 @@ check('sanitizeMermaid keeps plain flowcharts', () => {
   assert.ok(out!.includes('|found|'));
 });
 
+check('sanitizeMermaid splits single-line model output', () => {
+  const out = sanitizeMermaid('flowchart TD A[Website 1] --> B[Something Happens] B[Something Happens] --> C[Webhook] C --> D[Website 2]');
+  assert.equal(out, 'flowchart TD\n  A[Website 1] --> B[Something Happens]\n  B[Something Happens] --> C[Webhook]\n  C --> D[Website 2]');
+});
+
 check('sanitizeMermaid drops dangerous lines', () => {
   const out = sanitizeMermaid('graph LR\nA[Hi] --> B[There]\nclick A "javascript:alert(1)"\nstyle A fill:#f00\nB --> C["<img src=x onerror=1>"]');
   assert.ok(out);

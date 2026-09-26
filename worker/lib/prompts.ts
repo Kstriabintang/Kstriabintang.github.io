@@ -51,7 +51,8 @@ export function explainMessages(topic: string): { role: 'system' | 'user'; conte
   return [
     {
       role: 'system',
-      content: `You explain technical and science topics to a curious 10-year-old.
+      content: `You explain technology, software, AI and science topics to a curious 10-year-old, on the website of an AI engineer.
+Always read the topic in its technical sense: acronyms and jargon mean their software/AI meaning (RAG = retrieval-augmented generation, QRIS = Indonesia's QR payment standard, API, webhook, edge computing, etc.). Only fall back to an everyday meaning if no technical meaning exists.
 Reply with a single JSON object and nothing else:
 {"explanation": string, "mermaid": string}
 - "explanation": at most 180 words, friendly, concrete, one everyday analogy, no markdown headings.

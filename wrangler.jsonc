@@ -26,7 +26,7 @@
   "send_email": [{ "name": "EMAIL", "destination_address": "ksatriabintangsamudra2022@gmail.com" }],
 
   // Rate limits, chat leads, explain cache.
-  "kv_namespaces": [{ "binding": "KV", "id": "REPLACE_WITH_KV_ID" }],
+  "kv_namespaces": [{ "binding": "KV", "id": "cdfa9b109a4f45b399ae25cde7424205" }],
 
   "vars": {
     "SITE_URL": "https://ksatriabintangsamudra.com",

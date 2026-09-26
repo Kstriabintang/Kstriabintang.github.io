@@ -6,18 +6,17 @@
 </p>
 
 <p align="center">
-  <img alt="Status" src="https://img.shields.io/badge/status-in%20development%20%C2%B7%20phase%200-f59e0b">
+  <img alt="Status" src="https://img.shields.io/badge/live%20%C2%B7%20phase%201%20%2B%202-10b981">
   <img alt="Astro" src="https://img.shields.io/badge/Astro-5%2B-ff5d01">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-3178c6">
-  <img alt="Hosting" src="https://img.shields.io/badge/Cloudflare-Pages-f38020">
+  <img alt="Hosting" src="https://img.shields.io/badge/Cloudflare-Workers-f38020">
   <img alt="License" src="https://img.shields.io/badge/code-MIT-blue">
 </p>
 
 > [!IMPORTANT]
-> **This branch (`v2-astro`) is a rebuild in progress. Nothing described below is finished yet.**
-> The current live site (React + Vite) is still served from `main` at
-> [ksatriabintangsamudra.my.id](https://ksatriabintangsamudra.my.id) until the Phase 1 cutover.
-> This README is the blueprint the rebuild is developed against — check the [Roadmap](#-roadmap) for real progress.
+> **v2 is live at [ksatriabintangsamudra.com](https://ksatriabintangsamudra.com)** (deployed from the `v2-astro` branch).
+> The previous React site is still served from `main` at [ksatriabintangsamudra.my.id](https://ksatriabintangsamudra.my.id) until the old domain is redirected.
+> Check the [Roadmap](#-roadmap) for real progress.
 
 ---
 
@@ -123,17 +122,17 @@ projects and photos — is Ksatria's own.
 | Language | **TypeScript** (strict) | Typed content schemas and components |
 | Styling | **SCSS** + CSS custom properties | Mirrors the reference's token-driven styles; theme switch via `[data-theme]` |
 | Interactive islands | **React** (only where needed) | ⌘K palette, terminal, chat widget |
-| Search | **Pagefind** | Static full-text index for the ⌘K palette, no server |
+| Search | Build-time `search.json` | Fuzzy ⌘K palette over pages, projects, tools and actions |
 | Globe | **cobe** | ~5 KB WebGL dotted globe with markers |
 | Canvas effects | Hand-written starfield / cloudfield | Paused off-screen and under `prefers-reduced-motion` |
 | Fonts | **Fraunces** (roman + italic, variable), **Montserrat** (variable), system `ui-monospace` | Self-hosted `woff2`, preloaded |
 | Content | **Astro Content Collections** (Markdown/MDX + Zod) | Projects, tools, pages as typed files |
-| Hosting | **Cloudflare Pages** | DNS already on Cloudflare; Pages Functions for the form and AI endpoints |
-| Server functions | **Cloudflare Pages Functions** | `/api/contact` (Phase 1), `/api/chat`, `/api/explain` (Phase 2) |
-| Email | **Resend** | Contact-form delivery |
-| Bot protection | **Cloudflare Turnstile** | Contact form and chat gate |
-| Storage (Phase 2) | **Cloudflare KV** (rate limits) · **D1** (chat leads) | Native to Pages Functions |
-| LLM (Phase 2) | **Vensix** gateway (OpenAI-compatible) | Model routing and cost metering already built |
+| Hosting | **Cloudflare Workers + static assets** | One Worker serves `dist/` and the `/api/*` routes; DNS already on Cloudflare |
+| Server functions | **Worker routes** (`worker/`) | `/api/contact`, `/api/lead`, `/api/chat`, `/api/explain` |
+| Email | **Cloudflare Email Routing** (`send_email` binding) | Contact-form delivery; `hello@` forwards to the owner |
+| Abuse protection | Honeypot + KV rate limits | Contact form, chat, explainer |
+| Storage | **Cloudflare KV** | Rate limits, chat leads (90 days), explainer cache (7 days) |
+| LLM | **Cloudflare Workers AI** (Llama 3.3 70B) | Chat assistant and "Explain it"; Vensix can be swapped in later |
 | Analytics | **Cloudflare Web Analytics** | Cookie-less |
 | Testing | **Playwright** (e2e + visual), **Vitest** (units), **Lighthouse CI** | See [Quality Bar](#-quality-bar) |
 
@@ -500,12 +499,12 @@ npm run test:e2e     # Playwright e2e + visual
 
 ### Cutover checklist (end of Phase 1)
 
-- [ ] Parity + quality checks pass on the preview URL
-- [ ] Merge `v2-astro` → `main`; Pages production deploy succeeds
-- [ ] Attach `ksatriabintangsamudra.com` and `www` to the Pages project
+- [x] Parity checks against the reference (desktop, mobile, dark, light)
+- [ ] Merge `v2-astro` → `main`
+- [x] Attach `ksatriabintangsamudra.com` and `www` to the Worker
 - [ ] Redirect rule on `.my.id` (path + query preserved), keep the old domain renewed ≥ 12 months
 - [ ] Remove GitHub Pages workflow and `CNAME`; disable Pages in repo settings
-- [ ] Email routing + SPF/DKIM/DMARC for the new domain; verify Resend sender
+- [x] Email routing + SPF/DKIM/DMARC for the new domain
 - [ ] Google Search Console: add property, submit sitemap, run Change of Address
 - [ ] Update links: GitHub profile, repo homepage, LinkedIn, CV PDF, social bios
 
@@ -516,27 +515,27 @@ npm run test:e2e     # Playwright e2e + visual
 ### Phase 0 — Foundation
 - [x] Reference design extracted (tokens, typography, components, motion)
 - [x] Domain `ksatriabintangsamudra.com` registered
-- [ ] Scaffold Astro + TypeScript + SCSS + React integration on `v2-astro`
-- [ ] Self-host fonts; implement `tokens.scss` / `global.scss` and the theme bootstrap
-- [ ] Cloudflare Pages project connected to the repo with preview deploys
+- [x] Scaffold Astro + TypeScript + SCSS + React integration on `v2-astro`
+- [x] Self-host fonts; implement `tokens.scss` / `global.scss` and the theme bootstrap
+- [x] Cloudflare Worker `ksatriabintangsamudra` deployed with custom domains (apex + www → apex)
 - [ ] CI: typecheck, build, Playwright smoke test
 - [ ] Capture reference screenshots into `docs/reference/`
 
 ### Phase 1 — Core site (launch)
-- [ ] **M1 Shell** — BaseLayout, SEO head, navbar (dropdowns, shrink/hide, mobile drawer), footer, scroll progress, theme toggle
-- [ ] **M2 Hero** — starfield/cloudfield, north star, headline animation, role typer, proof strip, photo ring, availability pill
-- [ ] **M3 Content** — collections + schemas, project MDX files, data files
-- [ ] **M4 Home sections** — Playground, Selected work (filters), Who I am + Currently, Toolkit, Wandered (globe), Let's connect
-- [ ] **M5 Pages** — `/projects`, case studies, `/services`, `/about`, `/uses`, `/resume`, `/privacy`, `404`
-- [ ] **M6 Interactions** — ⌘K palette (Pagefind), terminal + Konami
-- [ ] **M7 Contact** — `/api/contact` with Turnstile + Resend
+- [x] **M1 Shell** — BaseLayout, SEO head, navbar (dropdowns, shrink/hide, mobile drawer), footer, scroll progress, theme toggle
+- [x] **M2 Hero** — starfield/cloudfield, north star, headline animation, role typer, proof strip, photo ring, availability pill
+- [x] **M3 Content** — collections + schemas, project MDX files, data files
+- [x] **M4 Home sections** — Playground, Selected work (filters), Who I am + Currently, Toolkit, Wandered (globe), Let's connect
+- [x] **M5 Pages** — `/projects`, case studies, `/services`, `/about`, `/uses`, `/resume`, `/privacy`, `404`
+- [x] **M6 Interactions** — ⌘K palette, terminal + Konami
+- [x] **M7 Contact** — `/api/contact` with honeypot, rate limit and Email Routing
 - [ ] **M8 Quality** — visual parity, Lighthouse ≥ 95, accessibility pass, reduced motion
 - [ ] **M9 Launch** — cutover checklist above
 
 ### Phase 2 — AI features
-- [ ] Chat widget UI + lead gate
-- [ ] `/api/chat` via Vensix with streaming, grounding on site content, KV rate limit, D1 leads
-- [ ] "Explain it" hero input + `/api/explain` with Mermaid rendering
+- [x] Chat widget UI + lead gate
+- [x] `/api/chat` via Workers AI with streaming, grounded on verified facts, KV rate limit and leads
+- [x] "Explain it" hero input + `/api/explain` with Mermaid rendering
 - [ ] Abuse tests and cost ceiling
 
 ### Phase 3 — Writing

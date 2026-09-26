@@ -101,15 +101,14 @@ const explain: Handler = async (request, env) => {
   const topic = normalizeTopic((body as { topic?: unknown })?.topic);
   if (topic.length < 2) return json({ ok: false, error: 'Please type a topic.' }, 422);
 
-  const cacheKey = `explain:v1:${topic}`;
+  const cacheKey = `explain:v2:${topic}`;
   const cached = await env.KV.get(cacheKey);
   if (cached) return json({ ok: true, topic, cached: true, ...(JSON.parse(cached) as object) });
 
   const rl = await rateLimit(env.KV, 'explain', clientIp(request), 20);
   if (!rl.allowed) return tooMany();
 
-  let result;
-  try {
+  const ask = async () => {
     const out = (await env.AI.run(env.EXPLAIN_MODEL, {
       messages: explainMessages(topic),
       max_tokens: 700,
@@ -123,14 +122,23 @@ const explain: Handler = async (request, env) => {
         },
       },
     })) as { response?: unknown };
-    result = parseExplanation(out?.response ?? out);
+    return parseExplanation(out?.response ?? out);
+  };
+
+  let result;
+  try {
+    result = await ask();
+    // The diagram is half the feature — give the model one more try if it came back unusable.
+    if (result && !result.mermaid) result = (await ask()) ?? result;
   } catch (err) {
     console.error('explain failed', err instanceof Error ? err.message : err);
     return json({ ok: false, error: 'The explainer is busy right now — please try again in a minute.' }, 503);
   }
   if (!result) return json({ ok: false, error: 'Could not explain that one — try another topic.' }, 502);
 
-  await env.KV.put(cacheKey, JSON.stringify(result), { expirationTtl: 60 * 60 * 24 * 7 });
+  // Cache complete answers for a week; answers without a diagram only briefly.
+  const ttl = result.mermaid ? 60 * 60 * 24 * 7 : 60 * 10;
+  await env.KV.put(cacheKey, JSON.stringify(result), { expirationTtl: ttl });
   return json({ ok: true, topic, cached: false, ...result });
 };
 
