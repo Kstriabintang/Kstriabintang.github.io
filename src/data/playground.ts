@@ -61,6 +61,24 @@ export const playground = {
       ],
     },
     {
+      name: 'Games',
+      emoji: '🎮',
+      allLabel: 'All games',
+      allHref: '/games',
+      items: [
+        {
+          title: 'Termle',
+          meta: 'Daily · Word puzzle',
+          desc: 'A tech twist on the daily word game — guess the 5-letter developer/security word in six tries. A new word every day, and a share button to compare with friends.',
+          href: '/games/termle',
+          poster: '/images/games/termle.jpg',
+          emoji: '🟩',
+          badge: 'New',
+          ctaLabel: 'Play',
+        },
+      ],
+    },
+    {
       name: 'Ventures',
       emoji: '🚀',
       allLabel: 'All projects',

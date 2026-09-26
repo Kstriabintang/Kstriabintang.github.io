@@ -19,7 +19,7 @@ import { playground } from '../../data/playground';
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
           </a>
         </div>
-        <div class={`pg-grid ${band.items.length >= 3 ? 'pg-grid--tri' : 'pg-grid--duo'}`}>
+        <div class={`pg-grid ${band.items.length >= 3 ? 'pg-grid--tri' : band.items.length === 1 ? 'pg-grid--solo' : 'pg-grid--duo'}`}>
           {band.items.map((tool) => (
             <button
               type="button"

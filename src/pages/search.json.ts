@@ -20,6 +20,8 @@ const pages: SearchItem[] = [
   { title: 'Uses', href: '/uses', kind: 'Page', keywords: 'gear setup stack tools hardware' },
   { title: 'Resume', href: '/resume', kind: 'Page', keywords: 'cv experience credentials pdf' },
   { title: 'Certifications', href: '/certifications', kind: 'Page', keywords: 'certificates credentials courses google ai essentials isc2 ethical hacking linux python excel toefl' },
+  { title: 'Games', href: '/games', kind: 'Page', keywords: 'play browser fun termle wordle puzzle' },
+  { title: 'Termle — daily tech word game', href: '/games/termle', kind: 'Page', keywords: 'wordle game puzzle daily word tech play' },
   { title: 'Privacy', href: '/privacy', kind: 'Page', keywords: 'data policy contact form chat' },
 ];
 

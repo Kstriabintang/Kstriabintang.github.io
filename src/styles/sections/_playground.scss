@@ -16,6 +16,8 @@
 @media(max-width:37.5em) { .pg-grid--tri {grid-template-columns:1fr} }
 .pg-grid--duo {grid-template-columns:repeat(2,1fr); max-width:880px; margin-left:auto; margin-right:auto}
 @media(max-width:37.5em) { .pg-grid--duo {grid-template-columns:1fr; max-width:none} }
+.pg-grid--solo {grid-template-columns:minmax(0,440px); justify-content:center}
+@media(max-width:37.5em) { .pg-grid--solo {grid-template-columns:1fr} }
 .pg-band {display:flex; align-items:baseline; justify-content:space-between; gap:1.6rem; margin:4rem 0 1.8rem}
 .pg-band:first-of-type {margin-top:0}
 .pg-band__name {font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.5rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-primary, #fff); display:inline-flex; align-items:center; gap:.8rem; margin:0}

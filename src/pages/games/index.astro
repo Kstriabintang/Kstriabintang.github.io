@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { games } from '../../data/games';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_games.scss';
+---
+
+<BaseLayout
+  title="Games"
+  description="Small browser games built by Ksatria Bintang Samudra — play right now, no sign-up. Starting with Termle, a daily tech word puzzle."
+>
+  <main class="tool-page">
+    <div class="tool-page__container tool-page__container--wide">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li>Games</li>
+        </ol>
+      </nav>
+
+      <header class="tool-page__header">
+        <h1>Games</h1>
+        <p>Small things I built for fun — they run entirely in your browser, no sign-up. More on the way.</p>
+      </header>
+
+      <div class="games-grid">
+        {games.map((g) => (
+          <a class="game-card" href={g.href}>
+            <div class="game-card__art">
+              <span class="game-card__emoji" aria-hidden="true">{g.emoji}</span>
+              {g.poster && <img class="game-card__img" src={g.poster} alt="" width="800" height="500" loading="lazy" decoding="async" />}
+              {g.badge && <span class="game-card__badge">{g.badge}</span>}
+            </div>
+            <div class="game-card__body">
+              <h2 class="game-card__title">{g.title}</h2>
+              <p class="game-card__meta">{g.meta}</p>
+              <p class="game-card__desc">{g.desc}</p>
+              <span class="game-card__cta">{g.ctaLabel ?? 'Play'} <Icon name="arrow-right" size={16} /></span>
+            </div>
+          </a>
+        ))}
+        <div class="game-card game-card--soon" aria-hidden="true">
+          <div class="game-card__soon">
+            <span class="game-card__soon-emoji">🎮</span>
+            <p>More games coming</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

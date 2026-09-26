@@ -1,0 +1,284 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_termle.scss';
+
+const rows = [0, 1, 2, 3, 4, 5];
+const cols = [0, 1, 2, 3, 4];
+const keyRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
+---
+
+<BaseLayout
+  title="Termle — a daily tech Wordle"
+  description="Termle: guess the 5-letter tech word in six tries. A new word every day — built by Ksatria Bintang Samudra. Share your result."
+>
+  <main class="tool-page termle-page">
+    <div class="tool-page__container">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a href="/games">Games</a></li>
+          <li aria-hidden="true">›</li>
+          <li>Termle</li>
+        </ol>
+      </nav>
+
+      <header class="termle__header">
+        <h1 class="termle__title">Termle <span class="termle__prompt">$</span></h1>
+        <p class="termle__tag">Guess the 5-letter <strong>tech word</strong> in six tries. A new word every day.</p>
+        <p class="termle__no" data-tm-no></p>
+      </header>
+
+      <div class="termle__board" data-tm-board aria-label="Guess grid">
+        {rows.map((r) => (
+          <div class="termle__row" data-tm-row={r}>
+            {cols.map((c) => (
+              <div class="termle__tile" data-tm-tile={`${r}-${c}`} aria-hidden="true"></div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <p class="termle__msg" data-tm-msg role="status" aria-live="polite"></p>
+
+      <div class="termle__keyboard" data-tm-kb>
+        {keyRows.map((row, i) => (
+          <div class="termle__kbrow">
+            {i === 2 && <button class="termle__key termle__key--wide" data-tm-key="Enter">Enter</button>}
+            {row.split('').map((k) => (
+              <button class="termle__key" data-tm-key={k}>{k}</button>
+            ))}
+            {i === 2 && <button class="termle__key termle__key--wide" data-tm-key="Backspace" aria-label="Backspace">⌫</button>}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Result modal -->
+    <div class="termle-modal" data-tm-modal hidden>
+      <div class="termle-modal__backdrop" data-tm-close></div>
+      <div class="termle-modal__panel" role="dialog" aria-modal="true" aria-labelledby="tm-result">
+        <button class="termle-modal__close" type="button" data-tm-close aria-label="Close">✕</button>
+        <h2 class="termle-modal__result" id="tm-result" data-tm-result></h2>
+        <p class="termle-modal__answer" data-tm-answer></p>
+        <div class="termle-modal__stats" data-tm-stats></div>
+        <p class="termle-modal__grid" data-tm-emoji></p>
+        <div class="termle-modal__actions">
+          <button class="termle-modal__btn termle-modal__btn--primary" type="button" data-tm-share>Share result</button>
+          <a class="termle-modal__btn" href="/games">More games</a>
+        </div>
+        <p class="termle-modal__next" data-tm-next></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Termle — a daily 5-letter tech-word game. All client-side, state in localStorage.
+    const WORDS = [
+      'REACT','ASYNC','AWAIT','CACHE','LINUX','TOKEN','PROXY','QUERY','STACK','ARRAY',
+      'BYTES','DEBUG','REGEX','MERGE','FETCH','HOOKS','PARSE','MUTEX','SHELL','CLOUD',
+      'LOGIN','ADMIN','VAULT','REDIS','MYSQL','ASTRO','AGENT','MODEL','PIXEL','FRAME',
+      'FLASK','MACRO','FLOAT','INDEX','PATCH','BUILD','SLICE','TUPLE','CLASS','ROUTE',
+      'PROPS','STATE','YIELD','CONST','CATCH','THROW','SCOPE','NGINX','QUEUE','NODES',
+      'PORTS','LAYER','EPOCH','BATCH','NONCE','CRYPT',
+    ];
+    const ROWS = 6, COLS = 5;
+    const EPOCH = Date.UTC(2026, 0, 1);
+    const DAY = Math.floor((Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) - EPOCH) / 86400000);
+    const ANSWER = WORDS[((DAY % WORDS.length) + WORDS.length) % WORDS.length];
+    const PUZZLE = DAY + 1;
+    const KEY = 'termle:' + DAY;
+
+    const $ = (s: string) => document.querySelector(s) as HTMLElement | null;
+    const board = $('[data-tm-board]');
+    const kb = $('[data-tm-kb]');
+    const msgEl = $('[data-tm-msg]');
+    const noEl = $('[data-tm-no]');
+    if (noEl) noEl.textContent = 'No. ' + PUZZLE;
+
+    type Cell = { row: number; col: number };
+    let guesses: string[] = [];
+    let current = '';
+    let done = false;
+
+    const tile = (r: number, c: number) => document.querySelector(`[data-tm-tile="${r}-${c}"]`) as HTMLElement | null;
+    const key = (k: string) => document.querySelector(`[data-tm-key="${k}"]`) as HTMLElement | null;
+
+    function score(guess: string): ('correct' | 'present' | 'absent')[] {
+      const res: ('correct' | 'present' | 'absent')[] = Array(COLS).fill('absent');
+      const rem: Record<string, number> = {};
+      for (const ch of ANSWER) rem[ch] = (rem[ch] || 0) + 1;
+      for (let i = 0; i < COLS; i++) if (guess[i] === ANSWER[i]) { res[i] = 'correct'; rem[guess[i]]--; }
+      for (let i = 0; i < COLS; i++) if (res[i] !== 'correct' && rem[guess[i]] > 0) { res[i] = 'present'; rem[guess[i]]--; }
+      return res;
+    }
+
+    function paintRow(r: number, guess: string, animate: boolean) {
+      const s = score(guess);
+      for (let c = 0; c < COLS; c++) {
+        const t = tile(r, c);
+        if (!t) continue;
+        t.textContent = guess[c];
+        const apply = () => {
+          t.classList.add('termle__tile--' + s[c], 'termle__tile--filled');
+          const kEl = key(guess[c]);
+          if (kEl) {
+            // Don't downgrade a key already marked correct.
+            if (s[c] === 'correct') kEl.classList.add('termle__key--correct');
+            else if (s[c] === 'present' && !kEl.classList.contains('termle__key--correct')) kEl.classList.add('termle__key--present');
+            else if (s[c] === 'absent' && !kEl.classList.contains('termle__key--correct') && !kEl.classList.contains('termle__key--present')) kEl.classList.add('termle__key--absent');
+          }
+        };
+        if (animate) { setTimeout(() => { t.classList.add('termle__tile--flip'); setTimeout(apply, 130); }, c * 130); }
+        else apply();
+      }
+    }
+
+    function drawCurrent() {
+      for (let c = 0; c < COLS; c++) {
+        const t = tile(guesses.length, c);
+        if (!t) continue;
+        t.textContent = current[c] || '';
+        t.classList.toggle('termle__tile--active', !!current[c]);
+      }
+    }
+
+    function flash(text: string) {
+      if (!msgEl) return;
+      msgEl.textContent = text;
+      msgEl.classList.add('termle__msg--show');
+      setTimeout(() => msgEl.classList.remove('termle__msg--show'), 1400);
+    }
+
+    // ---- persistence & stats ----
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(KEY);
+        if (raw) { const d = JSON.parse(raw); guesses = d.guesses || []; done = !!d.done; }
+      } catch {}
+    }
+    function saveState() {
+      try { localStorage.setItem(KEY, JSON.stringify({ guesses, done })); } catch {}
+    }
+    function readStats() {
+      try { return JSON.parse(localStorage.getItem('termle:stats') || '{}'); } catch { return {}; }
+    }
+    function writeStats(won: boolean) {
+      const s = readStats();
+      if (s.lastDay === DAY) return s; // already recorded
+      s.played = (s.played || 0) + 1;
+      if (won) { s.wins = (s.wins || 0) + 1; s.streak = s.lastDay === DAY - 1 ? (s.streak || 0) + 1 : 1; }
+      else s.streak = 0;
+      s.maxStreak = Math.max(s.maxStreak || 0, s.streak || 0);
+      s.lastDay = DAY;
+      try { localStorage.setItem('termle:stats', JSON.stringify(s)); } catch {}
+      return s;
+    }
+
+    function emojiGrid(): string {
+      return guesses.map((g) => score(g).map((x) => (x === 'correct' ? '🟩' : x === 'present' ? '🟨' : '⬛')).join('')).join('\n');
+    }
+
+    function nextCountdown(): string {
+      const now = new Date();
+      const t = new Date(now); t.setHours(24, 0, 0, 0);
+      const ms = t.getTime() - now.getTime();
+      const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000);
+      return `Next word in ${h}h ${m}m`;
+    }
+
+    function showResult(won: boolean, recordNow: boolean) {
+      const stats = recordNow ? writeStats(won) : readStats();
+      const modal = $('[data-tm-modal]');
+      const resEl = $('[data-tm-result]');
+      const ansEl = $('[data-tm-answer]');
+      const statsEl = $('[data-tm-stats]');
+      const emojiEl = $('[data-tm-emoji]');
+      const nextEl = $('[data-tm-next]');
+      if (resEl) resEl.textContent = won ? 'Access granted 🔓' : 'Out of tries';
+      if (ansEl) ansEl.innerHTML = won ? `Solved in <strong>${guesses.length}/6</strong>` : `The word was <strong>${ANSWER}</strong>`;
+      const winRate = stats.played ? Math.round((100 * (stats.wins || 0)) / stats.played) : 0;
+      if (statsEl) statsEl.innerHTML = `
+        <div><b>${stats.played || 0}</b><span>Played</span></div>
+        <div><b>${winRate}%</b><span>Win rate</span></div>
+        <div><b>${stats.streak || 0}</b><span>Streak</span></div>
+        <div><b>${stats.maxStreak || 0}</b><span>Best</span></div>`;
+      if (emojiEl) emojiEl.textContent = emojiGrid();
+      if (nextEl) nextEl.textContent = nextCountdown();
+      if (modal) modal.hidden = false;
+    }
+
+    function finish(won: boolean) {
+      done = true;
+      saveState();
+      setTimeout(() => showResult(won, true), guesses.length ? 900 : 0);
+    }
+
+    function submit() {
+      if (current.length !== COLS) { flash('Not enough letters'); shakeRow(); return; }
+      const guess = current;
+      guesses.push(guess);
+      paintRow(guesses.length - 1, guess, true);
+      current = '';
+      saveState();
+      if (guess === ANSWER) { finish(true); return; }
+      if (guesses.length >= ROWS) { finish(false); return; }
+    }
+
+    function shakeRow() {
+      const row = document.querySelector(`[data-tm-row="${guesses.length}"]`);
+      if (!row) return;
+      row.classList.add('termle__row--shake');
+      setTimeout(() => row.classList.remove('termle__row--shake'), 450);
+    }
+
+    function type(ch: string) {
+      if (done || current.length >= COLS) return;
+      current += ch;
+      drawCurrent();
+    }
+    function backspace() {
+      if (done || !current.length) return;
+      current = current.slice(0, -1);
+      drawCurrent();
+    }
+
+    // ---- input ----
+    kb?.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest('[data-tm-key]') as HTMLElement | null;
+      if (!b) return;
+      const k = b.dataset.tmKey!;
+      if (k === 'Enter') submit();
+      else if (k === 'Backspace') backspace();
+      else type(k);
+    });
+    window.addEventListener('keydown', (e) => {
+      if ((e.target as HTMLElement)?.tagName === 'INPUT') return;
+      if (e.key === 'Enter') submit();
+      else if (e.key === 'Backspace') backspace();
+      else if (/^[a-zA-Z]$/.test(e.key)) type(e.key.toUpperCase());
+    });
+
+    // Result modal open/close + share
+    $('[data-tm-modal]')?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).hasAttribute('data-tm-close')) ($('[data-tm-modal]') as HTMLElement).hidden = true;
+    });
+    $('[data-tm-share]')?.addEventListener('click', async () => {
+      const text = `Termle No. ${PUZZLE} — ${guesses[guesses.length - 1] === ANSWER ? guesses.length : 'X'}/6\n\n${emojiGrid()}\n\nhttps://ksatriabintangsamudra.com/games/termle`;
+      try {
+        if (navigator.share) await navigator.share({ text });
+        else { await navigator.clipboard.writeText(text); flash('Copied to clipboard'); }
+      } catch { try { await navigator.clipboard.writeText(text); flash('Copied to clipboard'); } catch {} }
+    });
+
+    // ---- boot: replay any saved guesses ----
+    loadState();
+    guesses.forEach((g, i) => paintRow(i, g, false));
+    if (done) {
+      const won = guesses[guesses.length - 1] === ANSWER;
+      // Show result without re-recording stats.
+      setTimeout(() => showResult(won, false), 250);
+    }
+  </script>
+</BaseLayout>
