@@ -352,6 +352,15 @@
   z-index: 1;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* dark scrim over the poster: badges pop, light screenshots (AR, Deus) blend into the dark card */
+.projects-index .projects-index__card-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(9, 11, 20, 0.55) 0%, rgba(9, 11, 20, 0.12) 32%, rgba(9, 11, 20, 0.16) 66%, rgba(9, 11, 20, 0.62) 100%);
+}
 .projects-index .projects-index__card:hover .projects-index__card-shot { transform: scale(1.05); }
 @media (prefers-reduced-motion: reduce) {
   .projects-index .projects-index__card-shot { transition: none; }
