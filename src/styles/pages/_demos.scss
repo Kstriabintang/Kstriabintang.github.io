@@ -179,6 +179,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   flex: 1;
+  min-width: 0;
 }
 .demo-cred__copy {
   flex-shrink: 0;
