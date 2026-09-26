@@ -347,3 +347,36 @@
 .hero-subscribe__error[hidden] {
   display: none;
 }
+
+// ── Mobile & tablet fix ──
+// The hero was locked to height:100vh with overflow:hidden, which clipped the
+// stacked content (portrait, headline, input, proof) on shorter screens — the
+// photo got cut under the navbar. Let it grow with its content instead, clear
+// the fixed navbar, and drop the decorative star that overlapped the eyebrow.
+@media (max-width: 56.25em) {
+  #hero {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-top: 9rem;
+    padding-bottom: 5rem;
+  }
+  .hero-layout {
+    gap: 2.6rem;
+    width: 100%;
+  }
+  .hero-north-star {
+    display: none;
+  }
+  .hero-portrait__ring {
+    inset: -10px;
+  }
+}
+@media (max-width: 37.5em) {
+  #hero {
+    padding: 8rem 1.6rem 4rem;
+  }
+  .hero-layout {
+    gap: 2rem;
+  }
+}
