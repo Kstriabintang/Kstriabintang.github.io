@@ -1,0 +1,60 @@
+---
+title: Vibe coding is fun — until it hits production
+description: Prompting until it works is a great way to learn and prototype, and a dangerous way to ship. Where "vibe coding" earns its place, where it quietly bites, and how to graduate a vibe-coded prototype into something real.
+date: 2026-09-24
+category: AI · Opinion
+tags: [AI, Vibe coding, Engineering, Opinion]
+readingMinutes: 6
+cover: /images/blog/vibe-coding-vs-production.jpg
+takeaways:
+  - "Vibe coding — prompt until it works, don't read the code — is excellent for prototypes and learning."
+  - "In production it quietly bites: security holes, unhandled edge cases, and code nobody understands well enough to fix."
+  - "The fix isn't to stop using AI — it's to switch modes: spec it, read the diff, test it, and verify before it ships."
+faq:
+  - q: "What is vibe coding?"
+    a: "Vibe coding is building by prompting an AI and accepting whatever works, without really reading or understanding the code it produces. It's fast and fun for prototypes — you steer by feel rather than by spec."
+  - q: "Is vibe coding bad?"
+    a: "Not for the right job. For a throwaway prototype, a demo, or learning, it's great. It becomes dangerous when vibe-coded code goes to production unread — because nobody understands it well enough to secure it, debug it or extend it."
+  - q: "How do you take a vibe-coded prototype to production?"
+    a: "Switch modes. Write down what it must actually do, read the code the AI wrote, add tests for the edge cases, check the security-sensitive paths, and verify the built artifact. Keep the speed of AI; add the rigor of engineering."
+---
+
+"Vibe coding" is the perfect name. You describe what you want, the AI produces it, you run it, and if it works, you move on — steering by feel, never really reading the code. It is genuinely fun, genuinely fast, and genuinely fine… right up until it isn't.
+
+## Where vibe coding is great
+
+I'm not here to gatekeep. Vibe coding is a legitimately good tool for:
+
+- **Prototypes and spikes** — proving an idea in an hour instead of a day.
+- **Learning** — poking at a new framework by generating and running things.
+- **Throwaway scripts** — one-off tasks where "works once" is the whole requirement.
+
+For those, not reading every line is a *feature*. Speed is the point, and the cost of being wrong is basically zero.
+
+## Where it quietly bites
+
+The trouble starts when vibe-coded code sneaks into production — because the same "don't read it, just ship it" that made it fast becomes the liability:
+
+- **Security holes you never saw.** The model happily writes code that concatenates user input into a query or trusts the client. If you didn't read it, you didn't catch it. (This is how classics like [SQL injection](/glossary/#sql-injection) get shipped.)
+- **Edge cases nobody handled.** "It worked when I tried it" is not "it handles empty input, timeouts, and two users at once."
+- **Code nobody understands.** The most expensive outcome: production code that no human on the team actually comprehends. When it breaks at 2am, "the AI wrote it" is not a debugging strategy.
+
+None of these show up in the demo. All of them show up in production.
+
+## The mode switch
+
+The answer isn't to stop using AI — I ship with it constantly. It's to **change modes when the stakes change**. Vibe for the prototype; engineer for the product.
+
+Graduating a vibe-coded prototype looks like this:
+
+1. **Write down what it must actually do** — the spec you skipped.
+2. **Read the code the AI wrote.** All of it. Understand it well enough to defend it.
+3. **Test the edge cases**, not just the happy path.
+4. **Check the security-sensitive paths** — auth, input handling, anything touching money or data.
+5. **Verify the built artifact**, because [what ships isn't always what the model said it produced](/blog/auditing-ai-written-code).
+
+You keep the speed of AI and add the rigor of engineering. That's the whole trick.
+
+## The honest take
+
+Vibe coding isn't the enemy — unread code in production is. Let the AI move fast where being wrong is cheap, and slow down to actually understand things where being wrong is expensive. The developers who win with AI aren't the ones who vibe the hardest; they're the ones who know exactly when to stop vibing and start engineering.
