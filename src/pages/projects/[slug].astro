@@ -2,6 +2,7 @@
 import '../../styles/pages/_projects.scss';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/ui/Icon.astro';
+import DeviceShowcase from '../../components/projects/DeviceShowcase.astro';
 import {
   getProjects,
   categoryShort,
@@ -38,6 +39,15 @@ const actions = [
   d.links.source && { href: d.links.source, label: 'View Source', primary: !d.links.live && !d.links.demo },
 ].filter(Boolean) as { href: string; label: string; primary: boolean }[];
 
+const SHOTS: Record<string, string> = {
+  coaltrack: 'demo.coaltrack.id',
+  vensix: 'vensix.biz.id',
+  'makmur-motor': 'makmurmotor.biz.id',
+  lavelle: 'lavelle.my.id',
+  'wedding-saving': 'demo.weddingsaving.my.id',
+  'ar-science-lab': 'utamiii.my.id',
+};
+const showcaseHost = SHOTS[project.id];
 const url = new URL(`/projects/${project.id}/`, site.url).toString();
 const jsonLd = [
   {
@@ -124,6 +134,8 @@ const jsonLd = [
           </div>
         ))}
       </section>
+
+      {showcaseHost && <DeviceShowcase slug={project.id} title={d.title} host={showcaseHost} />}
 
       <section class={`project-detail__case project-detail__case--${mod}`}>
         <h2 class="project-detail__section-heading">Case Study</h2>

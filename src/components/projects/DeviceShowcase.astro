@@ -1,0 +1,44 @@
+---
+// App Store / Play Store–style device mockups: a browser (desktop) frame plus
+// phone and tablet frames, each holding a real screenshot of the live product.
+// Renders nothing if the project has no captured shots.
+import '../../styles/components/_showcase.scss';
+
+interface Props {
+  slug: string;
+  title: string;
+  /** Shown in the browser address bar (host only). */
+  host?: string;
+}
+const { slug, title, host } = Astro.props;
+const base = `/images/shots/${slug}`;
+---
+
+<section class="showcase" aria-label={`${title} across devices`}>
+  <h2 class="project-detail__section-heading">See it in action</h2>
+  <p class="showcase__lead">The live product on desktop, tablet and phone.</p>
+
+  <div class="showcase__browser">
+    <div class="showcase__bar">
+      <span class="showcase__dot"></span><span class="showcase__dot"></span><span class="showcase__dot"></span>
+      {host && <span class="showcase__url">{host}</span>}
+    </div>
+    <img class="showcase__browser-img" src={`${base}/desktop.jpg`} alt={`${title} on desktop`} loading="lazy" decoding="async" width="1440" height="900" />
+  </div>
+
+  <div class="showcase__handhelds">
+    <figure class="device device--tablet">
+      <div class="device__screen">
+        <img src={`${base}/tablet.jpg`} alt={`${title} on a tablet`} loading="lazy" decoding="async" width="834" height="1050" />
+      </div>
+      <figcaption class="device__label">Tablet</figcaption>
+    </figure>
+    <figure class="device device--phone">
+      <div class="device__notch" aria-hidden="true"></div>
+      <div class="device__screen">
+        <img src={`${base}/mobile.jpg`} alt={`${title} on a phone`} loading="lazy" decoding="async" width="390" height="844" />
+      </div>
+      <figcaption class="device__label">Mobile</figcaption>
+    </figure>
+  </div>
+</section>
