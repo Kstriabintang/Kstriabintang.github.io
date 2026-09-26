@@ -1,0 +1,38 @@
+---
+title: LUXAFOIR
+summary: A production-grade streetwear e-commerce storefront — editorial design, slide-out cart, wishlist, live search, quick view and a multi-step Midtrans checkout, bilingual ID/EN, built on Next.js 14 and the edge.
+category: web
+metric: Production-grade storefront
+tags: [Next.js 14, TypeScript, Midtrans, Supabase]
+cover:
+  gradient: ['#0a0a0a', '#3f3f46']
+  icon: credit-card
+links:
+  live: https://luxafoir.ksatriabintangsamudra.com
+  source: https://github.com/Kstriabintang/luxafoir
+year: 2026
+metrics:
+  - label: Storefront UX features
+    value: 6
+  - label: UI languages (ID / EN)
+    value: 2
+  - label: Servers to manage
+    value: 0
+stack: [Next.js 14 (App Router, RSC), TypeScript, Tailwind CSS, Framer Motion, Radix UI, Prisma, Supabase, Midtrans, Resend]
+featured: false
+order: 16
+---
+
+## The Challenge
+
+Most "e-commerce templates" look the part until you try to buy something — the cart is clunky, search is a page reload, checkout is a single overwhelming form, and none of it is built for the way Indonesians actually pay. I wanted to build a storefront that feels like a real, opinionated brand and behaves like a real shop end to end.
+
+## My Approach
+
+LUXAFOIR is a premium streetwear storefront with an editorial black-and-white design and a full commerce experience: a **slide-out cart**, **wishlist**, **quick view**, **real-time search**, **infinite scroll** and a **multi-step checkout** wired to **Midtrans** — the whole interface bilingual (ID/EN). It's built on Next.js 14 (App Router with React Server Components) and TypeScript, styled with Tailwind and Framer Motion, with Prisma + Supabase behind it and Resend for order email.
+
+It's engineered to run **anywhere with zero setup**: the whole app degrades gracefully to mock data with no environment keys, so payments simulate success and the catalogue still works — then you wire real services by filling in `.env`. The live demo runs on the Cloudflare edge.
+
+## The Results
+
+A live, production-grade storefront demo at luxafoir.ksatriabintangsamudra.com — a coherent brand experience with the full commerce flow (browse → cart → checkout), bilingual and payment-ready. It's the clearest showcase of my product-and-design side: a shop that looks like a brand, not a template. The public demo runs on **seeded mock data with simulated Midtrans payments** — no real orders or customer data involved.

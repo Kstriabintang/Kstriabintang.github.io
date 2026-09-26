@@ -1,0 +1,37 @@
+---
+title: SystemGuard Pro
+summary: A web-based, all-in-one system scanner — one local Flask server opens a dark dashboard that inspects hardware, security, battery health, processes and more across Windows, Linux and macOS, with a live health score and JSON export.
+category: security
+metric: 13 scanners, one dashboard
+tags: [Python, Flask, psutil, Cross-platform]
+cover:
+  gradient: ['#0a0f1c', '#00d4ff']
+  icon: shield
+links:
+  source: https://github.com/Kstriabintang/SystemSpec-Pro
+year: 2026
+metrics:
+  - label: Scanner modules
+    value: 13
+  - label: Platforms (Win / Linux / macOS)
+    value: 3
+  - label: GUI frameworks to install
+    value: 0
+stack: [Python 3.10+, Flask, psutil, py-cpuinfo, GPUtil]
+featured: false
+order: 17
+---
+
+## The Challenge
+
+Figuring out what's actually going on inside a computer usually means a dozen separate tools — one for hardware, one for temperatures, one for the battery, another for a virus scan — most of them platform-specific and none of them giving you a single, honest picture. I wanted one thing you can run on any machine that answers "is this computer healthy?" in a glance.
+
+## My Approach
+
+SystemGuard Pro runs a small local **Flask** server and opens a **dark, animated dashboard in the browser** — no GUI framework to install. Behind it, **13 scanner modules** cover system, CPU, memory, disk (with SMART), GPU, network, battery health, security (firewall/antivirus/SSH), processes, startup items, a virus quick-scan and a heuristic hardware timeline. It's **cross-platform** (Windows, Linux, macOS) with graceful fallbacks, and it degrades honestly: run without admin and it tells you which checks are limited rather than pretending.
+
+Results are rolled into a single animated **health score** and a **Critical Findings** panel grouped by severity, and the whole report exports to JSON.
+
+## The Results
+
+A working, cross-platform diagnostics tool that turns a scattered chore into one dashboard — 13 scanners, a real-time health score, severity-ranked findings and JSON export, all in the browser. On a test run it surfaced concrete, honest findings (high swap usage, a disabled firewall) and scored the machine 93/100 — a utility that measures and reports rather than guesses.
