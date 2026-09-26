@@ -36,6 +36,33 @@
 .blog-post__cover {margin:0 0 2.8rem; border-radius:16px; overflow:hidden; border:1px solid var(--card-border)}
 .blog-post__cover img {display:block; width:100%; height:auto}
 
+/* ---- TL;DR / key takeaways ---- */
+.tldr {margin:0 0 2.8rem; padding:1.8rem 2rem; border-radius:16px; text-align:left; background:linear-gradient(135deg,#02aab014,#00cdac0a); border:1px solid #02aab033; border-left:3px solid #02aab0}
+.tldr__label {font-family:ui-monospace,Menlo,monospace; font-size:1.1rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#02aab0; margin:0 0 1rem}
+.tldr__list {margin:0; padding-left:1.6rem; display:flex; flex-direction:column; gap:.6rem}
+.tldr__list li {font-size:1.5rem; line-height:1.55; color:var(--text-primary)}
+.tldr__list li::marker {color:#02aab0}
+
+/* ---- FAQ ---- */
+.post-faq {max-width:68ch; margin:3rem 0 0; text-align:left}
+.post-faq__title {font-family:Fraunces,Georgia,serif; font-size:2.3rem; font-weight:600; color:var(--text-primary); margin:0 0 1.2rem}
+.post-faq__list {display:flex; flex-direction:column; gap:.8rem}
+.post-faq__item {border:1px solid var(--card-border); border-radius:12px; background:var(--card-bg); padding:0 1.6rem; overflow:hidden}
+.post-faq__q {cursor:pointer; list-style:none; padding:1.3rem 0; font-family:inherit; font-size:1.55rem; font-weight:600; color:var(--text-primary); display:flex; justify-content:space-between; align-items:center; gap:1rem}
+.post-faq__q::-webkit-details-marker {display:none}
+.post-faq__q::after {content:"+"; color:#02aab0; font-size:2rem; font-weight:400; line-height:1; flex-shrink:0; transition:transform .2s ease}
+.post-faq__item[open] .post-faq__q::after {transform:rotate(45deg)}
+.post-faq__a {margin:0 0 1.4rem; font-size:1.45rem; line-height:1.65; color:var(--text-secondary)}
+
+/* ---- author bio ---- */
+.post-author {display:flex; gap:1.4rem; align-items:flex-start; max-width:68ch; margin:3rem 0 0; padding:1.8rem; border-radius:16px; background:var(--card-bg); border:1px solid var(--card-border); text-align:left}
+.post-author__img {width:64px; height:64px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid #02aab040}
+.post-author__name {font-family:Fraunces,Georgia,serif; font-size:1.7rem; font-weight:600; color:var(--text-primary); margin:0 0 .3rem}
+.post-author__bio {font-size:1.35rem; line-height:1.55; color:var(--text-secondary); margin:0 0 .8rem}
+.post-author__links {display:flex; gap:1.4rem; flex-wrap:wrap}
+.post-author__links a {font-family:ui-monospace,Menlo,monospace; font-size:1.1rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#02aab0; text-decoration:none}
+.post-author__links a:hover {opacity:.82}
+
 /* ---- prose ---- */
 .prose {max-width:68ch; color:var(--text-primary)}
 .prose h2 {font-family:Fraunces,Georgia,serif; font-size:2.5rem; font-weight:600; line-height:1.25; margin:2.8rem 0 1rem; color:var(--text-primary)}

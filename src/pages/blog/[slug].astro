@@ -45,6 +45,17 @@ const jsonLd = [
     ],
   },
 ];
+if (post.data.faq && post.data.faq.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.data.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  } as (typeof jsonLd)[number]);
+}
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description} type="article" image={post.data.cover} jsonLd={jsonLd}>
@@ -81,9 +92,44 @@ const jsonLd = [
         </figure>
       )}
 
+      {post.data.takeaways && post.data.takeaways.length > 0 && (
+        <aside class="tldr" aria-label="Key takeaways">
+          <p class="tldr__label">⚡ The 30-second version</p>
+          <ul class="tldr__list">
+            {post.data.takeaways.map((t) => <li>{t}</li>)}
+          </ul>
+        </aside>
+      )}
+
       <div class="prose">
         <Content />
       </div>
+
+      {post.data.faq && post.data.faq.length > 0 && (
+        <section class="post-faq" aria-label="Frequently asked questions">
+          <h2 class="post-faq__title">FAQ</h2>
+          <div class="post-faq__list">
+            {post.data.faq.map((f) => (
+              <details class="post-faq__item">
+                <summary class="post-faq__q">{f.q}</summary>
+                <p class="post-faq__a">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <aside class="post-author">
+        <img class="post-author__img" src="/images/profile.jpg" alt="Ksatria Bintang Samudra" width="72" height="72" loading="lazy" decoding="async" />
+        <div class="post-author__body">
+          <p class="post-author__name">Ksatria Bintang Samudra</p>
+          <p class="post-author__bio">AI Engineer &amp; founder of Luxavero LLC — I ship production systems for mining, ISPs and small businesses from Pontianak, Indonesia, spec-first and AI-augmented.</p>
+          <div class="post-author__links">
+            <a href="/#contact">Work with me →</a>
+            <a href="/blog">More writing →</a>
+          </div>
+        </div>
+      </aside>
 
       <footer class="blog-post__foot">
         <a class="blog-post__back" href="/blog"><Icon name="arrow-right" size={15} /> All posts</a>

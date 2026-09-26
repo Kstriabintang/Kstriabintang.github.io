@@ -6,6 +6,17 @@ category: Security
 tags: [Security, Supabase, RLS, PostgreSQL]
 readingMinutes: 6
 cover: /images/blog/access-control-in-the-database.jpg
+takeaways:
+  - "Hiding a UI control isn't security — enforce access in the database with row-level security."
+  - "RLS makes authorization a property of the data, so new endpoints inherit it and a forgotten filter can't leak."
+  - "Index for RLS (it runs per row) and back it with an append-only audit trail."
+faq:
+  - q: "What is row-level security (RLS)?"
+    a: "Database policies attached to a table so it only returns rows a user is allowed to see — enforced by PostgreSQL itself, no matter which query or endpoint asks."
+  - q: "Why not just check permissions in the app?"
+    a: "Because a single forgotten WHERE clause leaks data. With RLS the rule lives on the table, so every query inherits it and the database refuses unauthorized rows."
+  - q: "Does RLS slow things down?"
+    a: "It has a per-row cost, so it must be indexed and the policies kept lean. On one production system a slowdown traced to missing indexes and per-row policy evaluation, fixed with six indexes and a policy rewrite."
 ---
 
 The most common access-control bug I see isn't exotic. It's this: the app hides a button, and the developer calls it done. But the data is still one crafted request away. If authorization only lives in the UI, it doesn't really exist.

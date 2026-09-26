@@ -6,6 +6,17 @@ category: AI · Workflow
 tags: [AI, Workflow, Code review, Flutter]
 readingMinutes: 5
 cover: /images/blog/auditing-ai-written-code.jpg
+takeaways:
+  - "Verify the built artifact — the shipped bundle, merged manifest, generated SQL — not the model's summary of what it did."
+  - "Write risky logic twice and cross-check it; a mismatch becomes a free bug detector."
+  - "Gate everything with tests: letting AI write more code is only safe if more code is also checked."
+faq:
+  - q: "Does using AI to write code make it lower quality?"
+    a: "Not inherently — the risk is unreviewed AI code. Treat the model like an eager junior engineer: give it a spec, review the diff, and verify the built artifact. Quality comes from the review discipline, not the typing tool."
+  - q: "What actually caught the missing Android INTERNET permission?"
+    a: "Inspecting the signed app bundle's merged AndroidManifest.xml — not the source. Manifest merging in a multi-module Flutter build had dropped the permission; only the shipped artifact revealed it."
+  - q: "How do you review AI-generated code efficiently?"
+    a: "Read the diff as a reviewer rather than the author, run it through CI tests, and verify the real output (the bundle or migration) instead of trusting the model's description."
 ---
 
 I build most of my software as an AI-augmented solo developer. I write the spec, I own the architecture, and I drive Claude Code and Cursor through the implementation. But there is one rule I never break: **I audit what actually ships, not what the model tells me it produced.**

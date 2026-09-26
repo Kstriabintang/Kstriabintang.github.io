@@ -6,6 +6,17 @@ category: AI
 tags: [AI, LLM, API design, Payments]
 readingMinutes: 5
 cover: /images/blog/one-key-five-llms.jpg
+takeaways:
+  - "Expose the OpenAI-compatible API shape so existing clients switch by changing only the base URL, key and model string."
+  - "The hard part is honest, real-time cost metering across providers — not the routing."
+  - "For Indonesia, QRIS top-ups remove the card barrier that quietly blocks many local developers."
+faq:
+  - q: "What is an LLM gateway?"
+    a: "A single API in front of multiple model providers that handles routing, authentication, cost metering and a consistent request/response shape — so callers use one key and one protocol instead of five."
+  - q: "Why OpenAI-compatible instead of a custom API?"
+    a: "Almost every client library, framework and tool already speaks the OpenAI Chat Completions shape, so migration is just a new base URL and key. Compatibility with what people already have is the moat."
+  - q: "How does billing work across different models?"
+    a: "Each response's token usage is priced against the specific model that served it and debited from one balance, so a user sees one number going down rather than several invoices arriving later."
 ---
 
 Every model provider wants to be your only provider. Different keys, different SDKs, different billing, different dashboards. If you build anything real on top of LLMs, you feel that friction fast — and your users feel it worse.

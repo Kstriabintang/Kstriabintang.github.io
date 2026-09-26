@@ -6,6 +6,17 @@ category: Android
 tags: [Android, ADB, Performance, CLI]
 readingMinutes: 4
 cover: /images/blog/debloat-android-no-root.jpg
+takeaways:
+  - "Debloat per-user over wireless ADB — no root, so nothing touches the system partition and every change is reversible."
+  - "Prove it with gfxinfo: measured before/after, not a 'feels faster' claim."
+  - "On a vivo V21: 52 packages removed, frame time 18 to 12 ms, janky frames 0.27% to 0.00%."
+faq:
+  - q: "Is debloating Android with ADB safe and reversible?"
+    a: "Yes — adb-kit disables or uninstalls packages per-user with no root, so any package can be brought back and nothing in the system partition changes."
+  - q: "Do I need root to debloat Android?"
+    a: "No. Wireless ADB with per-user package operations avoids root entirely, which keeps warranties intact and banking apps working."
+  - q: "How do you know it actually improved performance?"
+    a: "gfxinfo profiling before and after on the same device and workload — real frame-time numbers, documented in the repo with screenshots, rather than a placebo booster claim."
 ---
 
 Phones ship full of software nobody asked for, and the usual "fixes" are worse than the problem: rooting voids warranties and breaks banking apps, and one-tap "boosters" mostly just show you an animation. I wanted a third option — remove bloat **without root**, keep every change **reversible**, and then **prove** the phone actually got faster. That's adb-kit.

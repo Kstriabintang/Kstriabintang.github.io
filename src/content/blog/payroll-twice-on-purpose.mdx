@@ -6,6 +6,17 @@ category: Engineering
 tags: [Payroll, Laravel, Flutter, Testing]
 readingMinutes: 6
 cover: /images/blog/payroll-twice-on-purpose.jpg
+takeaways:
+  - "Statutory payroll is law, not preference — implement it to cited regulation (PPh21 TER, BPJS, Kepmenaker overtime)."
+  - "Duplicating the calculation (PHP server + Dart handset) is a safety net: any mismatch is caught at build time."
+  - "Mirrored tests are the real spec, and an append-only audit trail keeps the inputs honest."
+faq:
+  - q: "Isn't duplicating logic a violation of DRY?"
+    a: "Usually yes — but when a calculation is defined by an external authority, needed in two runtimes for real reasons, and expensive to get wrong, a second cross-checked implementation is a proof, not waste."
+  - q: "How do you keep the two implementations in sync?"
+    a: "Mirrored test suites — the same input fixtures and expected outputs run against both PHP and Dart. When the tax rule changes, the fixtures change first and both sides must be fixed until they agree."
+  - q: "What stops attendance data being altered after the fact?"
+    a: "An append-only audit trail: PostgreSQL triggers reject UPDATE and DELETE on the attendance and approval tables, so the inputs to payroll can't be quietly rewritten later."
 ---
 
 "Don't repeat yourself" is good advice right up until the moment a wrong number costs someone their correct wage. CoalTrack calculates payroll for coal-mining crews, and I implemented the same statutory logic **twice** — once in a Laravel/PHP service, once in a Dart mirror on the phone. On purpose. Here's the reasoning.

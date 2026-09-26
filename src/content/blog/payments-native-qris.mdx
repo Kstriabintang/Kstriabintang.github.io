@@ -6,6 +6,17 @@ category: Payments
 tags: [QRIS, Payments, Indonesia, Backend]
 readingMinutes: 5
 cover: /images/blog/payments-native-qris.jpg
+takeaways:
+  - "In Indonesia, QRIS is the default way to pay — build payment-native or lock out a huge share of users."
+  - "Never let the client decide a payment succeeded; confirm it on the server against the provider."
+  - "Make webhooks idempotent and settle in a database transaction to survive retries and races."
+faq:
+  - q: "Why QRIS instead of cards for Indonesian apps?"
+    a: "QRIS is one QR standard that every bank and e-wallet accepts, with no card requirement or foreign-currency friction — for many Indonesians it is the only practical way to pay online."
+  - q: "How do you verify a QRIS payment securely?"
+    a: "Server-side only. The server re-checks the charge status against the provider's API — not just the webhook payload — before it flips the order to paid and releases the goods."
+  - q: "How do you prevent double-charging on webhook retries?"
+    a: "Idempotency: each charge carries a unique reference, and applying it a second time is a harmless no-op, enforced with a database transaction and a uniqueness constraint."
 ---
 
 Most payment tutorials assume a credit card and a Western checkout. In Indonesia that assumption quietly blocks a huge share of your users. The default here is **QRIS** — one QR standard that every bank and e-wallet accepts. If your product can't take a QRIS payment, for many people it simply can't take their money.

@@ -6,6 +6,17 @@ category: Infrastructure
 tags: [Cloudflare Workers, Edge, D1, Serverless]
 readingMinutes: 5
 cover: /images/blog/shipping-on-the-edge.jpg
+takeaways:
+  - "Cloudflare Workers means no servers to patch, no region to pick, and near-zero idle cost."
+  - "Edge storage (D1, KV, R2) makes it a real platform, not just a CDN."
+  - "Plan around the limits: short-lived requests, SQLite rather than Postgres, eventual consistency where it's fine."
+faq:
+  - q: "What can you actually run on Cloudflare Workers?"
+    a: "Sites, APIs and request-scoped logic at the edge, backed by D1 (SQLite), KV, R2 and Workers AI — enough to run real products like a dealership CMS or a temp-mail service."
+  - q: "When should you NOT use the edge?"
+    a: "For long-running or heavy compute, or a data-heavy system of record that needs full Postgres, row-level security and complex queries — reach for a traditional or serverless Postgres instead."
+  - q: "Is it really cheaper?"
+    a: "At low-to-moderate traffic the bill rounds to near zero because you pay per request with no idle cost — which changes which small projects are even worth keeping online."
 ---
 
 For a solo builder, the traditional server is a tax you pay forever: patching, scaling, monitoring, a monthly bill whether anyone shows up or not. For most of what I ship, I've stopped paying it. I run on **Cloudflare Workers** — code that executes at the edge, close to the user, with no server to babysit.
