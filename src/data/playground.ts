@@ -59,11 +59,20 @@ export const playground = {
       ],
     },
     {
-      name: 'Apps',
-      emoji: '🎧',
+      name: 'Ventures',
+      emoji: '🚀',
       allLabel: 'All projects',
       allHref: '/projects',
       items: [
+        {
+          title: 'Luxavero',
+          meta: 'My company · Wyoming, USA',
+          desc: 'My U.S.-registered software studio — the home for my own products and client work. Live at luxavero.net.',
+          href: 'https://luxavero.net',
+          poster: '/images/tools/luxavero.jpg',
+          emoji: '🏢',
+          badge: 'Live',
+        },
         {
           title: 'VenWave',
           meta: 'Music · Next.js',
