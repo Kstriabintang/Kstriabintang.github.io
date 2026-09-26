@@ -49,9 +49,9 @@ export const navGroups: NavGroup[] = [
     blurb: 'Things I built that run in your browser right now.',
     layout: 'grid',
     items: [
-      { label: 'DevSec Toolbox', desc: '34 in-browser dev tools', href: 'https://ksatriabintangsamudra.my.id/devsec/', icon: 'wrench', badge: 'Live', external: true },
-      { label: 'HAND//TRACE', desc: 'Gesture AR in the browser', href: 'https://ksatriabintangsamudra.my.id/handtrace/', icon: 'sparkles', external: true },
-      { label: 'ResumeKita', desc: 'ATS-friendly CV builder', href: 'https://resumekita.my.id', icon: 'file', external: true },
+      { label: 'DevSec Toolbox', desc: '34 in-browser dev tools', href: 'https://devsec.ksatriabintangsamudra.com/', icon: 'wrench', badge: 'Live', external: true },
+      { label: 'HAND//TRACE', desc: 'Gesture AR in the browser', href: 'https://handtrace.ksatriabintangsamudra.com/', icon: 'sparkles', external: true },
+      { label: 'ResumeKita', desc: 'ATS-friendly CV builder', href: 'https://resume.ksatriabintangsamudra.com', icon: 'file', external: true },
       { label: 'All tools', desc: 'The full playground', href: '/#playground', icon: 'cpu' },
     ],
   },
@@ -91,9 +91,9 @@ export const footerColumns = [
   {
     title: 'Playground',
     links: [
-      { label: 'DevSec Toolbox', href: 'https://ksatriabintangsamudra.my.id/devsec/' },
-      { label: 'HAND//TRACE', href: 'https://ksatriabintangsamudra.my.id/handtrace/' },
-      { label: 'ResumeKita', href: 'https://resumekita.my.id' },
+      { label: 'DevSec Toolbox', href: 'https://devsec.ksatriabintangsamudra.com/' },
+      { label: 'HAND//TRACE', href: 'https://handtrace.ksatriabintangsamudra.com/' },
+      { label: 'ResumeKita', href: 'https://resume.ksatriabintangsamudra.com' },
     ],
   },
   {
