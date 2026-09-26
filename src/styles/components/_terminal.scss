@@ -1,1 +1,43 @@
-// Terminal overlay — owned by the islands work.
+// Terminal overlay — values from the reference design.
+.terminal-overlay {position:fixed; inset:0; z-index:9999; background:#080814f7; display:flex; align-items:center; justify-content:center; animation:terminalFadeIn .2s ease-out}
+@keyframes terminalFadeIn{0%{opacity:0}to{opacity:1}}
+.terminal-scanlines {position:fixed; inset:0; pointer-events:none; z-index:10000; background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0px,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px)}
+.terminal-confetti {position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:10001}
+.terminal-window {width:90%; max-width:860px; height:80vh; max-height:700px; display:flex; flex-direction:column; border-radius:10px; overflow:hidden; box-shadow:0 20px 80px #0009,0 0 60px #02aab014; animation:terminalSlideUp .25s ease-out; background:#0d0d1a}
+@media(max-width:37.5em) { .terminal-window {width:100%; height:100vh; max-height:100vh; border-radius:0} }
+@keyframes terminalSlideUp{0%{transform:translateY(20px) scale(.97);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.terminal-header {display:flex; align-items:center; padding:1rem 1.6rem; background:#1a1a2e; border-bottom:1px solid rgba(255,255,255,.06); flex-shrink:0}
+.terminal-dots {display:flex; gap:8px}
+.terminal-dot {width:12px; height:12px; border-radius:50%; cursor:pointer}
+.terminal-dot--red {background:#ff5f57}
+.terminal-dot--yellow {background:#febc2e}
+.terminal-dot--green {background:#28c840}
+.terminal-title {flex:1; text-align:center; font-family:JetBrains Mono,SF Mono,Fira Code,Cascadia Code,monospace; font-size:1.2rem; color:#fff6; user-select:none}
+.terminal-close {background:none; border:1px solid rgba(255,255,255,.15); color:#fff6; font-family:JetBrains Mono,SF Mono,monospace; font-size:1rem; padding:.2rem .8rem; border-radius:4px; cursor:pointer; transition:all .2s ease}
+.terminal-close:hover {color:#fffc; border-color:#ffffff4d}
+.terminal-output {flex:1; overflow-y:auto; padding:1.6rem; font-family:JetBrains Mono,SF Mono,Fira Code,Cascadia Code,monospace; font-size:1.3rem; line-height:1.7; color:#e0e0e8; cursor:text}
+.terminal-output::-webkit-scrollbar {width:6px}
+.terminal-output::-webkit-scrollbar-track {background:transparent}
+.terminal-output::-webkit-scrollbar-thumb {background:#ffffff1a; border-radius:3px}
+@media(max-width:37.5em) { .terminal-output {font-size:1.1rem; padding:1.2rem; line-height:1.6} }
+.terminal-line {white-space:pre-wrap; word-break:break-word; margin-bottom:.2rem}
+.terminal-line--input {color:#e0e0e8}
+.terminal-line--output {color:#c8c8d0}
+.terminal-prompt {user-select:none}
+.terminal-text {white-space:pre-wrap}
+.term-teal {color:#02aab0}
+.term-bold {font-weight:700; color:#fff}
+.term-dim {color:#fff6}
+.term-red {color:#ef4444}
+.term-yellow {color:#f59e0b}
+.terminal-input-row {display:flex; align-items:center; padding:1rem 1.6rem; background:#0d0d1a; border-top:1px solid rgba(255,255,255,.04); flex-shrink:0; font-family:JetBrains Mono,SF Mono,Fira Code,Cascadia Code,monospace; font-size:1.3rem; color:#e0e0e8}
+@media(max-width:37.5em) { .terminal-input-row {font-size:1.1rem; padding:1rem 1.2rem} }
+.terminal-input {flex:1; background:none; border:none; outline:none; color:#e0e0e8; font-family:inherit; font-size:inherit; line-height:1.5; caret-color:#02aab0; padding:0; margin:0}
+.terminal-cursor {display:inline-block; width:8px; height:1.4em; background:#02aab0; animation:terminalBlink 1s step-end infinite; vertical-align:text-bottom; margin-left:1px; flex-shrink:0}
+.terminal-cursor--inline {margin-left:2px}
+@keyframes terminalBlink{0%,to{opacity:1}50%{opacity:0}}
+
+// The page body is centred; terminal output (ASCII art, tables) must stay left-aligned.
+.terminal-window {
+  text-align: left;
+}
