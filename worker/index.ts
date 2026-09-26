@@ -69,8 +69,40 @@ const contact: Handler = async (request, env) => {
     console.error('contact send failed', err instanceof Error ? err.message : err);
     return json({ ok: false, error: 'Message could not be sent. Please email hello@ksatriabintangsamudra.com directly.' }, 502);
   }
+  // Best-effort auto-reply to the visitor, sent from hello@ via Resend. Never blocks success.
+  await sendAutoReply(env, name, email).catch((err) =>
+    console.error('auto-reply failed', err instanceof Error ? err.message : err),
+  );
   return json({ ok: true });
 };
+
+/** Sends a branded "got your message" reply from hello@ via Resend, if the key is configured. */
+async function sendAutoReply(env: Env, name: string, to: string): Promise<void> {
+  if (!env.RESEND_API_KEY) return;
+  const first = name.split(' ')[0] || name;
+  const html = `<div style="font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:520px;margin:auto;color:#1a1a2e">
+    <p>Hi ${escapeHtml(first)},</p>
+    <p>Thanks for reaching out — your message landed with me and I'll get back to you within a couple of business days.</p>
+    <p>In the meantime, feel free to explore my live demos at <a href="https://ksatriabintangsamudra.com/demos" style="color:#02aab0">ksatriabintangsamudra.com/demos</a>.</p>
+    <p style="margin-top:1.5rem">— Ksatria Bintang Samudra<br><span style="color:#667">AI Engineer · Automation Builder · Solutions Architect</span></p>
+  </div>`;
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from: 'Ksatria Bintang Samudra <hello@ksatriabintangsamudra.com>',
+      to: [to],
+      reply_to: 'hello@ksatriabintangsamudra.com',
+      subject: 'Thanks — I got your message',
+      html,
+    }),
+  });
+  if (!res.ok) throw new Error(`resend ${res.status}`);
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string));
+}
 
 const lead: Handler = async (request, env) => {
   let body: unknown;

@@ -9,4 +9,6 @@ export interface Env {
   CONTACT_TO: string;
   CHAT_MODEL: string;
   EXPLAIN_MODEL: string;
+  // Optional: set via `wrangler secret put RESEND_API_KEY` to send the visitor an auto-reply.
+  RESEND_API_KEY?: string;
 }
