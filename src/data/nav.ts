@@ -38,10 +38,22 @@ export const navGroups: NavGroup[] = [
     items: [
       { label: 'Projects', desc: 'Case studies & shipped', href: '/projects', icon: 'folder' },
       { label: 'Live Demos', desc: 'Open & try my apps now', href: '/demos', icon: 'sparkles', badge: 'New' },
-      { label: 'Notebook', desc: 'Writing & field notes', href: '/blog', icon: 'file' },
       { label: 'Services', desc: 'Work with me', href: '/services', icon: 'briefcase' },
       { label: 'Resume', desc: 'Experience & credentials', href: '/resume', icon: 'file' },
       { label: 'GitHub', desc: '39 public repositories', href: 'https://github.com/Kstriabintang', icon: 'github', external: true },
+    ],
+  },
+  {
+    id: 'writing',
+    label: 'Writing',
+    blurb: 'Essays and references on AI & engineering.',
+    layout: 'grid',
+    items: [
+      { label: 'Blog', desc: 'Essays & field notes', href: '/blog', icon: 'file' },
+      { label: 'Learning Paths', desc: 'Guided tracks', href: '/learning-paths', icon: 'cpu' },
+      { label: 'Glossary', desc: 'AI & dev terms', href: '/glossary', icon: 'folder' },
+      { label: 'Cheatsheets', desc: 'Quick references', href: '/cheatsheets', icon: 'wrench' },
+      { label: 'Comparisons', desc: 'X vs Y, decided', href: '/comparisons', icon: 'briefcase' },
     ],
   },
   {
@@ -87,9 +99,18 @@ export const footerColumns = [
     links: [
       { label: 'Projects', href: '/projects' },
       { label: 'Live Demos', href: '/demos' },
-      { label: 'Notebook', href: '/blog' },
       { label: 'Services', href: '/services' },
       { label: 'Resume', href: '/resume' },
+    ],
+  },
+  {
+    title: 'Writing',
+    links: [
+      { label: 'Blog', href: '/blog' },
+      { label: 'Learning Paths', href: '/learning-paths' },
+      { label: 'Glossary', href: '/glossary' },
+      { label: 'Cheatsheets', href: '/cheatsheets' },
+      { label: 'Comparisons', href: '/comparisons' },
     ],
   },
   {

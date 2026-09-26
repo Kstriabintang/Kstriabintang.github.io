@@ -2,6 +2,9 @@
 import type { APIRoute } from 'astro';
 import { navGroups } from '../data/nav';
 import { site } from '../data/site';
+import { comparisons } from '../data/comparisons';
+import { cheatsheets } from '../data/cheatsheets';
+import { glossary } from '../data/glossary';
 
 export interface SearchItem {
   title: string;
@@ -24,6 +27,10 @@ const pages: SearchItem[] = [
   { title: 'Termle — daily tech word game', href: '/games/termle', kind: 'Page', keywords: 'wordle game puzzle daily word tech play' },
   { title: 'IT Quiz — levelled tech exam', href: '/games/it-quiz', kind: 'Page', keywords: 'quiz game exam test it tech levels junior mid senior questions play' },
   { title: 'Notebook', href: '/blog', kind: 'Page', keywords: 'blog writing articles posts notes notebook' },
+  { title: 'Glossary', href: '/glossary', kind: 'Page', keywords: 'glossary terms definitions ai llm rag embedding qris rls edge define what is' },
+  { title: 'Cheatsheets', href: '/cheatsheets', kind: 'Page', keywords: 'cheatsheet quick reference git http docker commands' },
+  { title: 'Comparisons', href: '/comparisons', kind: 'Page', keywords: 'comparison vs versus rest graphql sql nosql workers lambda' },
+  { title: 'Learning Paths', href: '/learning-paths', kind: 'Page', keywords: 'learning path curriculum guide track tutorial' },
   { title: 'Privacy', href: '/privacy', kind: 'Page', keywords: 'data policy contact form chat' },
 ];
 
@@ -101,8 +108,14 @@ async function postsFromCollection(): Promise<SearchItem[]> {
   }
 }
 
+const writingRefs: SearchItem[] = [
+  ...comparisons.map((c) => ({ title: `${c.a} vs ${c.b}`, href: `/comparisons/${c.slug}`, kind: 'Page' as const, keywords: `comparison vs ${c.description}` })),
+  ...cheatsheets.map((c) => ({ title: `${c.title} cheatsheet`, href: `/cheatsheets/${c.slug}`, kind: 'Page' as const, keywords: `cheatsheet reference ${c.description}` })),
+  ...glossary.map((t) => ({ title: t.term, href: `/glossary/#${t.slug}`, kind: 'Page' as const, keywords: `glossary define ${t.short}` })),
+];
+
 export const GET: APIRoute = async () => {
-  const items: SearchItem[] = [...pages, ...sections, ...(await projectsFromCollection()), ...(await postsFromCollection()), ...toolsFromNav(), ...socials, ...actions];
+  const items: SearchItem[] = [...pages, ...sections, ...(await projectsFromCollection()), ...(await postsFromCollection()), ...writingRefs, ...toolsFromNav(), ...socials, ...actions];
   return new Response(JSON.stringify(items), {
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
   });

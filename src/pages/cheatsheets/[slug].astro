@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { site } from '../../data/site';
+import { cheatsheets } from '../../data/cheatsheets';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_writing.scss';
+
+export function getStaticPaths() {
+  return cheatsheets.map((c) => ({ params: { slug: c.slug }, props: { c } }));
+}
+const { c } = Astro.props;
+const url = new URL(`/cheatsheets/${c.slug}/`, site.url).toString();
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: c.title,
+    description: c.description,
+    datePublished: new Date(c.updated).toISOString(),
+    dateModified: new Date(c.updated).toISOString(),
+    author: { '@type': 'Person', name: site.name, url: site.url },
+    mainEntityOfPage: url,
+    inLanguage: 'en',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Cheatsheets', item: new URL('/cheatsheets/', site.url).toString() },
+      { '@type': 'ListItem', position: 3, name: c.title, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout title={c.title} description={c.description} type="article" jsonLd={jsonLd}>
+  <main class="tool-page">
+    <article class="tool-page__container writing-article">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a href="/cheatsheets">Cheatsheets</a></li>
+          <li aria-hidden="true">›</li>
+          <li>{c.title}</li>
+        </ol>
+      </nav>
+
+      <header class="writing-article__head">
+        <span class="writing-card__kind">Cheatsheet</span>
+        <h1 class="writing-article__title">{c.title}</h1>
+        <p class="writing-article__lede">{c.intro}</p>
+      </header>
+
+      {c.sections.map((s) => (
+        <section class="cheat-section">
+          <h2 class="cheat-section__title">{s.heading}</h2>
+          <div class="cheat-rows">
+            {s.rows.map((r) => (
+              <div class="cheat-row">
+                <code class="cheat-row__code">{r.code}</code>
+                <span class="cheat-row__desc">{r.desc}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <footer class="writing-article__foot">
+        <a class="writing-article__back" href="/cheatsheets"><Icon name="arrow-right" size={15} /> All cheatsheets</a>
+      </footer>
+    </article>
+  </main>
+</BaseLayout>

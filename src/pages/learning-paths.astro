@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/ui/Icon.astro';
+import { learningPaths } from '../data/learning-paths';
+import '../styles/pages/_tool-page.scss';
+import '../styles/pages/_writing.scss';
+---
+
+<BaseLayout
+  title="Learning Paths — guided tracks"
+  description="Guided reading tracks through Ksatria Bintang Samudra's writing, references and projects — AI-augmented engineering, payments for Indonesia, shipping on the edge, and secure-by-design."
+>
+  <main class="tool-page">
+    <div class="tool-page__container tool-page__container--wide">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li>Learning Paths</li>
+        </ol>
+      </nav>
+      <header class="tool-page__header">
+        <h1>Learning Paths</h1>
+        <p>Guided tracks that string my articles, references and real projects into a reading order — start at the top and work down.</p>
+      </header>
+
+      <div class="paths">
+        {learningPaths.map((p) => (
+          <section class="path-card">
+            <h2 class="path-card__title">{p.title}</h2>
+            <p class="path-card__blurb">{p.blurb}</p>
+            <ol class="path-steps">
+              {p.steps.map((s, i) => (
+                <li class="path-step">
+                  <a class="path-step__link" href={s.href}>
+                    <span class="path-step__num">{String(i + 1).padStart(2, '0')}</span>
+                    <span class="path-step__label">{s.label}</span>
+                    <span class="path-step__kind">{s.kind}</span>
+                    <Icon name="arrow-right" size={15} />
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>

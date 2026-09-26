@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { comparisons } from '../../data/comparisons';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_writing.scss';
+---
+
+<BaseLayout
+  title="Comparisons — X vs Y, decided"
+  description="Practical, opinionated engineering comparisons — REST vs GraphQL, SQL vs NoSQL, Cloudflare Workers vs AWS Lambda — with when-to-use verdicts."
+>
+  <main class="tool-page">
+    <div class="tool-page__container tool-page__container--wide">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li>Comparisons</li>
+        </ol>
+      </nav>
+      <header class="tool-page__header">
+        <h1>Comparisons</h1>
+        <p>X vs Y, decided — practical trade-offs and a clear when-to-use verdict for each, from real shipping experience.</p>
+      </header>
+      <div class="writing-grid">
+        {comparisons.map((c) => (
+          <a class="writing-card" href={`/comparisons/${c.slug}`}>
+            <span class="writing-card__kind">Comparison</span>
+            <h2 class="writing-card__title">{c.a} <span class="writing-card__vs">vs</span> {c.b}</h2>
+            <p class="writing-card__desc">{c.description}</p>
+            <span class="writing-card__more">Read <Icon name="arrow-right" size={15} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>

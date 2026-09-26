@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { cheatsheets } from '../../data/cheatsheets';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_writing.scss';
+---
+
+<BaseLayout
+  title="Cheatsheets — quick references"
+  description="Fast, practical cheatsheets — Git essentials, HTTP status codes and Docker commands — the references I actually reach for."
+>
+  <main class="tool-page">
+    <div class="tool-page__container tool-page__container--wide">
+      <nav class="tool-page__breadcrumb" aria-label="Breadcrumb">
+        <ol class="tool-page__breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">›</li>
+          <li>Cheatsheets</li>
+        </ol>
+      </nav>
+      <header class="tool-page__header">
+        <h1>Cheatsheets</h1>
+        <p>Quick references for the things worth looking up, not memorising — the commands and codes I use most.</p>
+      </header>
+      <div class="writing-grid">
+        {cheatsheets.map((c) => (
+          <a class="writing-card" href={`/cheatsheets/${c.slug}`}>
+            <span class="writing-card__kind">Cheatsheet</span>
+            <h2 class="writing-card__title">{c.title}</h2>
+            <p class="writing-card__desc">{c.description}</p>
+            <span class="writing-card__more">Open <Icon name="arrow-right" size={15} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
