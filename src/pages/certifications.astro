@@ -36,31 +36,37 @@ import '../styles/pages/_certifications.scss';
             <p class="cred-group__blurb">{group.blurb}</p>
           </div>
           <div class="cred-grid">
-            {group.items.map((c) => (
-              <article class="cred-card spotlight-card">
-                <div class="cred-card__top">
-                  <span class="cred-card__badge" style={`--cred-accent:${c.accent}`}>{c.initials}</span>
-                  <div class="cred-card__meta">
-                    <span class="cred-card__kind">{c.kind}</span>
-                    <span class="cred-card__year">{c.year}</span>
-                  </div>
-                </div>
-                <h3 class="cred-card__title">{c.title}</h3>
-                <p class="cred-card__issuer">{c.issuer}</p>
-                {c.credentialId && <p class="cred-card__id">{c.credentialId}</p>}
-                {c.note && <p class="cred-card__note">{c.note}</p>}
-                <div class="cred-card__links">
-                  <a class="cred-card__link" href={c.file} target="_blank" rel="noopener">
-                    View certificate <Icon name="arrow-up-right" size={15} />
+            {group.items.map((c) => {
+              const image = c.file.replace('/sertif/', '/images/certs/').replace('.pdf', '.jpg');
+              return (
+                <article class="cred-card spotlight-card">
+                  <a class="cred-card__thumb" href={c.file} target="_blank" rel="noopener" aria-label={`View ${c.title} certificate`}>
+                    <img src={image} alt={`${c.title} — ${c.issuer}`} width="820" height="512" loading="lazy" decoding="async" />
+                    <span class="cred-card__kind" style={`--cred-accent:${c.accent}`}>{c.kind}</span>
+                    <span class="cred-card__zoom"><Icon name="arrow-up-right" size={16} /></span>
                   </a>
-                  {c.verifyUrl && (
-                    <a class="cred-card__link cred-card__link--verify" href={c.verifyUrl} target="_blank" rel="noopener">
-                      <Icon name="check" size={14} /> Verify
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
+                  <div class="cred-card__body">
+                    <div class="cred-card__meta">
+                      <span class="cred-card__issuer">{c.issuer}</span>
+                      <span class="cred-card__year">{c.year}</span>
+                    </div>
+                    <h3 class="cred-card__title">{c.title}</h3>
+                    {c.credentialId && <p class="cred-card__id">{c.credentialId}</p>}
+                    {c.note && <p class="cred-card__note">{c.note}</p>}
+                    <div class="cred-card__links">
+                      <a class="cred-card__link" href={c.file} target="_blank" rel="noopener">
+                        View certificate <Icon name="arrow-up-right" size={15} />
+                      </a>
+                      {c.verifyUrl && (
+                        <a class="cred-card__link cred-card__link--verify" href={c.verifyUrl} target="_blank" rel="noopener">
+                          <Icon name="check" size={14} /> Verify
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
       ))}

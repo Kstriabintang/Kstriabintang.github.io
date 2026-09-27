@@ -1,0 +1,244 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_persona.scss';
+
+const gameLd = {
+  '@context': 'https://schema.org',
+  '@type': ['SoftwareApplication', 'Game'],
+  name: 'Dev Persona — engineer personality test',
+  url: `${site.url}/games/dev-persona/`,
+  applicationCategory: 'GameApplication',
+  operatingSystem: 'Any (web browser)',
+  description: 'A 10-question tech personality test that reveals your engineer archetype — Architect, Shipper, Guardian, Scientist, Craftsman or Firefighter.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  author: { '@id': `${site.url}/#person` },
+  inLanguage: 'en',
+};
+
+const QUESTIONS = [
+  { q: 'A brand-new project lands on your desk. First instinct?', a: [
+    { t: 'Sketch the architecture and the data model.', k: 'architect' },
+    { t: 'Spin up a prototype and see what sticks.', k: 'shipper' },
+    { t: 'Ask what could go wrong — and who can access what.', k: 'guardian' },
+    { t: 'Frame the riskiest assumption and test it first.', k: 'scientist' },
+  ] },
+  { q: 'Your code finally works. Now what?', a: [
+    { t: 'Refactor until it reads beautifully.', k: 'craftsman' },
+    { t: 'Ship it and watch the metrics.', k: 'shipper' },
+    { t: 'Add tests and guard rails.', k: 'guardian' },
+    { t: 'Write down why you built it this way.', k: 'architect' },
+  ] },
+  { q: "Production is down at 2 AM. You feel…", a: [
+    { t: 'Focused — this is my moment.', k: 'firefighter' },
+    { t: 'Systematic — reproduce, isolate, fix.', k: 'scientist' },
+    { t: 'Calm — alerts and runbooks have us covered.', k: 'guardian' },
+    { t: 'Already drafting the postmortem in my head.', k: 'architect' },
+  ] },
+  { q: "Pick the compliment you'd most love to hear:", a: [
+    { t: '“This system scales beautifully.”', k: 'architect' },
+    { t: '“You shipped that so fast.”', k: 'shipper' },
+    { t: '“This code is a joy to read.”', k: 'craftsman' },
+    { t: '“Nothing ever breaks on your watch.”', k: 'guardian' },
+  ] },
+  { q: 'Your ideal ticket for the week:', a: [
+    { t: 'Design a new service from scratch.', k: 'architect' },
+    { t: 'Fix the flaky bug everyone avoids.', k: 'firefighter' },
+    { t: 'Cut the page load time in half.', k: 'scientist' },
+    { t: 'Polish the onboarding until it sings.', k: 'craftsman' },
+  ] },
+  { q: "A teammate's PR is 'good enough.' You:", a: [
+    { t: 'Approve — we can iterate later.', k: 'shipper' },
+    { t: 'Request changes for clarity.', k: 'craftsman' },
+    { t: 'Check for security holes first.', k: 'guardian' },
+    { t: 'Ask about the edge cases with real data.', k: 'scientist' },
+  ] },
+  { q: 'What do you read for fun?', a: [
+    { t: 'System-design write-ups.', k: 'architect' },
+    { t: 'Post-incident reports.', k: 'firefighter' },
+    { t: 'Benchmarks and papers.', k: 'scientist' },
+    { t: 'Changelogs of tools you love.', k: 'craftsman' },
+  ] },
+  { q: 'Your terminal is mostly…', a: [
+    { t: 'Dotfiles tuned to perfection.', k: 'craftsman' },
+    { t: 'Monitoring dashboards.', k: 'guardian' },
+    { t: 'Whatever ships fastest.', k: 'shipper' },
+    { t: 'Aliases for incident triage.', k: 'firefighter' },
+  ] },
+  { q: 'Biggest pet peeve:', a: [
+    { t: 'Tight coupling and no boundaries.', k: 'architect' },
+    { t: "Slow, unmeasured 'optimizations.'", k: 'scientist' },
+    { t: 'Secrets committed to the repo.', k: 'guardian' },
+    { t: 'Bikeshedding while prod burns.', k: 'firefighter' },
+  ] },
+  { q: 'In five years, you want to be…', a: [
+    { t: 'The one who designs the platform.', k: 'architect' },
+    { t: 'The founder who shipped the thing.', k: 'shipper' },
+    { t: 'The one trusted with the crown jewels.', k: 'guardian' },
+    { t: "The go-to when it's truly broken.", k: 'firefighter' },
+  ] },
+];
+
+const RESULTS = {
+  architect:   { name: 'The Architect',   emoji: '🏛️', tagline: 'You see the whole board.',        blurb: 'You design for change — clear boundaries, named trade-offs, systems that outlive the sprint. You think in interfaces and invariants, and you write the decision down so the next person understands why.', color: '#02aab0' },
+  shipper:     { name: 'The Shipper',      emoji: '🚀', tagline: 'Done beats perfect.',              blurb: 'You get real software in front of real users fast, then let the data guide the next move. Momentum is your superpower — you turn ideas into things people can actually touch.', color: '#f5a524' },
+  guardian:    { name: 'The Guardian',     emoji: '🛡️', tagline: "You think in threats.",            blurb: 'Least privilege, audit trails, and “what could go wrong?” are your love language. You build the quiet reliability everyone takes for granted — until they need it.', color: '#0aa06e' },
+  scientist:   { name: 'The Scientist',    emoji: '🔬', tagline: "You don't guess — you measure.",   blurb: 'Every bug is a hypothesis, every optimization a benchmark. You chase root cause, not symptoms, and you trust evidence over opinions (including your own).', color: '#6c8cff' },
+  craftsman:   { name: 'The Craftsman',    emoji: '🎨', tagline: 'Code is communication.',           blurb: 'You care about the reader, the developer experience, and the tiny details that make software feel good. Elegance, to you, is a feature — not a luxury.', color: '#c77dff' },
+  firefighter: { name: 'The Firefighter',  emoji: '🚒', tagline: 'Chaos is your calm.',              blurb: "When prod is burning, you're the steady hand that reproduces, isolates and fixes. Pressure sharpens you — you love the puzzle no one else wants to touch.", color: '#ff6b6b' },
+};
+
+const data = { questions: QUESTIONS, results: RESULTS };
+---
+
+<BaseLayout
+  title="Dev Persona — what kind of engineer are you?"
+  description="A tech personality test — answer 10 quick questions and discover your engineer archetype: Architect, Shipper, Guardian, Scientist, Craftsman or Firefighter. Built by Ksatria Bintang Samudra."
+  jsonLd={gameLd}
+  lockZoom
+>
+  <main class="tool-page persona-page">
+    <div class="tool-page__container">
+      <!-- INTRO -->
+      <section class="persona__screen" data-screen="intro">
+        <p class="persona__eyebrow">Personality test · 10 questions · ~2 min</p>
+        <h1 class="persona__title">What kind of <span class="persona__accent">engineer</span> are you?</h1>
+        <p class="persona__sub">Ten honest questions map how you think, build and break things — then reveal your engineer archetype. No sign-up, all in your browser.</p>
+        <div class="persona__chips">
+          <span class="persona__chip">🏛️ Architect</span><span class="persona__chip">🚀 Shipper</span><span class="persona__chip">🛡️ Guardian</span>
+          <span class="persona__chip">🔬 Scientist</span><span class="persona__chip">🎨 Craftsman</span><span class="persona__chip">🚒 Firefighter</span>
+        </div>
+        <button class="persona__btn persona__btn--primary" type="button" data-start>Start the test</button>
+      </section>
+
+      <!-- QUIZ -->
+      <section class="persona__screen" data-screen="quiz" hidden>
+        <div class="persona__progress"><div class="persona__progress-bar" data-progress></div></div>
+        <p class="persona__count"><span data-qnum>1</span> <span class="persona__count-total">/ 10</span></p>
+        <h2 class="persona__q" data-question>…</h2>
+        <div class="persona__options" data-options></div>
+        <button class="persona__back" type="button" data-back hidden>← previous</button>
+      </section>
+
+      <!-- RESULT -->
+      <section class="persona__screen" data-screen="result" hidden>
+        <p class="persona__eyebrow" data-result-eyebrow>Your engineer archetype</p>
+        <div class="persona__result-hero">
+          <span class="persona__result-emoji" data-result-emoji>🏛️</span>
+          <h2 class="persona__result-name" data-result-name>The Architect</h2>
+          <p class="persona__result-tagline" data-result-tagline>You see the whole board.</p>
+        </div>
+        <p class="persona__result-blurb" data-result-blurb></p>
+        <div class="persona__bars" data-bars></div>
+        <div class="persona__controls">
+          <button class="persona__btn persona__btn--primary" type="button" data-share>Share result</button>
+          <button class="persona__btn" type="button" data-again>Play again</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script type="application/json" id="persona-data" set:html={JSON.stringify(data)}></script>
+  <script>
+    interface Opt { t: string; k: string }
+    interface Q { q: string; a: Opt[] }
+    interface Res { name: string; emoji: string; tagline: string; blurb: string; color: string }
+
+    const el = document.getElementById('persona-data');
+    if (el) {
+      const data = JSON.parse(el.textContent || '{}') as { questions: Q[]; results: Record<string, Res> };
+      const Q = data.questions, R = data.results;
+      const $ = <T extends HTMLElement>(s: string) => document.querySelector(s) as T;
+      const screen = (name: string) => document.querySelectorAll<HTMLElement>('[data-screen]').forEach((s) => (s.hidden = s.dataset.screen !== name));
+
+      const answers: string[] = [];
+      let i = 0;
+
+      function renderQ() {
+        const q = Q[i];
+        $('[data-qnum]').textContent = String(i + 1);
+        ($('[data-progress]') as HTMLElement).style.width = `${(i / Q.length) * 100}%`;
+        $('[data-question]').textContent = q.q;
+        const box = $('[data-options]');
+        box.innerHTML = '';
+        q.a.forEach((opt, idx) => {
+          const b = document.createElement('button');
+          b.className = 'persona__opt';
+          b.type = 'button';
+          b.style.setProperty('--i', String(idx));
+          b.innerHTML = `<span class="persona__opt-key">${String.fromCharCode(65 + idx)}</span><span>${opt.t}</span>`;
+          if (answers[i] === opt.k && (b.dataset.k = opt.k)) b.classList.add('is-picked');
+          b.dataset.k = opt.k;
+          b.addEventListener('click', () => choose(opt.k));
+          box.appendChild(b);
+        });
+        ($('[data-back]') as HTMLElement).hidden = i === 0;
+      }
+
+      function choose(k: string) {
+        answers[i] = k;
+        const box = $('[data-options]');
+        box.querySelectorAll<HTMLElement>('.persona__opt').forEach((b) => b.classList.toggle('is-picked', b.dataset.k === k));
+        box.classList.add('is-leaving');
+        setTimeout(() => {
+          box.classList.remove('is-leaving');
+          if (i < Q.length - 1) { i++; renderQ(); }
+          else showResult();
+        }, 260);
+      }
+
+      function showResult() {
+        ($('[data-progress]') as HTMLElement).style.width = '100%';
+        const tally: Record<string, number> = {};
+        for (const k of Object.keys(R)) tally[k] = 0;
+        answers.forEach((a) => (tally[a] = (tally[a] || 0) + 1));
+        const ranked = Object.entries(tally).sort((a, b) => b[1] - a[1]);
+        const topKey = ranked[0][0];
+        const res = R[topKey];
+
+        $('[data-result-emoji]').textContent = res.emoji;
+        const nameEl = $('[data-result-name]');
+        nameEl.textContent = res.name;
+        nameEl.style.color = res.color;
+        $('[data-result-tagline]').textContent = res.tagline;
+        $('[data-result-blurb]').textContent = res.blurb;
+
+        const bars = $('[data-bars]');
+        bars.innerHTML = '';
+        ranked.forEach(([k, n], idx) => {
+          const pct = Math.round((n / Q.length) * 100);
+          const row = document.createElement('div');
+          row.className = 'persona__bar' + (k === topKey ? ' is-top' : '');
+          row.innerHTML = `<span class="persona__bar-label">${R[k].emoji} ${R[k].name.replace('The ', '')}</span>
+            <span class="persona__bar-track"><span class="persona__bar-fill" style="--c:${R[k].color}"></span></span>
+            <span class="persona__bar-pct">${pct}%</span>`;
+          bars.appendChild(row);
+          requestAnimationFrame(() => setTimeout(() => {
+            (row.querySelector('.persona__bar-fill') as HTMLElement).style.width = `${pct}%`;
+          }, 120 + idx * 90));
+        });
+
+        (document.querySelector('[data-share]') as HTMLElement).dataset.text =
+          `I'm ${res.name} ${res.emoji} — ${res.tagline} What kind of engineer are you?`;
+        screen('result');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      $('[data-start]').addEventListener('click', () => { i = 0; answers.length = 0; renderQ(); screen('quiz'); });
+      $('[data-back]').addEventListener('click', () => { if (i > 0) { i--; renderQ(); } });
+      $('[data-again]').addEventListener('click', () => { i = 0; answers.length = 0; renderQ(); screen('quiz'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      document.querySelector('[data-share]')?.addEventListener('click', async (e) => {
+        const text = (e.currentTarget as HTMLElement).dataset.text || '';
+        const url = 'https://ksatriabintangsamudra.com/games/dev-persona/';
+        const btn = e.currentTarget as HTMLButtonElement;
+        try {
+          if (navigator.share) { await navigator.share({ title: 'Dev Persona', text, url }); }
+          else { await navigator.clipboard.writeText(`${text} ${url}`); const p = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(() => (btn.textContent = p), 1500); }
+        } catch { /* dismissed */ }
+      });
+
+      renderQ();
+    }
+  </script>
+</BaseLayout>

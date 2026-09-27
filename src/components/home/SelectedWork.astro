@@ -23,7 +23,7 @@ const filters = filterOrder.filter((c) => used.has(c));
       ))}
     </div>
 
-    <div class="sr sr--scale project-grid" data-project-grid>
+    <div class="sr sr--scale project-grid project-grid--capped" data-project-grid>
       {projects.map((project, i) => (
         <div class="sr__child" data-category={project.data.category} style={`--sr-i:${i};transition-delay:${i * 120}ms`}>
           <ProjectCard project={project} />
@@ -49,6 +49,7 @@ const filters = filterOrder.filter((c) => used.has(c));
     bar.addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
       if (!btn) return;
+      grid.classList.remove('project-grid--capped'); // once they filter, show every match
       const filter = btn.dataset.filter;
       bar.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((b) => {
         const active = b === btn;

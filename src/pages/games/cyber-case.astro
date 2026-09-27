@@ -1,0 +1,287 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_cyber-case.scss';
+
+const gameLd = {
+  '@context': 'https://schema.org',
+  '@type': ['SoftwareApplication', 'Game'],
+  name: 'Cyber Case — a security investigation game',
+  url: `${site.url}/games/cyber-case/`,
+  applicationCategory: 'GameApplication',
+  operatingSystem: 'Any (web browser)',
+  description: 'A cyber-security detective game: inspect logs, spot indicators of compromise, and solve the breach using real incident-response thinking.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  author: { '@id': `${site.url}/#person` },
+  inLanguage: 'en',
+};
+
+const CASES = [
+  {
+    id: 'CASE-001',
+    title: 'The 3 A.M. Payroll',
+    difficulty: 'Analyst',
+    hook: 'A payroll batch was changed while the CFO slept. Find out how.',
+    brief:
+      '02:14 — a payroll run was modified from the admin console. Three employee bank accounts were swapped moments before the transfer. The CFO swears she was asleep. Four evidence sources are open. Inspect them, then file your report.',
+    evidence: [
+      { icon: '🔐', label: 'Auth logs', preview: 'admin@corp — login SUCCESS 02:11', detail: 'admin@corp login SUCCESS at 02:11 from 203.0.113.44 (geo: Lagos, NG).\nEvery prior login for this account: 08:00–18:00, from Jakarta, ID.\nMFA challenge recorded for this session: NONE.', flag: true },
+      { icon: '💸', label: 'Payroll audit', preview: '3 bank accounts changed 02:14', detail: '02:14 — three employees had their payout bank account changed.\nAll three new accounts are at the same bank, all opened within the last 5 days.\nChange made by: admin@corp.', flag: true },
+      { icon: '📧', label: 'Email gateway', preview: 'Link clicked 01:52', detail: "01:52 — admin@corp opened an email 'Urgent: re-verify your payroll access' and clicked the link.\nDestination: corp-payroll-verify[.]com — domain registered 2 days ago, hosted behind Cloudflare, mimics the real login page.", flag: true },
+      { icon: '💻', label: 'Endpoint scan', preview: 'Laptop clean, new device seen', detail: "Admin's laptop: no malware, no persistence, disk clean.\nBut the admin session was resumed from a brand-new device fingerprint at 02:09 — two minutes before the 02:11 login.", flag: false },
+    ],
+    questions: [
+      { q: 'What was the initial attack vector?', options: ['Malware planted on the CFO’s laptop', 'A phishing email that harvested the admin’s credentials', 'SQL injection in the payroll app', 'A malicious insider on the finance team'], answer: 1, explain: 'The 01:52 email → look-alike domain registered 2 days ago is classic credential phishing. The laptop was clean; the creds were stolen, then used from Lagos.' },
+      { q: 'Why did the login at 02:11 succeed and not stop the attacker?', options: ['The firewall was down', 'The password was too short', 'MFA was not enforced on the admin account', 'The audit log was disabled'], answer: 2, explain: 'Stolen credentials alone were enough — the auth log shows NO MFA challenge. Phishing-resistant MFA would have blocked a login from an unknown device in another country.' },
+      { q: 'Which is the strongest Indicator of Compromise (IOC) to block right now?', options: ['The CFO’s job title', 'The domain corp-payroll-verify[.]com and the 203.0.113.44 login', 'The company’s public website', 'The payroll software version'], answer: 1, explain: 'Block the phishing domain and the attacker IP/geo, and force a session + password reset. Those are the concrete artifacts tied to this attack.' },
+      { q: 'Which single control would most likely have prevented this?', options: ['Longer passwords', 'Antivirus on every laptop', 'A VPN for all staff', 'Phishing-resistant MFA (passkeys / WebAuthn) on admin accounts'], answer: 3, explain: 'Passkeys are bound to the real domain, so a phished login on a look-alike site simply cannot complete. It defeats the whole chain.' },
+    ],
+  },
+  {
+    id: 'CASE-002',
+    title: 'The Leaky Endpoint',
+    difficulty: 'Senior',
+    hook: 'A researcher says customer invoices are public. Nothing was "hacked."',
+    brief:
+      'A security researcher emails you: your customers’ invoices are downloadable by anyone, no login required. No alarms fired, no malware, no breach of a server. The hole is in your own code and config. Inspect the evidence and diagnose it.',
+    evidence: [
+      { icon: '🌐', label: 'API logs', preview: 'GET /api/invoices/1001 → 200', detail: 'GET /api/invoices/1001 returns a full invoice — with NO auth token in the request.\nSequential IDs /api/invoices/1000 … 9999 all return 200 OK.\nNo per-user ownership check is performed.', flag: true },
+      { icon: '🪣', label: 'Cloud storage', preview: 'Bucket ACL = public-read', detail: "Object store 'invoices-prod' has ACL public-read.\nEnabled 3 weeks ago in a commit titled 'quick fix for the demo'.", flag: true },
+      { icon: '🌿', label: 'Git history', preview: "commit: 'disable auth for testing'", detail: "Commit on main: 'temp: disable auth middleware for testing'.\nMerged 3 weeks ago. Never reverted. Deployed to production.", flag: true },
+      { icon: '🛡️', label: 'WAF / CDN', preview: '40k requests from 1 IP', detail: 'No rate limiting configured.\n40,000 requests from a single IP hit /api/invoices/* in 10 minutes — a clean sequential sweep from 1000 upward.', flag: false },
+    ],
+    questions: [
+      { q: 'What class of vulnerability is this?', options: ['Cross-site scripting (XSS)', 'Broken access control — objects served without an ownership check (IDOR)', 'Buffer overflow', 'Denial of service'], answer: 1, explain: 'Any user can read any invoice by changing the ID, with no authorization check. That is Broken Access Control / IDOR — #1 on the OWASP Top 10.' },
+      { q: 'What is the root cause in the timeline?', options: ['A zero-day in the framework', 'A ‘disable auth for testing’ commit shipped to production and never reverted', 'The database was misconfigured by the vendor', 'An expired TLS certificate'], answer: 1, explain: 'The git history is the smoking gun: auth middleware was switched off for testing and rode all the way to prod. Config (public bucket) made it worse.' },
+      { q: 'What allowed mass data theft rather than a single leak?', options: ['Weak encryption', 'No rate limiting, so IDs could be enumerated sequentially', 'A slow database', 'Too many admins'], answer: 1, explain: '40k requests from one IP walked the IDs 1000→9999 unthrottled. Rate limiting + anomaly detection would have caught the sweep early.' },
+      { q: 'First action to stop the bleeding?', options: ['Email all customers an apology', 'Re-enable authorization, make the bucket private, then rotate/scope exposed data', 'Rebuild the whole app', 'Turn off the website for a month'], answer: 1, explain: 'Contain first: restore the auth check and lock the bucket to kill public access immediately, then assess what was exposed and notify per policy.' },
+    ],
+  },
+];
+
+const data = { cases: CASES };
+---
+
+<BaseLayout
+  title="Cyber Case — a security investigation game"
+  description="Play security analyst: inspect the logs, spot the indicators of compromise, and crack the breach. A cyber-security detective game with real incident-response thinking — by Ksatria Bintang Samudra."
+  jsonLd={gameLd}
+  lockZoom
+>
+  <main class="tool-page cc-page">
+    <div class="tool-page__container">
+      <!-- SELECT -->
+      <section class="cc__screen" data-screen="select">
+        <p class="cc__eyebrow">// SECURITY OPS · CASE FILES</p>
+        <h1 class="cc__title">Cyber <span class="cc__accent">Case</span></h1>
+        <p class="cc__sub">You're the on-call security analyst. Open a case, inspect the evidence, find the indicators of compromise, and file your verdict. Real incident-response thinking — no experience required.</p>
+        <div class="cc__cases" data-cases></div>
+      </section>
+
+      <!-- INVESTIGATE -->
+      <section class="cc__screen" data-screen="investigate" hidden>
+        <button class="cc__back" type="button" data-to-select>← case files</button>
+        <div class="cc__filehead">
+          <span class="cc__fileno" data-case-id>CASE-001</span>
+          <span class="cc__diff" data-case-diff>Analyst</span>
+        </div>
+        <h2 class="cc__casetitle" data-case-title>The 3 A.M. Payroll</h2>
+        <div class="cc__brief"><span class="cc__brief-tag">BRIEFING</span><p data-case-brief></p></div>
+        <h3 class="cc__section">Evidence <span class="cc__hint" data-evidence-count>0 / 4 inspected</span></h3>
+        <div class="cc__evidence" data-evidence></div>
+        <button class="cc__btn cc__btn--primary" type="button" data-solve>Solve the case →</button>
+      </section>
+
+      <!-- QUESTIONS -->
+      <section class="cc__screen" data-screen="quiz" hidden>
+        <div class="cc__filehead"><span class="cc__fileno" data-q-caseid>CASE-001</span><span class="cc__diff">DEDUCTION</span></div>
+        <div class="cc__progress"><div class="cc__progress-bar" data-q-progress></div></div>
+        <p class="cc__qcount"><span data-q-num>1</span> / <span data-q-total>4</span></p>
+        <h2 class="cc__q" data-q-text>…</h2>
+        <div class="cc__options" data-q-options></div>
+        <div class="cc__feedback" data-q-feedback hidden>
+          <p class="cc__feedback-verdict" data-q-verdict></p>
+          <p class="cc__feedback-explain" data-q-explain></p>
+          <button class="cc__btn cc__btn--primary" type="button" data-q-next>Continue →</button>
+        </div>
+      </section>
+
+      <!-- VERDICT -->
+      <section class="cc__screen" data-screen="verdict" hidden>
+        <div class="cc__stamp" data-stamp>CASE CLOSED</div>
+        <p class="cc__rank-label">Your rank</p>
+        <h2 class="cc__rank" data-rank>Lead Investigator</h2>
+        <p class="cc__score" data-score>4 / 4 correct</p>
+        <div class="cc__report" data-report></div>
+        <div class="cc__controls">
+          <button class="cc__btn cc__btn--primary" type="button" data-next-case>Next case →</button>
+          <button class="cc__btn" type="button" data-replay>Replay this case</button>
+          <button class="cc__btn" type="button" data-share>Share</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script type="application/json" id="cc-data" set:html={JSON.stringify(data)}></script>
+  <script>
+    interface Ev { icon: string; label: string; preview: string; detail: string; flag: boolean }
+    interface Qn { q: string; options: string[]; answer: number; explain: string }
+    interface Case { id: string; title: string; difficulty: string; hook: string; brief: string; evidence: Ev[]; questions: Qn[] }
+
+    const el = document.getElementById('cc-data');
+    if (el) {
+      const { cases } = JSON.parse(el.textContent || '{}') as { cases: Case[] };
+      const $ = <T extends HTMLElement>(s: string) => document.querySelector(s) as T;
+      const screen = (n: string) => document.querySelectorAll<HTMLElement>('[data-screen]').forEach((s) => (s.hidden = s.dataset.screen !== n));
+
+      let ci = 0; // case index
+      let qi = 0; // question index
+      let correct = 0;
+      const given: number[] = [];
+      let inspected = new Set<number>();
+
+      // --- case select ---
+      const casesBox = $('[data-cases]');
+      cases.forEach((c, idx) => {
+        const card = document.createElement('button');
+        card.className = 'cc-case';
+        card.type = 'button';
+        card.style.setProperty('--i', String(idx));
+        card.innerHTML = `<span class="cc-case__no">${c.id}</span>
+          <span class="cc-case__diff">${c.difficulty}</span>
+          <span class="cc-case__title">${c.title}</span>
+          <span class="cc-case__hook">${c.hook}</span>
+          <span class="cc-case__go">Open case →</span>`;
+        card.addEventListener('click', () => openCase(idx));
+        casesBox.appendChild(card);
+      });
+
+      function openCase(idx: number) {
+        ci = idx; qi = 0; correct = 0; given.length = 0; inspected = new Set();
+        const c = cases[idx];
+        $('[data-case-id]').textContent = c.id;
+        $('[data-case-diff]').textContent = c.difficulty;
+        $('[data-case-title]').textContent = c.title;
+        $('[data-case-brief]').textContent = c.brief;
+        const box = $('[data-evidence]');
+        box.innerHTML = '';
+        c.evidence.forEach((ev, i) => {
+          const card = document.createElement('button');
+          card.className = 'cc-ev';
+          card.type = 'button';
+          card.style.setProperty('--i', String(i));
+          card.innerHTML = `<span class="cc-ev__icon">${ev.icon}</span>
+            <span class="cc-ev__label">${ev.label}</span>
+            <span class="cc-ev__preview">${ev.preview}</span>
+            <span class="cc-ev__detail">${ev.detail.replace(/\n/g, '<br>')}</span>
+            <span class="cc-ev__tag">Tap to inspect</span>`;
+          card.addEventListener('click', () => {
+            const open = card.classList.toggle('is-open');
+            if (open) { inspected.add(i); card.querySelector('.cc-ev__tag')!.textContent = 'Inspected ✓'; }
+            $('[data-evidence-count]').textContent = `${inspected.size} / ${c.evidence.length} inspected`;
+          });
+          box.appendChild(card);
+        });
+        $('[data-evidence-count]').textContent = `0 / ${c.evidence.length} inspected`;
+        screen('investigate');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // --- questions ---
+      function startQuiz() {
+        qi = 0; correct = 0; given.length = 0;
+        $('[data-q-caseid]').textContent = cases[ci].id;
+        $('[data-q-total]').textContent = String(cases[ci].questions.length);
+        renderQ();
+        screen('quiz');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function renderQ() {
+        const c = cases[ci], q = c.questions[qi];
+        $('[data-q-num]').textContent = String(qi + 1);
+        ($('[data-q-progress]') as HTMLElement).style.width = `${(qi / c.questions.length) * 100}%`;
+        $('[data-q-text]').textContent = q.q;
+        ($('[data-q-feedback]') as HTMLElement).hidden = true;
+        const box = $('[data-q-options]');
+        box.hidden = false;
+        box.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const b = document.createElement('button');
+          b.className = 'cc-opt';
+          b.type = 'button';
+          b.style.setProperty('--i', String(idx));
+          b.innerHTML = `<span class="cc-opt-key">${String.fromCharCode(65 + idx)}</span><span>${opt}</span>`;
+          b.addEventListener('click', () => answer(idx));
+          box.appendChild(b);
+        });
+      }
+
+      function answer(idx: number) {
+        const c = cases[ci], q = c.questions[qi];
+        given[qi] = idx;
+        const ok = idx === q.answer;
+        if (ok) correct++;
+        const box = $('[data-q-options]');
+        box.querySelectorAll<HTMLElement>('.cc-opt').forEach((b, i) => {
+          b.classList.add('is-locked');
+          if (i === q.answer) b.classList.add('is-correct');
+          else if (i === idx) b.classList.add('is-wrong');
+        });
+        const fb = $('[data-q-feedback]');
+        $('[data-q-verdict]').textContent = ok ? '✓ Correct' : '✗ Not quite';
+        $('[data-q-verdict]').className = 'cc__feedback-verdict ' + (ok ? 'is-ok' : 'is-bad');
+        $('[data-q-explain]').textContent = q.explain;
+        (fb as HTMLElement).hidden = false;
+        ($('[data-q-next]') as HTMLElement).textContent = qi < c.questions.length - 1 ? 'Continue →' : 'See verdict →';
+        fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      $('[data-q-next]').addEventListener('click', () => {
+        if (qi < cases[ci].questions.length - 1) { qi++; renderQ(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        else showVerdict();
+      });
+
+      // --- verdict ---
+      function showVerdict() {
+        const c = cases[ci], total = c.questions.length;
+        const ranks = ['Rookie — review the evidence again', 'Junior Analyst', 'Analyst', 'Senior Analyst', 'Lead Investigator'];
+        $('[data-rank]').textContent = ranks[correct] ?? ranks[0];
+        $('[data-score]').textContent = `${correct} / ${total} correct`;
+        const rep = $('[data-report]');
+        rep.innerHTML = '';
+        c.questions.forEach((q, i) => {
+          const ok = given[i] === q.answer;
+          const row = document.createElement('div');
+          row.className = 'cc-rep' + (ok ? ' is-ok' : ' is-bad');
+          row.innerHTML = `<span class="cc-rep__mark">${ok ? '✓' : '✗'}</span>
+            <span class="cc-rep__body"><b>${q.q}</b><br><span class="cc-rep__ans">${q.options[q.answer]}</span></span>`;
+          rep.appendChild(row);
+        });
+        (document.querySelector('[data-share]') as HTMLElement).dataset.text =
+          `I cracked "${c.title}" (${correct}/${total}) on Bintang's Cyber Case. Think you can solve the breach?`;
+        (document.querySelector('[data-next-case]') as HTMLElement).hidden = cases.length < 2;
+        screen('verdict');
+        const stamp = $('[data-stamp]');
+        stamp.classList.remove('is-in'); void stamp.offsetWidth; stamp.classList.add('is-in');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // --- wiring ---
+      $('[data-solve]').addEventListener('click', startQuiz);
+      $('[data-to-select]').addEventListener('click', () => screen('select'));
+      $('[data-replay]').addEventListener('click', () => openCase(ci));
+      $('[data-next-case]').addEventListener('click', () => openCase((ci + 1) % cases.length));
+      document.querySelector('[data-share]')?.addEventListener('click', async (e) => {
+        const btn = e.currentTarget as HTMLButtonElement;
+        const text = btn.dataset.text || '';
+        const url = 'https://ksatriabintangsamudra.com/games/cyber-case/';
+        try {
+          if (navigator.share) await navigator.share({ title: 'Cyber Case', text, url });
+          else { await navigator.clipboard.writeText(`${text} ${url}`); const p = btn.textContent; btn.textContent = 'Copied ✓'; setTimeout(() => (btn.textContent = p), 1500); }
+        } catch { /* dismissed */ }
+      });
+    }
+  </script>
+</BaseLayout>

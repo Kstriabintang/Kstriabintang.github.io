@@ -1,0 +1,79 @@
+// Dev Persona — tech personality test. Animated, mobile-first. Matches the site design system.
+
+.persona-page {padding-bottom:4rem; touch-action:manipulation}
+.persona-page * {-webkit-tap-highlight-color:transparent}
+.persona-page .tool-page__container {max-width:680px}
+
+.persona__screen {animation:persona-in .45s cubic-bezier(.16,1,.3,1)}
+@keyframes persona-in {from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+
+.persona__eyebrow {font-family:ui-monospace,Menlo,monospace; font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; color:#02aab0; margin:0 0 1rem; text-align:center}
+
+/* ---- intro ---- */
+.persona__title {font-family:Fraunces,Georgia,serif; font-size:clamp(2.6rem,7vw,3.8rem); font-weight:600; line-height:1.1; color:var(--text-primary); margin:0 0 1.2rem; text-align:center}
+.persona__accent {background:linear-gradient(120deg,#02aab0,#00cdac); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
+.persona__sub {font-size:1.6rem; line-height:1.6; color:var(--text-secondary); text-align:center; max-width:52ch; margin:0 auto 2rem}
+.persona__chips {display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-bottom:2.4rem}
+.persona__chip {font-family:ui-monospace,Menlo,monospace; font-size:1.15rem; color:var(--text-secondary); border:1px solid var(--card-border); border-radius:50px; padding:.4rem 1rem; background:var(--card-bg)}
+
+.persona__btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem; cursor:pointer;
+  font-family:ui-monospace,Menlo,monospace; font-size:1.2rem; font-weight:600; letter-spacing:.04em;
+  padding:1rem 2rem; border-radius:50px; border:1px solid var(--card-border); background:transparent; color:var(--text-primary);
+  transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.persona__btn:hover {transform:translateY(-2px); border-color:#02aab080}
+.persona__btn--primary {color:#04121a; background:linear-gradient(135deg,#02aab0,#00cdac); border-color:transparent; box-shadow:0 10px 28px rgba(2,170,176,.3); font-weight:700}
+.persona__screen[data-screen="intro"] {text-align:center}
+.persona__screen[data-screen="intro"] .persona__btn {min-width:220px}
+
+/* ---- quiz ---- */
+.persona__progress {height:6px; border-radius:50px; background:var(--card-border); overflow:hidden; margin:0 0 1.6rem}
+.persona__progress-bar {height:100%; width:0; border-radius:50px; background:linear-gradient(90deg,#02aab0,#00cdac); transition:width .4s cubic-bezier(.16,1,.3,1)}
+.persona__count {font-family:ui-monospace,Menlo,monospace; font-size:1.2rem; color:#02aab0; font-weight:700; margin:0 0 .8rem}
+.persona__count-total {color:var(--text-secondary); opacity:.7}
+.persona__q {font-family:Fraunces,Georgia,serif; font-size:clamp(2rem,5vw,2.7rem); font-weight:600; line-height:1.25; color:var(--text-primary); margin:0 0 1.8rem; min-height:2.4em}
+.persona__options {display:flex; flex-direction:column; gap:.9rem; transition:opacity .22s ease, transform .22s ease}
+.persona__options.is-leaving {opacity:0; transform:translateX(-16px)}
+.persona__opt {
+  display:flex; align-items:center; gap:1rem; width:100%; text-align:left; cursor:pointer;
+  padding:1.15rem 1.3rem; border-radius:14px; border:1px solid var(--card-border); background:var(--card-bg);
+  font-size:1.5rem; line-height:1.4; color:var(--text-primary);
+  transition:transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  animation:persona-opt-in .4s cubic-bezier(.16,1,.3,1) both; animation-delay:calc(var(--i) * .06s);
+}
+@keyframes persona-opt-in {from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.persona__opt:hover {transform:translateY(-2px); border-color:#02aab080; box-shadow:0 8px 22px rgba(0,0,0,.1)}
+.persona__opt.is-picked {border-color:#02aab0; background:#02aab016; box-shadow:0 0 0 1px #02aab0 inset}
+.persona__opt-key {
+  flex-shrink:0; display:grid; place-items:center; width:34px; height:34px; border-radius:9px;
+  font-family:ui-monospace,Menlo,monospace; font-size:1.2rem; font-weight:700; color:#02aab0;
+  background:#02aab016; border:1px solid #02aab033;
+}
+.persona__opt.is-picked .persona__opt-key {background:#02aab0; color:#04121a; border-color:transparent}
+.persona__back {margin:1.6rem auto 0; display:block; background:none; border:none; cursor:pointer; font-family:ui-monospace,Menlo,monospace; font-size:1.15rem; color:var(--text-secondary)}
+.persona__back:hover {color:#02aab0}
+
+/* ---- result ---- */
+.persona__screen[data-screen="result"] {text-align:center}
+.persona__result-hero {margin:1rem 0 1.6rem; animation:persona-pop .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes persona-pop {0%{opacity:0; transform:scale(.7)} 100%{opacity:1; transform:scale(1)}}
+.persona__result-emoji {font-size:5rem; line-height:1; display:block; margin-bottom:.6rem; filter:drop-shadow(0 8px 20px rgba(0,0,0,.3))}
+.persona__result-name {font-family:Fraunces,Georgia,serif; font-size:clamp(2.8rem,8vw,3.8rem); font-weight:700; margin:0 0 .4rem; line-height:1.05}
+.persona__result-tagline {font-family:ui-monospace,Menlo,monospace; font-size:1.4rem; color:var(--text-secondary); margin:0; font-style:italic}
+.persona__result-blurb {font-size:1.6rem; line-height:1.65; color:var(--text-primary); max-width:50ch; margin:0 auto 2.4rem; text-align:center}
+
+.persona__bars {display:flex; flex-direction:column; gap:.8rem; text-align:left; max-width:460px; margin:0 auto 2.4rem}
+.persona__bar {display:grid; grid-template-columns:9.5rem 1fr 3rem; align-items:center; gap:.8rem; font-family:ui-monospace,Menlo,monospace; font-size:1.15rem}
+.persona__bar-label {color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.persona__bar.is-top .persona__bar-label {color:var(--text-primary); font-weight:700}
+.persona__bar-track {height:10px; border-radius:50px; background:var(--card-border); overflow:hidden}
+.persona__bar-fill {display:block; height:100%; width:0; border-radius:50px; background:var(--c,#02aab0); transition:width .7s cubic-bezier(.16,1,.3,1)}
+.persona__bar-pct {text-align:right; color:var(--text-secondary)}
+.persona__bar.is-top .persona__bar-pct {color:var(--text-primary); font-weight:700}
+
+.persona__controls {display:flex; gap:.9rem; justify-content:center; flex-wrap:wrap}
+
+@media(max-width:34em) {
+  .persona__bar {grid-template-columns:7.5rem 1fr 2.6rem; font-size:1.05rem}
+}

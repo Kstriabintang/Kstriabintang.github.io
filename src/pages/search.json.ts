@@ -28,6 +28,8 @@ const pages: SearchItem[] = [
   { title: 'IT Quiz — levelled tech exam', href: '/games/it-quiz/', kind: 'Page', keywords: 'quiz game exam test it tech levels junior mid senior questions play' },
   { title: 'Chess vs Claude — 3D chess game', href: '/games/chess/', kind: 'Page', keywords: 'chess game 3d ai claude minimax board play catur' },
   { title: 'Tech Crossword — a developer TTS puzzle', href: '/games/crossword/', kind: 'Page', keywords: 'crossword tts puzzle word game tech developer play teka teki silang' },
+  { title: 'Dev Persona — what kind of engineer are you?', href: '/games/dev-persona/', kind: 'Page', keywords: 'personality test quiz tech psychology engineer archetype architect shipper guardian game play' },
+  { title: 'Cyber Case — a security investigation game', href: '/games/cyber-case/', kind: 'Page', keywords: 'cyber security game investigation detective criminal case incident forensics analyst breach hacker audit play' },
   { title: 'Notebook', href: '/blog/', kind: 'Page', keywords: 'blog writing articles posts notes notebook' },
   { title: 'Glossary', href: '/glossary/', kind: 'Page', keywords: 'glossary terms definitions ai llm rag embedding qris rls edge define what is' },
   { title: 'Cheatsheets', href: '/cheatsheets/', kind: 'Page', keywords: 'cheatsheet quick reference git http docker commands' },
