@@ -1,0 +1,300 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import data from '../../data/crossword.json';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_crossword.scss';
+
+const grid = data.grid as (string | null)[][];
+const numbers = data.numbers as number[][];
+const across = data.across as { num: number; row: number; col: number; clue: string }[];
+const down = data.down as { num: number; row: number; col: number; clue: string }[];
+---
+
+<BaseLayout
+  title="Tech Crossword — a developer's TTS puzzle"
+  description="A hand-built tech crossword (TTS) — 15 developer and infrastructure words to solve, right in your browser. Tap a cell, type, and check your answers. By Ksatria Bintang Samudra."
+  lockZoom
+>
+  <main class="tool-page cw-page">
+    <div class="tool-page__container">
+      <header class="cw__header">
+        <h1 class="cw__title">Tech <span class="cw__accent">Crossword</span></h1>
+        <p class="cw__sub">Fifteen words from a developer's day — React to Redis, proxy to pixel. Tap a square, type your answer.</p>
+      </header>
+
+      <div class="cw__cluebar" data-cluebar>
+        <button class="cw__cluebar-arrow" type="button" data-clue-prev aria-label="Previous clue">‹</button>
+        <p class="cw__cluebar-text"><span class="cw__cluebar-tag" data-clue-tag>1 Across</span><span data-clue-text>Tap a square to begin.</span></p>
+        <button class="cw__cluebar-arrow" type="button" data-clue-next aria-label="Next clue">›</button>
+      </div>
+
+      <div class="cw__stage">
+        <div class="cw__board" style={`--cols:${data.cols}; --rows:${data.rows}`} data-board>
+          {grid.map((row, r) =>
+            row.map((ch, c) =>
+              ch === null ? (
+                <div class="cw-cell cw-cell--block" aria-hidden="true"></div>
+              ) : (
+                <div class="cw-cell" data-cell data-r={r} data-c={c} role="button" tabindex="0" aria-label={`Row ${r + 1} column ${c + 1}`}>
+                  {numbers[r][c] > 0 && <span class="cw-cell__num">{numbers[r][c]}</span>}
+                  <span class="cw-cell__letter" data-letter></span>
+                </div>
+              )
+            )
+          )}
+        </div>
+        <input class="cw__ghost-input" data-input type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-hidden="true" tabindex="-1" />
+      </div>
+
+      <div class="cw__controls">
+        <button class="cw__btn cw__btn--primary" type="button" data-check>Check</button>
+        <button class="cw__btn" type="button" data-reveal-word>Reveal word</button>
+        <button class="cw__btn" type="button" data-clear>Clear</button>
+      </div>
+      <p class="cw__note" data-note>15 words · 0 solved</p>
+
+      <div class="cw__clues">
+        <section class="cw__clue-group">
+          <h2 class="cw__clue-heading">Across</h2>
+          <ul class="cw__clue-list">
+            {across.map((a) => (
+              <li>
+                <button class="cw__clue" type="button" data-goto data-dir="across" data-r={a.row} data-c={a.col}>
+                  <b>{a.num}</b><span>{a.clue}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section class="cw__clue-group">
+          <h2 class="cw__clue-heading">Down</h2>
+          <ul class="cw__clue-list">
+            {down.map((d) => (
+              <li>
+                <button class="cw__clue" type="button" data-goto data-dir="down" data-r={d.row} data-c={d.col}>
+                  <b>{d.num}</b><span>{d.clue}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <div class="cw-modal" data-modal hidden>
+      <div class="cw-modal__backdrop" data-modal-close></div>
+      <div class="cw-modal__panel" role="dialog" aria-modal="true">
+        <h2 class="cw-modal__result">Solved! 🎉</h2>
+        <p class="cw-modal__sub">Every square checks out. Nicely done.</p>
+        <button class="cw__btn cw__btn--primary" type="button" data-modal-close-btn>Play again</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="application/json" id="cw-data" set:html={JSON.stringify(data)}></script>
+
+  <script>
+    type Dir = 'across' | 'down';
+    interface Entry { num: number; row: number; col: number; answer: string; clue: string }
+    interface CW { rows: number; cols: number; grid: (string | null)[][]; numbers: number[][]; across: Entry[]; down: Entry[] }
+
+    const raw = document.getElementById('cw-data');
+    if (raw) {
+      const data: CW = JSON.parse(raw.textContent || '{}');
+      const boardEl = document.querySelector('[data-board]') as HTMLElement;
+      const input = document.querySelector('[data-input]') as HTMLInputElement;
+      const cells = new Map<string, HTMLElement>();
+      document.querySelectorAll<HTMLElement>('[data-cell]').forEach((el) => {
+        cells.set(`${el.dataset.r},${el.dataset.c}`, el);
+      });
+      const entries: string[][] = data.grid.map((row) => row.map(() => ''));
+
+      let cur = { r: -1, c: -1 };
+      let dir: Dir = 'across';
+
+      const isCell = (r: number, c: number) => r >= 0 && c >= 0 && r < data.rows && c < data.cols && data.grid[r][c] !== null;
+      const key = (r: number, c: number) => `${r},${c}`;
+
+      function wordStart(r: number, c: number, d: Dir) {
+        let rr = r, cc = c;
+        if (d === 'across') while (isCell(rr, cc - 1)) cc--;
+        else while (isCell(rr - 1, cc)) rr--;
+        return { r: rr, c: cc };
+      }
+      function wordCells(r: number, c: number, d: Dir) {
+        const s = wordStart(r, c, d);
+        const out: { r: number; c: number }[] = [];
+        let rr = s.r, cc = s.c;
+        while (isCell(rr, cc)) { out.push({ r: rr, c: cc }); if (d === 'across') cc++; else rr++; }
+        return out;
+      }
+      function hasDir(r: number, c: number, d: Dir) {
+        if (d === 'across') return isCell(r, c - 1) || isCell(r, c + 1);
+        return isCell(r - 1, c) || isCell(r + 1, c);
+      }
+      function clueAt(r: number, c: number, d: Dir): Entry | undefined {
+        const s = wordStart(r, c, d);
+        return (d === 'across' ? data.across : data.down).find((e) => e.row === s.r && e.col === s.c);
+      }
+
+      function paint() {
+        cells.forEach((el) => el.classList.remove('cw-cell--active', 'cw-cell--word'));
+        if (cur.r < 0) return;
+        wordCells(cur.r, cur.c, dir).forEach((p) => cells.get(key(p.r, p.c))?.classList.add('cw-cell--word'));
+        cells.get(key(cur.r, cur.c))?.classList.add('cw-cell--active');
+        const e = clueAt(cur.r, cur.c, dir);
+        const tag = document.querySelector('[data-clue-tag]') as HTMLElement;
+        const txt = document.querySelector('[data-clue-text]') as HTMLElement;
+        if (e) { tag.textContent = `${e.num} ${dir === 'across' ? 'Across' : 'Down'}`; txt.textContent = e.clue; }
+      }
+
+      function focusCell(r: number, c: number, d?: Dir, toggle = false) {
+        if (!isCell(r, c)) return;
+        if (toggle && cur.r === r && cur.c === c && hasDir(r, c, dir === 'across' ? 'down' : 'across')) {
+          dir = dir === 'across' ? 'down' : 'across';
+        } else if (d) {
+          dir = hasDir(r, c, d) ? d : dir;
+        }
+        if (!hasDir(r, c, dir)) dir = dir === 'across' ? 'down' : 'across';
+        cur = { r, c };
+        paint();
+        // Keep the mobile keyboard up.
+        input.value = '';
+        input.focus({ preventScroll: true });
+      }
+
+      function setLetter(r: number, c: number, ch: string) {
+        entries[r][c] = ch;
+        const el = cells.get(key(r, c));
+        if (el) {
+          (el.querySelector('[data-letter]') as HTMLElement).textContent = ch;
+          el.classList.remove('cw-cell--wrong');
+        }
+      }
+
+      function advance() {
+        const word = wordCells(cur.r, cur.c, dir);
+        const idx = word.findIndex((p) => p.r === cur.r && p.c === cur.c);
+        // Prefer the next empty cell in the word; otherwise the next cell.
+        for (let i = idx + 1; i < word.length; i++) if (!entries[word[i].r][word[i].c]) { cur = word[i]; paint(); return; }
+        if (idx + 1 < word.length) { cur = word[idx + 1]; paint(); }
+      }
+      function retreat() {
+        const word = wordCells(cur.r, cur.c, dir);
+        const idx = word.findIndex((p) => p.r === cur.r && p.c === cur.c);
+        if (idx > 0) { cur = word[idx - 1]; paint(); }
+      }
+
+      function type(ch: string) {
+        if (cur.r < 0) return;
+        setLetter(cur.r, cur.c, ch);
+        checkWin();
+        advance();
+      }
+      function backspace() {
+        if (cur.r < 0) return;
+        if (entries[cur.r][cur.c]) { setLetter(cur.r, cur.c, ''); }
+        else { retreat(); setLetter(cur.r, cur.c, ''); }
+      }
+      function move(dr: number, dc: number) {
+        let r = cur.r, c = cur.c;
+        for (let i = 0; i < Math.max(data.rows, data.cols); i++) {
+          r += dr; c += dc;
+          if (!isCell(r, c)) return;
+          if (data.grid[r][c] !== null) { focusCell(r, c, dr === 0 ? 'across' : 'down'); return; }
+        }
+      }
+
+      function solvedCount() {
+        let n = 0;
+        const all = [...data.across, ...data.down];
+        for (const e of all) {
+          const d: Dir = data.across.includes(e) ? 'across' : 'down';
+          const ok = wordCells(e.row, e.col, d).every((p) => entries[p.r][p.c] === data.grid[p.r][p.c]);
+          if (ok) n++;
+        }
+        return n;
+      }
+      function updateNote() {
+        const note = document.querySelector('[data-note]') as HTMLElement;
+        note.textContent = `15 words · ${solvedCount()} solved`;
+      }
+      function isFull() {
+        for (let r = 0; r < data.rows; r++) for (let c = 0; c < data.cols; c++) if (isCell(r, c) && !entries[r][c]) return false;
+        return true;
+      }
+      function isCorrect() {
+        for (let r = 0; r < data.rows; r++) for (let c = 0; c < data.cols; c++) if (isCell(r, c) && entries[r][c] !== data.grid[r][c]) return false;
+        return true;
+      }
+      function checkWin() {
+        updateNote();
+        if (isFull() && isCorrect()) setTimeout(() => { (document.querySelector('[data-modal]') as HTMLElement).hidden = false; }, 250);
+      }
+
+      // --- input wiring ---
+      boardEl.addEventListener('click', (e) => {
+        const cell = (e.target as HTMLElement).closest('[data-cell]') as HTMLElement | null;
+        if (!cell) return;
+        focusCell(parseInt(cell.dataset.r!, 10), parseInt(cell.dataset.c!, 10), undefined, true);
+      });
+
+      input.addEventListener('input', () => {
+        const v = input.value.replace(/[^a-zA-Z]/g, '');
+        if (v) type(v[v.length - 1].toUpperCase());
+        input.value = '';
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace') { e.preventDefault(); backspace(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); move(0, -1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); move(0, 1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1, 0); }
+        else if (e.key === 'ArrowDown') { e.preventDefault(); move(1, 0); }
+        else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (hasDir(cur.r, cur.c, dir === 'across' ? 'down' : 'across')) { dir = dir === 'across' ? 'down' : 'across'; paint(); } }
+      });
+
+      document.querySelectorAll<HTMLElement>('[data-goto]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          focusCell(parseInt(btn.dataset.r!, 10), parseInt(btn.dataset.c!, 10), btn.dataset.dir as Dir);
+          boardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+
+      function stepClue(delta: number) {
+        const list = dir === 'across' ? data.across : data.down;
+        const e = cur.r < 0 ? undefined : clueAt(cur.r, cur.c, dir);
+        let i = e ? list.indexOf(e) : -1;
+        i = (i + delta + list.length) % list.length;
+        const t = list[i];
+        focusCell(t.row, t.col, dir);
+      }
+      document.querySelector('[data-clue-next]')?.addEventListener('click', () => stepClue(1));
+      document.querySelector('[data-clue-prev]')?.addEventListener('click', () => stepClue(-1));
+
+      document.querySelector('[data-check]')?.addEventListener('click', () => {
+        let any = false;
+        for (let r = 0; r < data.rows; r++) for (let c = 0; c < data.cols; c++) {
+          if (isCell(r, c) && entries[r][c] && entries[r][c] !== data.grid[r][c]) {
+            cells.get(key(r, c))?.classList.add('cw-cell--wrong'); any = true;
+          }
+        }
+        if (!any && isFull()) checkWin();
+        setTimeout(() => cells.forEach((el) => el.classList.remove('cw-cell--wrong')), 1400);
+      });
+      document.querySelector('[data-reveal-word]')?.addEventListener('click', () => {
+        if (cur.r < 0) return;
+        wordCells(cur.r, cur.c, dir).forEach((p) => setLetter(p.r, p.c, data.grid[p.r][p.c] as string));
+        checkWin();
+      });
+      document.querySelector('[data-clear]')?.addEventListener('click', () => {
+        for (let r = 0; r < data.rows; r++) for (let c = 0; c < data.cols; c++) if (isCell(r, c)) setLetter(r, c, '');
+        updateNote();
+      });
+      document.querySelectorAll('[data-modal-close], [data-modal-close-btn]').forEach((b) =>
+        b.addEventListener('click', () => { (document.querySelector('[data-modal]') as HTMLElement).hidden = true; })
+      );
+
+      updateNote();
+    }
+  </script>
+</BaseLayout>

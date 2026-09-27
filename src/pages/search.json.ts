@@ -26,6 +26,8 @@ const pages: SearchItem[] = [
   { title: 'Games', href: '/games', kind: 'Page', keywords: 'play browser fun termle wordle puzzle' },
   { title: 'Termle — daily tech word game', href: '/games/termle', kind: 'Page', keywords: 'wordle game puzzle daily word tech play' },
   { title: 'IT Quiz — levelled tech exam', href: '/games/it-quiz', kind: 'Page', keywords: 'quiz game exam test it tech levels junior mid senior questions play' },
+  { title: 'Chess vs Claude — 3D chess game', href: '/games/chess', kind: 'Page', keywords: 'chess game 3d ai claude minimax board play catur' },
+  { title: 'Tech Crossword — a developer TTS puzzle', href: '/games/crossword', kind: 'Page', keywords: 'crossword tts puzzle word game tech developer play teka teki silang' },
   { title: 'Notebook', href: '/blog', kind: 'Page', keywords: 'blog writing articles posts notes notebook' },
   { title: 'Glossary', href: '/glossary', kind: 'Page', keywords: 'glossary terms definitions ai llm rag embedding qris rls edge define what is' },
   { title: 'Cheatsheets', href: '/cheatsheets', kind: 'Page', keywords: 'cheatsheet quick reference git http docker commands' },

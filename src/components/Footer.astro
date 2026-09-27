@@ -36,7 +36,13 @@ const socials = [
 
       <div class="footer-top">
         <div class="footer-top__left">
-          <span class="footer-logo">{site.initials}</span>
+          <a class="footer-logo" href="/" aria-label={`${site.name} — home`}>
+            <svg class="footer-logo__mark" width="30" height="30" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+              <defs><linearGradient id="kb-foot" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#02aab0" /><stop offset="1" stop-color="#00cdac" /></linearGradient></defs>
+              <path d="M50 3C53.5 33 66 46.5 97 50C66 53.5 53.5 66 50 97C46.5 66 33 53.5 3 50C33 46.5 46.5 33 50 3Z" fill="url(#kb-foot)" />
+            </svg>
+            <span class="footer-logo__text">{site.shortName}</span>
+          </a>
           <p class="footer-tagline">{site.footerTagline}</p>
         </div>
         <div class="footer-top__right">

@@ -20,7 +20,9 @@ html:not([data-theme=dark]) .footer-copyright {color:#0009}
 .footer-top__left {display:flex; align-items:center; gap:1.5rem}
 @media(max-width:37.5em) { .footer-top__left {flex-direction:column; gap:.8rem} }
 .footer-top__right {display:flex; align-items:center}
-.footer-logo {font-family:Fraunces,Georgia,serif; font-size:2.4rem; font-weight:700; background:linear-gradient(135deg,#02aab0,#00cdac); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:-.02em}
+.footer-logo {display:inline-flex; align-items:center; gap:.7rem; text-decoration:none}
+.footer-logo__mark {flex-shrink:0; filter:drop-shadow(0 2px 6px rgba(2,170,176,.35))}
+.footer-logo__text {font-family:Fraunces,Georgia,serif; font-size:2.4rem; font-weight:700; background:linear-gradient(135deg,#02aab0,#00cdac); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:-.02em}
 .footer-tagline {font-family:Fraunces,Georgia,serif; font-style:italic; font-size:1.6rem; color:#ffffff8c; margin:0}
 .social-links {display:flex; flex-direction:row; justify-content:center; gap:.5rem}
 .social-links a {display:flex; flex-direction:column; justify-content:center; align-items:center; color:#ffffff80; width:4.5rem; height:4.5rem; transition:all .3s ease; border-radius:50%}

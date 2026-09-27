@@ -1,0 +1,210 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/pages/_tool-page.scss';
+import '../../styles/pages/_chess.scss';
+---
+
+<BaseLayout
+  title="Chess vs Claude — a 3D chess game"
+  description="Play 3D chess against Claude, an AI opponent with Easy, Medium and Expert levels. Tap to move, right in your browser — built by Ksatria Bintang Samudra."
+  lockZoom
+>
+  <main class="tool-page chess-page">
+    <div class="tool-page__container">
+      <header class="chess__header">
+        <h1 class="chess__title">Chess <span class="chess__vs">vs</span> <span class="chess__ai">Claude</span></h1>
+        <div class="chess__hud">
+          <span class="chess__status" data-status>Your move — you're White</span>
+          <select class="chess__level" data-level aria-label="Difficulty">
+            <option value="1">Easy</option>
+            <option value="2">Medium</option>
+            <option value="3" selected>Expert</option>
+          </select>
+        </div>
+      </header>
+
+      <div class="chess__captured chess__captured--ai" data-captured-ai aria-label="Pieces Claude captured"></div>
+
+      <div class="chess__stage">
+        <div class="chess__board" data-board></div>
+      </div>
+
+      <div class="chess__captured chess__captured--me" data-captured-me aria-label="Pieces you captured"></div>
+
+      <div class="chess__controls">
+        <button class="chess__btn chess__btn--primary" type="button" data-new>New game</button>
+        <button class="chess__btn" type="button" data-undo>Undo</button>
+      </div>
+
+      <p class="chess__hint">Tap a piece, then tap where it goes. Claude replies as Black.</p>
+    </div>
+
+    <div class="chess-modal" data-modal hidden>
+      <div class="chess-modal__backdrop" data-modal-close></div>
+      <div class="chess-modal__panel" role="dialog" aria-modal="true">
+        <h2 class="chess-modal__result" data-result></h2>
+        <p class="chess-modal__sub" data-result-sub></p>
+        <button class="chess__btn chess__btn--primary" type="button" data-new>Play again</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    import { Chess } from 'chess.js';
+
+    const GLYPH: Record<string, string> = { p: '♟', n: '♞', b: '♝', r: '♜', q: '♛', k: '♚' };
+    const VAL: Record<string, number> = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000 };
+    // Piece-square tables (white's view, a1=index 0 top-left of our render is a8). Simplified, center-biased.
+    const PST: Record<string, number[]> = {
+      p: [0,0,0,0,0,0,0,0, 50,50,50,50,50,50,50,50, 10,10,20,30,30,20,10,10, 5,5,10,25,25,10,5,5, 0,0,0,20,20,0,0,0, 5,-5,-10,0,0,-10,-5,5, 5,10,10,-20,-20,10,10,5, 0,0,0,0,0,0,0,0],
+      n: [-50,-40,-30,-30,-30,-30,-40,-50, -40,-20,0,0,0,0,-20,-40, -30,0,10,15,15,10,0,-30, -30,5,15,20,20,15,5,-30, -30,0,15,20,20,15,0,-30, -30,5,10,15,15,10,5,-30, -40,-20,0,5,5,0,-20,-40, -50,-40,-30,-30,-30,-30,-40,-50],
+      b: [-20,-10,-10,-10,-10,-10,-10,-20, -10,0,0,0,0,0,0,-10, -10,0,5,10,10,5,0,-10, -10,5,5,10,10,5,5,-10, -10,0,10,10,10,10,0,-10, -10,10,10,10,10,10,10,-10, -10,5,0,0,0,0,5,-10, -20,-10,-10,-10,-10,-10,-10,-20],
+      r: [0,0,0,0,0,0,0,0, 5,10,10,10,10,10,10,5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, 0,0,0,5,5,0,0,0],
+      q: [-20,-10,-10,-5,-5,-10,-10,-20, -10,0,0,0,0,0,0,-10, -10,0,5,5,5,5,0,-10, -5,0,5,5,5,5,0,-5, 0,0,5,5,5,5,0,-5, -10,5,5,5,5,5,0,-10, -10,0,5,0,0,0,0,-10, -20,-10,-10,-5,-5,-10,-10,-20],
+      k: [-30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -20,-30,-30,-40,-40,-30,-30,-20, -10,-20,-20,-20,-20,-20,-20,-10, 20,20,0,0,0,0,20,20, 20,30,10,0,0,10,30,20],
+    };
+    const FILES = ['a','b','c','d','e','f','g','h'];
+    const idxOf = (sq: string) => { const f = FILES.indexOf(sq[0]); const r = 8 - parseInt(sq[1], 10); return r * 8 + f; };
+
+    const game = new Chess();
+    const boardEl = document.querySelector('[data-board]') as HTMLElement;
+    const statusEl = document.querySelector('[data-status]') as HTMLElement;
+    const levelEl = document.querySelector('[data-level]') as HTMLSelectElement;
+    const capAiEl = document.querySelector('[data-captured-ai]') as HTMLElement;
+    const capMeEl = document.querySelector('[data-captured-me]') as HTMLElement;
+    let selected: string | null = null;
+    let targets: string[] = [];
+    let busy = false;
+
+    function render() {
+      const b = game.board();
+      boardEl.innerHTML = '';
+      for (let r = 0; r < 8; r++) {
+        for (let f = 0; f < 8; f++) {
+          const sq = FILES[f] + (8 - r);
+          const cell = document.createElement('button');
+          cell.className = `sq ${(r + f) % 2 === 0 ? 'sq--light' : 'sq--dark'}`;
+          cell.dataset.sq = sq;
+          if (selected === sq) cell.classList.add('sq--selected');
+          if (targets.includes(sq)) cell.classList.add('sq--target');
+          const p = b[r][f];
+          if (p) {
+            const span = document.createElement('span');
+            span.className = `pc pc--${p.color}` + (targets.includes(sq) ? ' pc--capture' : '');
+            span.textContent = GLYPH[p.type];
+            cell.appendChild(span);
+          }
+          cell.addEventListener('click', () => onTap(sq));
+          boardEl.appendChild(cell);
+        }
+      }
+      updateCaptured();
+    }
+
+    function updateStatus(text?: string) {
+      if (text) { statusEl.textContent = text; return; }
+      if (game.isCheckmate()) statusEl.textContent = game.turn() === 'w' ? 'Checkmate — Claude wins' : 'Checkmate — you win!';
+      else if (game.isDraw()) statusEl.textContent = 'Draw';
+      else if (game.inCheck()) statusEl.textContent = game.turn() === 'w' ? 'You are in check' : 'Claude is in check';
+      else statusEl.textContent = game.turn() === 'w' ? "Your move" : 'Claude is thinking…';
+    }
+
+    function updateCaptured() {
+      // Count captured by comparing to the full starting set.
+      const start = { p: 8, n: 2, b: 2, r: 2, q: 1 };
+      const live = { w: { p:0,n:0,b:0,r:0,q:0 }, b: { p:0,n:0,b:0,r:0,q:0 } } as any;
+      game.board().flat().forEach((p) => { if (p && p.type !== 'k') live[p.color][p.type]++; });
+      const capByMe = Object.entries(start).map(([t, n]) => GLYPH[t].repeat(n - live.b[t])).join('');
+      const capByAi = Object.entries(start).map(([t, n]) => GLYPH[t].repeat(n - live.w[t])).join('');
+      capMeEl.textContent = capByMe;
+      capAiEl.textContent = capByAi;
+    }
+
+    function onTap(sq: string) {
+      if (busy || game.isGameOver() || game.turn() !== 'w') return;
+      const piece = game.get(sq);
+      if (selected && targets.includes(sq)) {
+        game.move({ from: selected, to: sq, promotion: 'q' });
+        selected = null; targets = [];
+        render(); updateStatus();
+        if (!finishIfOver()) aiTurn();
+        return;
+      }
+      if (piece && piece.color === 'w') {
+        selected = sq;
+        targets = game.moves({ square: sq, verbose: true }).map((m: any) => m.to);
+      } else { selected = null; targets = []; }
+      render();
+    }
+
+    function evaluate(g: any): number {
+      let score = 0;
+      const board = g.board();
+      for (let r = 0; r < 8; r++) for (let f = 0; f < 8; f++) {
+        const p = board[r][f]; if (!p) continue;
+        const i = r * 8 + f;
+        const pst = PST[p.type];
+        if (p.color === 'w') score += VAL[p.type] + pst[i];
+        else score -= VAL[p.type] + pst[63 - i];
+      }
+      return score;
+    }
+
+    function minimax(g: any, depth: number, alpha: number, beta: number, maximizing: boolean): number {
+      if (depth === 0 || g.isGameOver()) {
+        if (g.isCheckmate()) return maximizing ? -100000 - depth : 100000 + depth;
+        if (g.isGameOver()) return 0;
+        return evaluate(g);
+      }
+      const moves = g.moves({ verbose: true }).sort((a: any, b: any) => (b.captured ? 1 : 0) - (a.captured ? 1 : 0));
+      if (maximizing) {
+        let best = -Infinity;
+        for (const m of moves) { g.move(m); best = Math.max(best, minimax(g, depth - 1, alpha, beta, false)); g.undo(); alpha = Math.max(alpha, best); if (beta <= alpha) break; }
+        return best;
+      } else {
+        let best = Infinity;
+        for (const m of moves) { g.move(m); best = Math.min(best, minimax(g, depth - 1, alpha, beta, true)); g.undo(); beta = Math.min(beta, best); if (beta <= alpha) break; }
+        return best;
+      }
+    }
+
+    function aiTurn() {
+      busy = true; updateStatus('Claude is thinking…');
+      setTimeout(() => {
+        const depth = parseInt(levelEl.value, 10) || 3;
+        const moves = game.moves({ verbose: true }).sort((a: any, b: any) => (b.captured ? 1 : 0) - (a.captured ? 1 : 0));
+        let bestMove = moves[0], bestScore = Infinity;
+        for (const m of moves) {
+          game.move(m);
+          const score = minimax(game, depth - 1, -Infinity, Infinity, true);
+          game.undo();
+          if (score < bestScore) { bestScore = score; bestMove = m; }
+        }
+        game.move(bestMove);
+        busy = false;
+        render(); updateStatus();
+        finishIfOver();
+      }, 220);
+    }
+
+    function finishIfOver(): boolean {
+      if (!game.isGameOver()) return false;
+      const modal = document.querySelector('[data-modal]') as HTMLElement;
+      const res = document.querySelector('[data-result]') as HTMLElement;
+      const sub = document.querySelector('[data-result-sub]') as HTMLElement;
+      if (game.isCheckmate()) { const youWin = game.turn() === 'b'; res.textContent = youWin ? 'You win! ♚' : 'Claude wins'; sub.textContent = youWin ? 'Checkmate — nicely played.' : 'Checkmate. Try a lower level or a new game.'; }
+      else { res.textContent = 'Draw'; sub.textContent = game.isStalemate() ? 'Stalemate.' : game.isThreefoldRepetition() ? 'Threefold repetition.' : 'Draw by the fifty-move rule or insufficient material.'; }
+      setTimeout(() => (modal.hidden = false), 500);
+      return true;
+    }
+
+    function newGame() { game.reset(); selected = null; targets = []; busy = false; (document.querySelector('[data-modal]') as HTMLElement).hidden = true; render(); updateStatus(); }
+    function undo() { if (busy) return; if (game.history().length >= 2) { game.undo(); game.undo(); } else if (game.history().length === 1) { game.undo(); } selected = null; targets = []; (document.querySelector('[data-modal]') as HTMLElement).hidden = true; render(); updateStatus(); }
+
+    document.querySelectorAll('[data-new]').forEach((b) => b.addEventListener('click', newGame));
+    document.querySelector('[data-undo]')?.addEventListener('click', undo);
+    document.querySelector('[data-modal]')?.addEventListener('click', (e) => { if ((e.target as HTMLElement).hasAttribute('data-modal-close')) (document.querySelector('[data-modal]') as HTMLElement).hidden = true; });
+
+    render(); updateStatus();
+  </script>
+</BaseLayout>
