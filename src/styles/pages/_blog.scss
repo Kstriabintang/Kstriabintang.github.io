@@ -25,8 +25,21 @@
 .blog-empty {text-align:center; color:var(--text-secondary); font-size:1.5rem}
 
 /* ---- post ---- */
-.blog-post {max-width:720px; text-align:left}
+.blog-post {max-width:1000px; text-align:left}
 .prose {text-align:left}
+/* Two-column reading layout on large screens: article + sticky "On this page" TOC. */
+.blog-post__main {min-width:0}
+@media(min-width:64em) {
+  .blog-post__grid {display:grid; grid-template-columns:minmax(0,700px) 220px; gap:3.5rem; justify-content:center; align-items:start}
+}
+.blog-post__toc {display:none}
+@media(min-width:64em) {
+  .blog-post__toc {display:block; position:sticky; top:9rem; align-self:start}
+}
+.blog-post__toc-label {font-family:ui-monospace,Menlo,monospace; font-size:1rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--text-secondary); margin:0 0 1rem}
+.blog-post__toc nav ul {list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.2rem; border-left:1px solid var(--card-border)}
+.blog-post__toc a {display:block; padding:.4rem 0 .4rem 1.2rem; margin-left:-1px; font-size:1.25rem; line-height:1.4; color:var(--text-secondary); text-decoration:none; border-left:2px solid transparent; transition:color .2s ease, border-color .2s ease}
+.blog-post__toc a:hover {color:#02aab0; border-left-color:#02aab0}
 .blog-post__head {margin-bottom:2.6rem; padding-bottom:2.2rem; border-bottom:1px solid var(--card-border)}
 .blog-post__meta {display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; font-family:ui-monospace,Menlo,monospace; font-size:1.1rem; color:var(--text-secondary); margin-bottom:1rem}
 .blog-post__title {font-family:Fraunces,Georgia,serif; font-size:clamp(2.8rem,5vw,4rem); font-weight:600; line-height:1.12; color:var(--text-primary); margin:0 0 1.2rem}
@@ -44,7 +57,7 @@
 .tldr__list li::marker {color:#02aab0}
 
 /* ---- FAQ ---- */
-.post-faq {max-width:68ch; margin:3rem 0 0; text-align:left}
+.post-faq {max-width:none; margin:3rem 0 0; text-align:left}
 .post-faq__title {font-family:Fraunces,Georgia,serif; font-size:2.3rem; font-weight:600; color:var(--text-primary); margin:0 0 1.2rem}
 .post-faq__list {display:flex; flex-direction:column; gap:.8rem}
 .post-faq__item {border:1px solid var(--card-border); border-radius:12px; background:var(--card-bg); padding:0 1.6rem; overflow:hidden}
@@ -55,7 +68,7 @@
 .post-faq__a {margin:0 0 1.4rem; font-size:1.45rem; line-height:1.65; color:var(--text-secondary)}
 
 /* ---- author bio ---- */
-.post-author {display:flex; gap:1.4rem; align-items:flex-start; max-width:68ch; margin:3rem 0 0; padding:1.8rem; border-radius:16px; background:var(--card-bg); border:1px solid var(--card-border); text-align:left}
+.post-author {display:flex; gap:1.4rem; align-items:flex-start; max-width:none; margin:3rem 0 0; padding:1.8rem; border-radius:16px; background:var(--card-bg); border:1px solid var(--card-border); text-align:left}
 .post-author__img {width:64px; height:64px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid #02aab040}
 .post-author__name {font-family:Fraunces,Georgia,serif; font-size:1.7rem; font-weight:600; color:var(--text-primary); margin:0 0 .3rem}
 .post-author__bio {font-size:1.35rem; line-height:1.55; color:var(--text-secondary); margin:0 0 .8rem}
@@ -64,7 +77,7 @@
 .post-author__links a:hover {opacity:.82}
 
 /* ---- prose ---- */
-.prose {max-width:68ch; color:var(--text-primary)}
+.prose {max-width:none; color:var(--text-primary)}
 .prose h2 {font-family:Fraunces,Georgia,serif; font-size:2.5rem; font-weight:600; line-height:1.25; margin:2.8rem 0 1rem; color:var(--text-primary)}
 .prose h3 {font-family:Fraunces,Georgia,serif; font-size:1.95rem; font-weight:600; margin:2rem 0 .8rem; color:var(--text-primary)}
 .prose p {font-size:1.75rem; line-height:1.75; color:var(--text-secondary); margin:0 0 1.5rem}

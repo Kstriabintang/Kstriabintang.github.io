@@ -13,7 +13,8 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2);
 const all = await getPosts();
 const related = all.filter((p) => postSlug(p) !== postSlug(post)).slice(0, 2);
 
@@ -71,6 +72,8 @@ if (post.data.faq && post.data.faq.length) {
         </ol>
       </nav>
 
+      <div class="blog-post__grid">
+        <div class="blog-post__main">
       <header class="blog-post__head">
         <div class="blog-post__meta">
           <span class="blog-card__cat">{post.data.category}</span>
@@ -148,6 +151,21 @@ if (post.data.faq && post.data.faq.length) {
           </div>
         )}
       </footer>
+        </div>
+
+        {toc.length > 1 && (
+          <aside class="blog-post__toc" aria-label="On this page">
+            <p class="blog-post__toc-label">On this page</p>
+            <nav>
+              <ul>
+                {toc.map((h) => (
+                  <li><a href={`#${h.slug}`}>{h.text}</a></li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+        )}
+      </div>
     </article>
   </main>
 </BaseLayout>
