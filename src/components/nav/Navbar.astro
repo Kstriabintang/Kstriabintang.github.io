@@ -14,11 +14,11 @@ const isCurrent = (hrefs: string[]) => hrefs.some((h) => !h.startsWith('http') &
         <span></span><span></span><span></span>
       </button>
       <a class="navbar-custom__logo" href="/" aria-label={`${site.name} — home`}>
-        <svg class="navbar-custom__mark" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <defs><linearGradient id="kb-mark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#02aab0" /><stop offset="1" stop-color="#00cdac" /></linearGradient></defs>
-          <path d="M12 1.5 14.2 9.8 22.5 12 14.2 14.2 12 22.5 9.8 14.2 1.5 12 9.8 9.8Z" fill="url(#kb-mark)" />
+        <svg class="navbar-custom__mark" width="24" height="24" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <defs><linearGradient id="kb-mark" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#02aab0" /><stop offset="1" stop-color="#00cdac" /></linearGradient></defs>
+          <path d="M50 3C53.5 33 66 46.5 97 50C66 53.5 53.5 66 50 97C46.5 66 33 53.5 3 50C33 46.5 46.5 33 50 3Z" fill="url(#kb-mark)" />
         </svg>
-        <span class="navbar-custom__logo-text">{site.initials}<span class="navbar-custom__logo-dot">.</span></span>
+        <span class="navbar-custom__logo-text">{site.shortName}</span>
       </a>
       <button class="navbar-custom__search" type="button" id="site-search-btn" aria-label="Search the site — press Command K" data-open-palette>
         <Icon name="search" size={16} />
