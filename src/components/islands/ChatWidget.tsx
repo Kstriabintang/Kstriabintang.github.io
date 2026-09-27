@@ -19,7 +19,7 @@ interface Message {
 const LEAD_KEY = 'kb_chat_lead';
 const MSG_KEY = 'kb_chat_messages';
 const GREETING =
-  "Hey! I'm Ksatria's AI assistant, powered by a real LLM. Ask me anything about Ksatria's projects, stack, experience — or how to get in touch.";
+  "Hey! I'm Bintang's AI assistant, powered by a real LLM. Ask me anything about Bintang's projects, stack, experience — or how to get in touch.";
 const SUGGESTIONS = ['What are you building right now?', 'Tell me about CoalTrack', 'Open to remote work?', 'What is your tech stack?'];
 
 const read = <T,>(key: string): T | null => {
@@ -290,7 +290,7 @@ export default function ChatWidget() {
         type="button"
         className={`ai-chat__trigger ${open ? 'ai-chat__trigger--hidden' : ''}`}
         onClick={openChat}
-        aria-label="Ask me anything — chat with Ksatria's AI assistant"
+        aria-label="Ask me anything — chat with Bintang's AI assistant"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -298,13 +298,13 @@ export default function ChatWidget() {
         <span className="ai-chat__trigger-label">Ask me anything</span>
       </button>
 
-      <div className={`ai-chat ${open ? 'ai-chat--open' : ''}`} role="dialog" aria-label="Chat with Ksatria's AI assistant" aria-hidden={!open}>
+      <div className={`ai-chat ${open ? 'ai-chat--open' : ''}`} role="dialog" aria-label="Chat with Bintang's AI assistant" aria-hidden={!open}>
         <div className="ai-chat__header">
           <div className="ai-chat__header-info">
             <img className="ai-chat__avatar" src="/images/profile.jpg" alt="Ksatria Bintang Samudra" width="40" height="40" />
             <div className="ai-chat__header-text">
               <span className="ai-chat__header-name">
-                Ksatria’s AI<span className="ai-chat__ai-badge">LLM</span>
+                Bintang’s AI<span className="ai-chat__ai-badge">LLM</span>
               </span>
               <span className="ai-chat__header-status">
                 <span className="ai-chat__status-dot" />
@@ -330,7 +330,7 @@ export default function ChatWidget() {
                 </svg>
               </div>
               <h3 className="ai-chat__lead-title">Before we chat...</h3>
-              <p className="ai-chat__lead-subtitle">Drop your info so Ksatria can follow up if needed!</p>
+              <p className="ai-chat__lead-subtitle">Drop your info so Bintang can follow up if needed!</p>
               <form onSubmit={submitLead} noValidate>
                 <input
                   ref={nameRef}

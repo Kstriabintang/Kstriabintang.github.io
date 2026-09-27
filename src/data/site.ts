@@ -3,7 +3,7 @@
 export const site = {
   url: 'https://ksatriabintangsamudra.com',
   name: 'Ksatria Bintang Samudra',
-  shortName: 'Ksatria',
+  shortName: 'Bintang',
   initials: 'KB',
   title: 'Ksatria Bintang Samudra — AI Engineer, Automation Builder & Solutions Architect',
   description:
@@ -24,7 +24,7 @@ export const site = {
     instagram: 'https://instagram.com/ven_0day',
     whatsapp: 'https://wa.me/6285264402640',
   },
-  bookCall: 'https://wa.me/6285264402640?text=Hi%20Ksatria%2C%20I%27d%20like%20to%20book%20a%20call.',
+  bookCall: 'https://wa.me/6285264402640?text=Hi%20Bintang%2C%20I%27d%20like%20to%20book%20a%20call.',
 } as const;
 
 export type Site = typeof site;

@@ -44,6 +44,9 @@ const GLYPHS: Record<string, string[]> = {
   t: [' _   ', '| |_ ', '| __|', '| |_ ', ' \\__|'],
   r: ['      ', ' _ __ ', "| '__|", '| |   ', '|_|   '],
   i: [' _ ', '(_)', '| |', '| |', '|_|'],
+  B: [' ____  ', '| __ ) ', '|  _ \\ ', '| |_) |', '|____/ '],
+  n: ['       ', ' _ __  ', "| '_ \\ ", '| | | |', '|_| |_|'],
+  g: ['       ', '  __ _ ', ' / _` |', '| (_| |', ' \\__, |'],
 };
 
 function figlet(word: string): string {
@@ -51,7 +54,7 @@ function figlet(word: string): string {
   return letters[0].map((_, row) => letters.map((g) => g[row]).join('')).join('\n');
 }
 
-export const BANNER = `\n${figlet('Ksatria')}\n`;
+export const BANNER = `\n${figlet('Bintang')}\n`;
 
 export const BANNER_SMALL = [
   '',
@@ -87,7 +90,7 @@ export const COMMANDS = [
 
 const FILES: Record<string, string> = {
   'about.txt': `
-${B}About Ksatria${R}
+${B}About Bintang${R}
 
   AI Engineer, Automation Builder and Solutions Architect based in
   Pontianak, Indonesia — a city that sits right on the equator.
@@ -184,7 +187,7 @@ ${projects.map((p) => `  ${T}${p.slug.padEnd(22)}${R} ${p.title}`).join('\n')}
 
 function neofetch(): string {
   return `
-  ${T}   .-.-.   ${R}   ${B}ksatria@samudra${R}
+  ${T}   .-.-.   ${R}   ${B}bintang@samudra${R}
   ${T}  ( 0°  )  ${R}   ───────────────
   ${T}   '-.-'   ${R}   ${T}OS:${R}       Human, equatorial edition
   ${T}   / | \\   ${R}   ${T}Host:${R}     Pontianak, Indonesia
@@ -260,7 +263,7 @@ export function runCommand(raw: string, projects: TermProject[]): TermResult {
 ${B}${T}ACCESS GRANTED${R}
 
   ██████████████████████████████
-  █   WELCOME TO TEAM KSATRIA   █
+  █   WELCOME TO TEAM BINTANG   █
   ██████████████████████████████
 
   Opening your mail client → ${EMAIL}
@@ -275,7 +278,7 @@ ${B}${T}ACCESS GRANTED${R}
     case 'echo':
       return { output: arg };
     case 'pwd':
-      return { output: '/home/ksatria/portfolio' };
+      return { output: '/home/bintang/portfolio' };
     case 'date':
       return { output: new Date().toString() };
     case 'hire':

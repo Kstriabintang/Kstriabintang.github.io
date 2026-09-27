@@ -56,7 +56,7 @@ const actions: SearchItem[] = [
   { title: 'Toggle theme', href: '#theme', kind: 'Action', action: 'theme', keywords: 'dark light mode' },
   { title: 'Open terminal', href: '#terminal', kind: 'Action', action: 'terminal', keywords: 'cli shell konami' },
   { title: 'Ask my AI assistant', href: '#chat', kind: 'Action', action: 'chat', keywords: 'chat bot ask question' },
-  { title: 'Email Ksatria', href: `mailto:${site.email}`, kind: 'Action', action: 'email', keywords: 'contact hire mail' },
+  { title: 'Email Bintang', href: `mailto:${site.email}`, kind: 'Action', action: 'email', keywords: 'contact hire mail' },
 ];
 
 function toolsFromNav(): SearchItem[] {

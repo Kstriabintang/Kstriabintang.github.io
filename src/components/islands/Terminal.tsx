@@ -18,7 +18,7 @@ const line = (type: Line['type'], text: string): Line => ({ id: nextId++, type, 
 function Prompt() {
   return (
     <span className="terminal-prompt">
-      <span className="term-teal">ksatria</span>
+      <span className="term-teal">bintang</span>
       <span className="term-dim">@</span>
       <span className="term-teal">portfolio</span>
       <span className="term-dim"> ~ $ </span>
@@ -278,7 +278,7 @@ export default function Terminal() {
             <span className="terminal-dot terminal-dot--yellow" />
             <span className="terminal-dot terminal-dot--green" />
           </div>
-          <span className="terminal-title">ksatria@samudra ~ %</span>
+          <span className="terminal-title">bintang@samudra ~ %</span>
           <button type="button" className="terminal-close" onClick={close} aria-label="Close terminal">
             ESC
           </button>

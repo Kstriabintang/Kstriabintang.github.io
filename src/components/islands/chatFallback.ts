@@ -11,7 +11,7 @@ const EMAIL = 'hello@ksatriabintangsamudra.com';
 const INTENTS: Intent[] = [
   {
     keywords: ['contact', 'email', 'hire', 'reach', 'call', 'book', 'whatsapp', 'available', 'availability', 'opportunit', 'remote', 'freelance', 'job'],
-    answer: `Ksatria is open to remote work worldwide. The fastest way in is email — ${EMAIL} — or the contact form at the bottom of the page. WhatsApp works too: +62 852-6440-2640.`,
+    answer: `Bintang is open to remote work worldwide. The fastest way in is email — ${EMAIL} — or the contact form at the bottom of the page. WhatsApp works too: +62 852-6440-2640.`,
   },
   {
     keywords: ['coaltrack', 'mining', 'attendance', 'payroll'],
@@ -35,16 +35,16 @@ const INTENTS: Intent[] = [
   },
   {
     keywords: ['where', 'location', 'based', 'live', 'pontianak', 'indonesia', 'timezone'],
-    answer: 'Ksatria is based in Pontianak, West Kalimantan, Indonesia — right on the equator (UTC+7) — and works remotely with clients anywhere.',
+    answer: 'Bintang is based in Pontianak, West Kalimantan, Indonesia — right on the equator (UTC+7) — and works remotely with clients anywhere.',
   },
   {
     keywords: ['job', 'work now', 'current', 'role', 'employer', 'rimba', 'luxavero', 'company', 'llc'],
     answer:
-      'Right now Ksatria is a Systems Developer at Rimba Raya, an internet service provider (since Mar 2026), the founder and sole developer of CoalTrack, and the founder of Luxavero LLC — his company registered in Wyoming, USA.',
+      'Right now Bintang is a Systems Developer at Rimba Raya, an internet service provider (since Mar 2026), the founder and sole developer of CoalTrack, and the founder of Luxavero LLC — his company registered in Wyoming, USA.',
   },
   {
     keywords: ['education', 'study', 'degree', 'university', 'college', 'kuliah'],
-    answer: 'Ksatria is studying for a Bachelor of Management at STIE Anindya Guna Semarang, expected to graduate in late 2027.',
+    answer: 'Bintang is studying for a Bachelor of Management at STIE Anindya Guna Semarang, expected to graduate in late 2027.',
   },
   {
     keywords: ['security', 'pentest', 'phishing', 'hacker'],
@@ -53,7 +53,7 @@ const INTENTS: Intent[] = [
   },
   {
     keywords: ['hello', 'hi', 'hey', 'halo', 'morning', 'evening', 'yo'],
-    answer: "Hey! Ask me about Ksatria's projects, stack, experience — or how to get in touch.",
+    answer: "Hey! Ask me about Bintang's projects, stack, experience — or how to get in touch.",
   },
 ];
 
@@ -70,6 +70,6 @@ export function fallbackAnswer(question: string): string {
   }
   return (
     best?.answer ??
-    `I'm not sure about that one. Try asking about projects, the tech stack, or how to reach Ksatria — or email ${EMAIL}.`
+    `I'm not sure about that one. Try asking about projects, the tech stack, or how to reach Bintang — or email ${EMAIL}.`
   );
 }
