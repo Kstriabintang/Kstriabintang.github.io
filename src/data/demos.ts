@@ -53,7 +53,7 @@ export const demos = {
             kind: 'persona',
             note: 'No login needed — tap a demo persona (Employee, Head, HR or Superadmin) to enter instantly.',
           },
-          caseStudy: '/projects/coaltrack',
+          caseStudy: '/projects/coaltrack/',
         },
         {
           title: 'VenWave',
@@ -83,7 +83,7 @@ export const demos = {
             kind: 'open',
             note: 'Fully interactive invitation demos — no login. Staff-portal walkthrough available on request.',
           },
-          caseStudy: '/projects/lavelle',
+          caseStudy: '/projects/lavelle/',
         },
         {
           title: 'Makmur Motor',
@@ -98,7 +98,7 @@ export const demos = {
             kind: 'open',
             note: 'Browse the live showroom. Admin CMS demo available on request.',
           },
-          caseStudy: '/projects/makmur-motor',
+          caseStudy: '/projects/makmur-motor/',
         },
         {
           title: 'Vensix',
@@ -113,7 +113,7 @@ export const demos = {
             kind: 'open',
             note: 'Live site — pre-launch, not yet open for commercial sign-ups.',
           },
-          caseStudy: '/projects/vensix',
+          caseStudy: '/projects/vensix/',
         },
         {
           title: 'PalmTrack',
@@ -143,7 +143,7 @@ export const demos = {
             kind: 'persona',
             note: 'Demo mode — tap a persona (Student, Lecturer or Admin) and use any password. Seeded with sample data, no real student info.',
           },
-          caseStudy: '/projects/cendekia-siakad',
+          caseStudy: '/projects/cendekia-siakad/',
         },
         {
           title: 'Cendekia — LMS',
@@ -158,7 +158,7 @@ export const demos = {
             kind: 'open',
             note: 'Demo mode with sample data — open and click around, no real login needed.',
           },
-          caseStudy: '/projects/cendekia-lms',
+          caseStudy: '/projects/cendekia-lms/',
         },
         {
           title: 'Daily Kost',
@@ -173,7 +173,7 @@ export const demos = {
             kind: 'open',
             note: 'Book with no login. Owner operations panel lives at /app.',
           },
-          caseStudy: '/projects/daily-kost',
+          caseStudy: '/projects/daily-kost/',
         },
         {
           title: 'WiFiSiapa',
@@ -188,7 +188,7 @@ export const demos = {
             kind: 'open',
             note: 'Public demo runs on simulated data — the real backend stays private.',
           },
-          caseStudy: '/projects/wifisiapa',
+          caseStudy: '/projects/wifisiapa/',
         },
         {
           title: 'Venmail',
@@ -203,7 +203,7 @@ export const demos = {
             kind: 'open',
             note: 'No login — a working inbox appears in about a second.',
           },
-          caseStudy: '/projects/venmail',
+          caseStudy: '/projects/venmail/',
         },
       ],
     },

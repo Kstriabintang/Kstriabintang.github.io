@@ -29,7 +29,7 @@ export const playground = {
       name: 'Tools',
       emoji: '🛠️',
       allLabel: 'All projects',
-      allHref: '/projects',
+      allHref: '/projects/',
       items: [
         {
           title: 'DevSec Toolbox',
@@ -64,13 +64,13 @@ export const playground = {
       name: 'Games',
       emoji: '🎮',
       allLabel: 'All games',
-      allHref: '/games',
+      allHref: '/games/',
       items: [
         {
           title: 'Termle',
           meta: 'Daily · Word puzzle',
           desc: 'A tech twist on the daily word game — guess the 5-letter developer/security word in six tries. A new word every day, and a share button to compare with friends.',
-          href: '/games/termle',
+          href: '/games/termle/',
           poster: '/images/games/termle.jpg',
           emoji: '🟩',
           badge: 'New',
@@ -80,7 +80,7 @@ export const playground = {
           title: 'IT Quiz',
           meta: 'Levels · Tech exam',
           desc: 'A fast IT exam with Junior, Mid and Senior levels — eight shuffled questions that never repeat, and a timer that tightens as you level up.',
-          href: '/games/it-quiz',
+          href: '/games/it-quiz/',
           poster: '/images/games/it-quiz.jpg',
           emoji: '🧠',
           badge: 'New',
@@ -90,7 +90,7 @@ export const playground = {
           title: 'Chess vs Claude',
           meta: '3D board · AI opponent',
           desc: 'Play 3D chess against Claude — a minimax engine with Easy, Medium and Expert levels. Tap to move; it thinks and replies as Black.',
-          href: '/games/chess',
+          href: '/games/chess/',
           poster: '/images/games/chess.jpg',
           emoji: '♟️',
           badge: 'New',
@@ -100,7 +100,7 @@ export const playground = {
           title: 'Tech Crossword',
           meta: 'TTS · Word puzzle',
           desc: "A developer's crossword — fifteen interlocking tech words to solve, from React to Redis. Tap a square, type, and check as you go.",
-          href: '/games/crossword',
+          href: '/games/crossword/',
           poster: '/images/games/crossword.jpg',
           emoji: '🔠',
           badge: 'New',
@@ -112,7 +112,7 @@ export const playground = {
       name: 'Ventures',
       emoji: '🚀',
       allLabel: 'All projects',
-      allHref: '/projects',
+      allHref: '/projects/',
       items: [
         {
           title: 'Luxavero',

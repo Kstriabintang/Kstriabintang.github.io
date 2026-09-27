@@ -14,7 +14,7 @@ const posts = (await getPosts()).slice(0, 3);
 
       <div class="sr sr--scale notebook-grid">
         {posts.map((post, i) => (
-          <a class="notebook-card sr__child" href={`/blog/${postSlug(post)}`} style={`--sr-i:${i};transition-delay:${i * 120}ms`}>
+          <a class="notebook-card sr__child" href={`/blog/${postSlug(post)}/`} style={`--sr-i:${i};transition-delay:${i * 120}ms`}>
             {post.data.cover && (
               <div class="notebook-card__thumb">
                 <img src={post.data.cover} alt="" width="400" height="250" loading="lazy" decoding="async" />
@@ -37,7 +37,7 @@ const posts = (await getPosts()).slice(0, 3);
       </div>
 
       <div class="notebook-all">
-        <a href="/blog" class="notebook-all__link">
+        <a href="/blog/" class="notebook-all__link">
           Browse all posts <Icon name="arrow-right" size={16} />
         </a>
       </div>

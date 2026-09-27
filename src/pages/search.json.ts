@@ -16,24 +16,24 @@ export interface SearchItem {
 
 const pages: SearchItem[] = [
   { title: 'Home', href: '/', kind: 'Page', keywords: 'start landing hero' },
-  { title: 'Projects', href: '/projects', kind: 'Page', keywords: 'work case studies portfolio shipped' },
-  { title: 'Live Demos', href: '/demos', kind: 'Page', keywords: 'try apps demo login coaltrack venwave lavelle makmur vensix palmtrack playground' },
-  { title: 'Services', href: '/services', kind: 'Page', keywords: 'hire work with me consulting freelance' },
-  { title: 'About', href: '/about', kind: 'Page', keywords: 'bio who story' },
-  { title: 'Uses', href: '/uses', kind: 'Page', keywords: 'gear setup stack tools hardware' },
-  { title: 'Resume', href: '/resume', kind: 'Page', keywords: 'cv experience credentials pdf' },
-  { title: 'Certifications', href: '/certifications', kind: 'Page', keywords: 'certificates credentials courses google ai essentials isc2 ethical hacking linux python excel toefl' },
-  { title: 'Games', href: '/games', kind: 'Page', keywords: 'play browser fun termle wordle puzzle' },
-  { title: 'Termle — daily tech word game', href: '/games/termle', kind: 'Page', keywords: 'wordle game puzzle daily word tech play' },
-  { title: 'IT Quiz — levelled tech exam', href: '/games/it-quiz', kind: 'Page', keywords: 'quiz game exam test it tech levels junior mid senior questions play' },
-  { title: 'Chess vs Claude — 3D chess game', href: '/games/chess', kind: 'Page', keywords: 'chess game 3d ai claude minimax board play catur' },
-  { title: 'Tech Crossword — a developer TTS puzzle', href: '/games/crossword', kind: 'Page', keywords: 'crossword tts puzzle word game tech developer play teka teki silang' },
-  { title: 'Notebook', href: '/blog', kind: 'Page', keywords: 'blog writing articles posts notes notebook' },
-  { title: 'Glossary', href: '/glossary', kind: 'Page', keywords: 'glossary terms definitions ai llm rag embedding qris rls edge define what is' },
-  { title: 'Cheatsheets', href: '/cheatsheets', kind: 'Page', keywords: 'cheatsheet quick reference git http docker commands' },
-  { title: 'Comparisons', href: '/comparisons', kind: 'Page', keywords: 'comparison vs versus rest graphql sql nosql workers lambda' },
-  { title: 'Learning Paths', href: '/learning-paths', kind: 'Page', keywords: 'learning path curriculum guide track tutorial' },
-  { title: 'Privacy', href: '/privacy', kind: 'Page', keywords: 'data policy contact form chat' },
+  { title: 'Projects', href: '/projects/', kind: 'Page', keywords: 'work case studies portfolio shipped' },
+  { title: 'Live Demos', href: '/demos/', kind: 'Page', keywords: 'try apps demo login coaltrack venwave lavelle makmur vensix palmtrack playground' },
+  { title: 'Services', href: '/services/', kind: 'Page', keywords: 'hire work with me consulting freelance' },
+  { title: 'About', href: '/about/', kind: 'Page', keywords: 'bio who story' },
+  { title: 'Uses', href: '/uses/', kind: 'Page', keywords: 'gear setup stack tools hardware' },
+  { title: 'Resume', href: '/resume/', kind: 'Page', keywords: 'cv experience credentials pdf' },
+  { title: 'Certifications', href: '/certifications/', kind: 'Page', keywords: 'certificates credentials courses google ai essentials isc2 ethical hacking linux python excel toefl' },
+  { title: 'Games', href: '/games/', kind: 'Page', keywords: 'play browser fun termle wordle puzzle' },
+  { title: 'Termle — daily tech word game', href: '/games/termle/', kind: 'Page', keywords: 'wordle game puzzle daily word tech play' },
+  { title: 'IT Quiz — levelled tech exam', href: '/games/it-quiz/', kind: 'Page', keywords: 'quiz game exam test it tech levels junior mid senior questions play' },
+  { title: 'Chess vs Claude — 3D chess game', href: '/games/chess/', kind: 'Page', keywords: 'chess game 3d ai claude minimax board play catur' },
+  { title: 'Tech Crossword — a developer TTS puzzle', href: '/games/crossword/', kind: 'Page', keywords: 'crossword tts puzzle word game tech developer play teka teki silang' },
+  { title: 'Notebook', href: '/blog/', kind: 'Page', keywords: 'blog writing articles posts notes notebook' },
+  { title: 'Glossary', href: '/glossary/', kind: 'Page', keywords: 'glossary terms definitions ai llm rag embedding qris rls edge define what is' },
+  { title: 'Cheatsheets', href: '/cheatsheets/', kind: 'Page', keywords: 'cheatsheet quick reference git http docker commands' },
+  { title: 'Comparisons', href: '/comparisons/', kind: 'Page', keywords: 'comparison vs versus rest graphql sql nosql workers lambda' },
+  { title: 'Learning Paths', href: '/learning-paths/', kind: 'Page', keywords: 'learning path curriculum guide track tutorial' },
+  { title: 'Privacy', href: '/privacy/', kind: 'Page', keywords: 'data policy contact form chat' },
 ];
 
 const sections: SearchItem[] = [
@@ -77,7 +77,7 @@ async function projectsFromCollection(): Promise<SearchItem[]> {
       const slug = data.slug ?? entry.id.replace(/\.(md|mdx)$/, '');
       return {
         title: data.title ?? slug,
-        href: `/projects/${slug}`,
+        href: `/projects/${slug}/`,
         kind: 'Project' as const,
         keywords: [data.summary, ...(data.tags ?? [])].filter(Boolean).join(' '),
       };
@@ -100,7 +100,7 @@ async function postsFromCollection(): Promise<SearchItem[]> {
         const slug = entry.id.replace(/\.(md|mdx)$/, '');
         return {
           title: data.title ?? slug,
-          href: `/blog/${slug}`,
+          href: `/blog/${slug}/`,
           kind: 'Page' as const,
           keywords: ['blog post', data.category, data.description, ...(data.tags ?? [])].filter(Boolean).join(' '),
         };
@@ -111,8 +111,8 @@ async function postsFromCollection(): Promise<SearchItem[]> {
 }
 
 const writingRefs: SearchItem[] = [
-  ...comparisons.map((c) => ({ title: `${c.a} vs ${c.b}`, href: `/comparisons/${c.slug}`, kind: 'Page' as const, keywords: `comparison vs ${c.description}` })),
-  ...cheatsheets.map((c) => ({ title: `${c.title} cheatsheet`, href: `/cheatsheets/${c.slug}`, kind: 'Page' as const, keywords: `cheatsheet reference ${c.description}` })),
+  ...comparisons.map((c) => ({ title: `${c.a} vs ${c.b}`, href: `/comparisons/${c.slug}/`, kind: 'Page' as const, keywords: `comparison vs ${c.description}` })),
+  ...cheatsheets.map((c) => ({ title: `${c.title} cheatsheet`, href: `/cheatsheets/${c.slug}/`, kind: 'Page' as const, keywords: `cheatsheet reference ${c.description}` })),
   ...glossary.map((t) => ({ title: t.term, href: `/glossary/#${t.slug}`, kind: 'Page' as const, keywords: `glossary define ${t.short}` })),
 ];
 

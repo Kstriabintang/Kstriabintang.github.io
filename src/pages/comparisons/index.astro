@@ -25,7 +25,7 @@ import '../../styles/pages/_writing.scss';
       </header>
       <div class="writing-grid">
         {comparisons.map((c) => (
-          <a class="writing-card" href={`/comparisons/${c.slug}`}>
+          <a class="writing-card" href={`/comparisons/${c.slug}/`}>
             <span class="writing-card__kind">Comparison</span>
             <h2 class="writing-card__title">{c.a} <span class="writing-card__vs">vs</span> {c.b}</h2>
             <p class="writing-card__desc">{c.description}</p>

@@ -51,7 +51,7 @@ const jsonLd = {
       ) : (
         <div class="blog-list">
           {posts.map((post) => (
-            <a class="blog-card" href={`/blog/${postSlug(post)}`}>
+            <a class="blog-card" href={`/blog/${postSlug(post)}/`}>
               {post.data.cover && (
                 <div class="blog-card__thumb">
                   <img src={post.data.cover} alt="" width="480" height="300" loading="lazy" decoding="async" />

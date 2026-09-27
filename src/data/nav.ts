@@ -36,10 +36,10 @@ export const navGroups: NavGroup[] = [
     blurb: 'Shipped products, case studies and how to hire me.',
     layout: 'grid',
     items: [
-      { label: 'Projects', desc: 'Case studies & shipped', href: '/projects', icon: 'folder' },
-      { label: 'Live Demos', desc: 'Open & try my apps now', href: '/demos', icon: 'sparkles', badge: 'New' },
-      { label: 'Services', desc: 'Work with me', href: '/services', icon: 'briefcase' },
-      { label: 'Resume', desc: 'Experience & credentials', href: '/resume', icon: 'file' },
+      { label: 'Projects', desc: 'Case studies & shipped', href: '/projects/', icon: 'folder' },
+      { label: 'Live Demos', desc: 'Open & try my apps now', href: '/demos/', icon: 'sparkles', badge: 'New' },
+      { label: 'Services', desc: 'Work with me', href: '/services/', icon: 'briefcase' },
+      { label: 'Resume', desc: 'Experience & credentials', href: '/resume/', icon: 'file' },
       { label: 'GitHub', desc: '39 public repositories', href: 'https://github.com/Kstriabintang', icon: 'github', external: true },
     ],
   },
@@ -49,11 +49,11 @@ export const navGroups: NavGroup[] = [
     blurb: 'Essays and references on AI & engineering.',
     layout: 'grid',
     items: [
-      { label: 'Blog', desc: 'Essays & field notes', href: '/blog', icon: 'file' },
-      { label: 'Learning Paths', desc: 'Guided tracks', href: '/learning-paths', icon: 'cpu' },
-      { label: 'Glossary', desc: 'AI & dev terms', href: '/glossary', icon: 'folder' },
-      { label: 'Cheatsheets', desc: 'Quick references', href: '/cheatsheets', icon: 'wrench' },
-      { label: 'Comparisons', desc: 'X vs Y, decided', href: '/comparisons', icon: 'briefcase' },
+      { label: 'Blog', desc: 'Essays & field notes', href: '/blog/', icon: 'file' },
+      { label: 'Learning Paths', desc: 'Guided tracks', href: '/learning-paths/', icon: 'cpu' },
+      { label: 'Glossary', desc: 'AI & dev terms', href: '/glossary/', icon: 'folder' },
+      { label: 'Cheatsheets', desc: 'Quick references', href: '/cheatsheets/', icon: 'wrench' },
+      { label: 'Comparisons', desc: 'X vs Y, decided', href: '/comparisons/', icon: 'briefcase' },
     ],
   },
   {
@@ -65,7 +65,7 @@ export const navGroups: NavGroup[] = [
       { label: 'DevSec Toolbox', desc: '34 in-browser dev tools', href: 'https://devsec.ksatriabintangsamudra.com/', icon: 'wrench', badge: 'Live', external: true },
       { label: 'HAND//TRACE', desc: 'Gesture AR in the browser', href: 'https://handtrace.ksatriabintangsamudra.com/', icon: 'sparkles', external: true },
       { label: 'ResumeKita', desc: 'ATS-friendly CV builder', href: 'https://resume.ksatriabintangsamudra.com', icon: 'file', external: true },
-      { label: 'Games', desc: 'Termle & more — play now', href: '/games', icon: 'sparkles', badge: 'New' },
+      { label: 'Games', desc: 'Termle & more — play now', href: '/games/', icon: 'sparkles', badge: 'New' },
       { label: 'All tools', desc: 'The full playground', href: '/#playground', icon: 'cpu' },
     ],
   },
@@ -77,15 +77,15 @@ export const navGroups: NavGroup[] = [
       {
         heading: 'Me',
         items: [
-          { label: 'About', desc: 'Who I am', href: '/about', icon: 'user' },
-          { label: 'Certifications', desc: 'Credentials & courses', href: '/certifications', icon: 'file' },
-          { label: 'Uses', desc: 'My gear & setup', href: '/uses', icon: 'cpu' },
+          { label: 'About', desc: 'Who I am', href: '/about/', icon: 'user' },
+          { label: 'Certifications', desc: 'Credentials & courses', href: '/certifications/', icon: 'file' },
+          { label: 'Uses', desc: 'My gear & setup', href: '/uses/', icon: 'cpu' },
         ],
       },
       {
         heading: 'Connect',
         items: [
-          { label: 'Resume', desc: 'CV (web + PDF)', href: '/resume', icon: 'file' },
+          { label: 'Resume', desc: 'CV (web + PDF)', href: '/resume/', icon: 'file' },
           { label: 'Contact', desc: 'Start a conversation', href: '/#contact', icon: 'mail' },
         ],
       },
@@ -97,26 +97,26 @@ export const footerColumns = [
   {
     title: 'Work',
     links: [
-      { label: 'Projects', href: '/projects' },
-      { label: 'Live Demos', href: '/demos' },
-      { label: 'Services', href: '/services' },
-      { label: 'Resume', href: '/resume' },
+      { label: 'Projects', href: '/projects/' },
+      { label: 'Live Demos', href: '/demos/' },
+      { label: 'Services', href: '/services/' },
+      { label: 'Resume', href: '/resume/' },
     ],
   },
   {
     title: 'Writing',
     links: [
-      { label: 'Blog', href: '/blog' },
-      { label: 'Learning Paths', href: '/learning-paths' },
-      { label: 'Glossary', href: '/glossary' },
-      { label: 'Cheatsheets', href: '/cheatsheets' },
-      { label: 'Comparisons', href: '/comparisons' },
+      { label: 'Blog', href: '/blog/' },
+      { label: 'Learning Paths', href: '/learning-paths/' },
+      { label: 'Glossary', href: '/glossary/' },
+      { label: 'Cheatsheets', href: '/cheatsheets/' },
+      { label: 'Comparisons', href: '/comparisons/' },
     ],
   },
   {
     title: 'Playground',
     links: [
-      { label: 'Games', href: '/games' },
+      { label: 'Games', href: '/games/' },
       { label: 'DevSec Toolbox', href: 'https://devsec.ksatriabintangsamudra.com/' },
       { label: 'HAND//TRACE', href: 'https://handtrace.ksatriabintangsamudra.com/' },
       { label: 'ResumeKita', href: 'https://resume.ksatriabintangsamudra.com' },
@@ -125,9 +125,9 @@ export const footerColumns = [
   {
     title: 'About Me',
     links: [
-      { label: 'About', href: '/about' },
-      { label: 'Certifications', href: '/certifications' },
-      { label: 'Uses', href: '/uses' },
+      { label: 'About', href: '/about/' },
+      { label: 'Certifications', href: '/certifications/' },
+      { label: 'Uses', href: '/uses/' },
       { label: 'GitHub', href: 'https://github.com/Kstriabintang' },
     ],
   },
@@ -136,7 +136,7 @@ export const footerColumns = [
     links: [
       { label: 'Contact', href: '/#contact' },
       { label: 'RSS', href: '/rss.xml' },
-      { label: 'Privacy', href: '/privacy' },
+      { label: 'Privacy', href: '/privacy/' },
     ],
   },
 ];

@@ -24,11 +24,11 @@ const ICONS: Record<Kind, string> = {
 
 const FALLBACK: Item[] = [
   { title: 'Home', href: '/', kind: 'Page' },
-  { title: 'Projects', href: '/projects', kind: 'Page' },
-  { title: 'Services', href: '/services', kind: 'Page' },
-  { title: 'About', href: '/about', kind: 'Page' },
-  { title: 'Uses', href: '/uses', kind: 'Page' },
-  { title: 'Resume', href: '/resume', kind: 'Page' },
+  { title: 'Projects', href: '/projects/', kind: 'Page' },
+  { title: 'Services', href: '/services/', kind: 'Page' },
+  { title: 'About', href: '/about/', kind: 'Page' },
+  { title: 'Uses', href: '/uses/', kind: 'Page' },
+  { title: 'Resume', href: '/resume/', kind: 'Page' },
   { title: "Let's connect", href: '/#contact', kind: 'Section' },
   { title: 'Toggle theme', href: '#theme', kind: 'Action', action: 'theme' },
   { title: 'Open terminal', href: '#terminal', kind: 'Action', action: 'terminal' },

@@ -46,8 +46,8 @@ export const about = {
     { value: 'AI Agents', label: 'Current obsession' },
   ],
   more: [
-    { emoji: '⚙️', label: 'Uses', desc: 'Hardware, software, and the AI tooling I actually ship with.', href: '/uses' },
-    { emoji: '📄', label: 'Resume', desc: 'Experience, projects and verifiable credentials.', href: '/resume' },
+    { emoji: '⚙️', label: 'Uses', desc: 'Hardware, software, and the AI tooling I actually ship with.', href: '/uses/' },
+    { emoji: '📄', label: 'Resume', desc: 'Experience, projects and verifiable credentials.', href: '/resume/' },
     { emoji: '🐙', label: 'GitHub', desc: '39 public repositories — tools, demos and experiments.', href: 'https://github.com/Kstriabintang' },
   ],
 };

@@ -66,7 +66,7 @@ if (post.data.faq && post.data.faq.length) {
         <ol class="tool-page__breadcrumb-list">
           <li><a href="/">Home</a></li>
           <li aria-hidden="true">›</li>
-          <li><a href="/blog">Notebook</a></li>
+          <li><a href="/blog/">Notebook</a></li>
           <li aria-hidden="true">›</li>
           <li>{post.data.category}</li>
         </ol>
@@ -129,19 +129,19 @@ if (post.data.faq && post.data.faq.length) {
           <p class="post-author__bio">AI Engineer &amp; founder of Luxavero LLC — I ship production systems for mining, ISPs and small businesses from Pontianak, Indonesia, spec-first and AI-augmented.</p>
           <div class="post-author__links">
             <a href="/#contact">Work with me →</a>
-            <a href="/blog">More writing →</a>
+            <a href="/blog/">More writing →</a>
           </div>
         </div>
       </aside>
 
       <footer class="blog-post__foot">
-        <a class="blog-post__back" href="/blog"><Icon name="arrow-right" size={15} /> All posts</a>
+        <a class="blog-post__back" href="/blog/"><Icon name="arrow-right" size={15} /> All posts</a>
         {related.length > 0 && (
           <div class="blog-post__related">
             <h2 class="blog-post__related-title">Keep reading</h2>
             <div class="blog-post__related-grid">
               {related.map((p) => (
-                <a class="blog-card blog-card--sm" href={`/blog/${postSlug(p)}`}>
+                <a class="blog-card blog-card--sm" href={`/blog/${postSlug(p)}/`}>
                   <span class="blog-card__cat">{p.data.category}</span>
                   <h3 class="blog-card__title">{p.data.title}</h3>
                   <span class="blog-card__more">Read <Icon name="arrow-right" size={14} /></span>
