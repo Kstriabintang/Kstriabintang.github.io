@@ -74,6 +74,7 @@ html:not([data-theme=dark]) .pg-section--home {border-top-color:rgba(0,0,0,.06)}
 .pg-modal__meta {font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.25rem; letter-spacing:.02em; color:#02aab0; margin:0 0 1.2rem}
 .pg-modal__desc {font-size:1.5rem; line-height:1.6; color:var(--text-secondary, #9aa4b8); margin:0 0 1.6rem}
 .pg-modal__login {display:flex; flex-direction:column; gap:.6rem; margin-bottom:2rem}
+.pg-modal__login[hidden] {display:none}
 .pg-modal__login-label {font-family:ui-monospace,SF Mono,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; color:#02aab0; margin:0}
 .pg-modal__cred {display:flex; align-items:center; gap:.9rem; width:100%; text-align:left; cursor:pointer; font:inherit; padding:.8rem 1rem; border-radius:10px; border:1px solid var(--card-border, rgba(255,255,255,.12)); background:rgba(2,170,176,.06); transition:border-color .2s ease,background .2s ease}
 .pg-modal__cred:hover {border-color:#02aab0; background:rgba(2,170,176,.12)}

@@ -43,7 +43,7 @@ import { playground } from '../../data/playground';
                 <p class="showcard__meta">{tool.meta}</p>
                 <p class="showcard__desc">{tool.desc}</p>
                 <span class="showcard__cta">
-                  Details
+                  {tool.login ? 'View demo' : (tool.ctaLabel ?? 'Open')}
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                 </span>
               </div>
@@ -132,7 +132,11 @@ import { playground } from '../../data/playground';
         elEmail.textContent = d.loginEmail;
         elPass.textContent = d.loginPass ?? '';
         elLogin.hidden = false;
-      } else elLogin.hidden = true;
+      } else {
+        elEmail.textContent = '';
+        elPass.textContent = '';
+        elLogin.hidden = true;
+      }
       elCta.href = d.href ?? '#';
       elCtaLabel.textContent = d.cta ?? 'Open';
       lastFocus = card;
@@ -150,7 +154,14 @@ import { playground } from '../../data/playground';
     };
 
     document.querySelectorAll<HTMLElement>('#playground [data-demo]').forEach((card) => {
-      card.addEventListener('click', () => open(card));
+      card.addEventListener('click', () => {
+        // Only cards with a real demo login (e.g. VenWave) open the modal.
+        // Everything else — games and live sites — just opens straight away.
+        if (card.dataset.loginEmail) { open(card); return; }
+        const href = card.dataset.href || '#';
+        if (href.startsWith('/') || href.startsWith('#')) window.location.assign(href);
+        else window.open(href, '_blank', 'noopener');
+      });
     });
     modal.querySelectorAll('[data-pg-close]').forEach((el) => el.addEventListener('click', close));
     modal.querySelector('[data-pg-copy="email"]')?.addEventListener('click', (e) => copy(e.currentTarget as HTMLElement, elEmail.textContent ?? ''));
