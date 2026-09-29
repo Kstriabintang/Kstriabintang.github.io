@@ -1,0 +1,40 @@
+---
+title: STATSBUZZ
+summary: A public, shareable stats & rankings site for tech, AI and startups — every number sourced and dated, wrapped in a bold "bee/hive" brand with dynamic OG share cards. Next.js 16 + Supabase. In active development.
+category: web
+metric: Sourced stats & rankings
+tags: [Next.js 16, Supabase, TypeScript, Brand design]
+cover:
+  gradient: ['#1b1508', '#c98a1a']
+  icon: globe
+links:
+  live: https://statsbuzz.vercel.app
+status: In active development (with Ankit Yadav)
+year: 2026
+metrics:
+  - label: Named data sources
+    value: 8
+  - label: Content categories
+    value: 6
+  - label: Servers to manage
+    value: 0
+stack: [Next.js 16 (App Router, RSC), TypeScript, Tailwind CSS 4, shadcn/ui, Supabase (Postgres + RLS), Zod, Vercel]
+featured: true
+order: 0
+---
+
+## The Challenge
+
+A stats site only earns attention when two things are true at once: every number is real and traceable, and the product has an identity strong enough to be worth sharing. Most "stats" content online is unsourced screenshots with no brand behind it. I wanted a fast public site where you find a surprising number, see exactly where it came from, and actually *want* to share it.
+
+## My Approach
+
+STATSBUZZ turns curated, sourced data into clean public **stat pages, rankings, trending and category pages** — each showing its source name, link, and the date the figure is as-of. It runs on **Next.js 16** (App Router, React Server Components, ISR) with **Supabase** (Postgres + Row-Level Security) behind an admin that enters and publishes data by hand — no scraping, no guessing. I built guardrails against the usual "stats site" dishonesty: deltas only render when the unit is known (never a bare `+21`), and ranked lists draw bars only where a comparable number exists, so nothing is faked. Every share link renders a **dynamic OG card** (`next/og`) carrying the number and its source, and SEO is wired end to end — dynamic sitemap, robots, canonical URLs and per-item metadata.
+
+## Design — the "hive"
+
+The visual identity is deliberately **bold and playful**, built around a bee/honeycomb system so it reads as a real data-media brand rather than a generic template: a hexagon "hive-cell" bee mark, a honeyed-ivory + warm-ink + honey palette, **Bricolage Grotesque** for the big numbers, honey "ranked bars", and a signature **"wait, what?"** card that reframes a percentage as a share-of-the-whole — the shareable hook. Full light and dark themes, responsive down to phone width, with the same bee carried onto every OG share card.
+
+## The Results
+
+Live at [statsbuzz.vercel.app](https://statsbuzz.vercel.app) with real, sourced numbers across AI, startups, SaaS, tech companies, social media and developer tools — drawn from named sources like the OECD, Gartner, GitHub Octoverse, Stack Overflow, DataReportal and SEC filings. This is an **active work in progress**, built with my partner **[Ankit Yadav](https://saasexamples.com)** (@therealaky), who runs the SaaS Examples community and leads distribution while I lead engineering and design. The **V0** foundation — public site, admin, RLS, SEO, share cards and the new brand — is live today. STATSBUZZ ships in versions, with a roadmap planned through **V5**; each release grows the data coverage, discovery and product depth, while keeping the one rule that matters: every number stays sourced and dated.
