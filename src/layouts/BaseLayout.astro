@@ -50,6 +50,9 @@ const personLd = {
   jobTitle: 'AI Engineer',
   hasOccupation: [
     { '@type': 'Occupation', name: 'AI Engineer' },
+    { '@type': 'Occupation', name: 'Full-Stack Developer' },
+    { '@type': 'Occupation', name: 'SaaS & Product Developer' },
+    { '@type': 'Occupation', name: 'Automation Engineer' },
     { '@type': 'Occupation', name: 'Founder & CEO, Luxavero LLC' },
   ],
   worksFor: { '@type': 'Organization', name: 'Luxavero LLC', url: 'https://luxavero.net' },
@@ -57,7 +60,12 @@ const personLd = {
   description: site.description,
   email: `mailto:${site.email}`,
   address: { '@type': 'PostalAddress', addressLocality: 'Pontianak', addressRegion: 'West Kalimantan', addressCountry: 'ID' },
-  knowsAbout: ['AI Engineering', 'LLM Integration', 'Automation', 'Solutions Architecture', 'Payment Integration', 'Cloudflare Workers', 'Flutter', 'Laravel', 'React'],
+  knowsAbout: [
+    'AI Engineering', 'LLM Integration', 'Prompt Engineering', 'AI Automation', 'Multi-agent Workflows',
+    'Full-Stack Web Development', 'SaaS Development', 'API Integration', 'E-commerce Development',
+    'Solutions Architecture', 'Payment Integration', 'Cloudflare Workers',
+    'Next.js', 'React', 'Vue.js', 'TypeScript', 'Node.js', 'Astro', 'Flutter', 'Laravel', 'Python', 'Supabase', 'PostgreSQL',
+  ],
   sameAs: [site.socials.github, site.socials.linkedin, site.socials.instagram],
 };
 const orgLd = {

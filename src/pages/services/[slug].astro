@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/pages/_services.scss';
+import '../../styles/pages/_service-detail.scss';
+import { site } from '../../data/site';
+import { services } from '../../data/services';
+import { getProjects } from '../../components/projects/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return services.map((svc) => ({ params: { slug: svc.slug }, props: { svc, projects } }));
+}
+
+const { svc, projects } = Astro.props;
+
+const related = svc.related
+  .map((id) => projects.find((p) => p.id === id))
+  .filter(Boolean)
+  .map((p) => ({ id: p!.id, title: p!.data.title, summary: p!.data.summary }));
+
+const url = new URL(`/services/${svc.slug}/`, site.url).toString();
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${url}#service`,
+    name: svc.h1,
+    serviceType: svc.h1,
+    description: svc.description,
+    url,
+    provider: { '@id': `${site.url}/#person` },
+    areaServed: { '@type': 'Place', name: 'Worldwide' },
+    audience: { '@type': 'Audience', audienceType: 'Founders, startups and small businesses' },
+    availableChannel: {
+      '@type': 'ServiceChannel',
+      serviceUrl: url,
+      availableLanguage: ['en', 'id'],
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: new URL('/services/', site.url).toString() },
+      { '@type': 'ListItem', position: 3, name: svc.label, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout title={svc.title} description={svc.description} jsonLd={jsonLd}>
+  <section class="services-page" id="main-content">
+    <div class="services-page__container">
+      <p class="svc-breadcrumb">
+        <a href="/">Home</a> › <a href="/services/">Services</a> › {svc.label}
+      </p>
+
+      <header class="services-page__hero">
+        <h1>{svc.h1}</h1>
+        <p class="services-page__lede">{svc.lede}</p>
+        <div class="services-page__cta-row">
+          <a class="services-page__btn services-page__btn--primary" href={site.bookCall} target="_blank" rel="noopener">Book an intro call</a>
+          <a class="services-page__btn services-page__btn--secondary" href={`mailto:${site.email}`}>Email me</a>
+        </div>
+      </header>
+
+      <div class="svc-section">
+        <h2>Who this is for</h2>
+        <ul class="svc-list">{svc.forWho.map((x) => <li>{x}</li>)}</ul>
+      </div>
+
+      <div class="svc-section">
+        <h2>Problems it solves</h2>
+        <ul class="svc-list">{svc.problems.map((x) => <li>{x}</li>)}</ul>
+      </div>
+
+      <div class="svc-section">
+        <h2>What I build</h2>
+        <ul class="svc-list">{svc.build.map((x) => <li>{x}</li>)}</ul>
+      </div>
+
+      <div class="svc-section">
+        <h2>Technologies</h2>
+        <ul class="svc-chips">{svc.tech.map((t) => <li>{t}</li>)}</ul>
+      </div>
+
+      <div class="services-page__how">
+        <h2>How it works</h2>
+        <ol>
+          <li><strong>Intro call (free, 20 min).</strong> You describe the product and the problem; I tell you honestly whether I’m the right fit.</li>
+          <li><strong>Scoped proposal.</strong> Fixed scope, fixed price, written acceptance criteria — no open-ended hourly billing.</li>
+          <li><strong>The work.</strong> Weekly demos on a preview URL, a written handover, and a walkthrough call at the end.</li>
+        </ol>
+      </div>
+
+      {related.length > 0 && (
+        <div class="svc-section" style="margin-top:4rem">
+          <h2>Related work</h2>
+          <ul class="svc-related">
+            {related.map((r) => (
+              <li>
+                <a href={`/projects/${r.id}/`}>
+                  {r.title}
+                  <span>{r.summary}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div class="services-page__cta services-page__cta--bottom">
+        <a class="services-page__btn services-page__btn--primary" href={site.bookCall} target="_blank" rel="noopener">Book an intro call</a>
+        <p class="services-page__cta-note">
+          Prefer async? <a href={`mailto:${site.email}`}>{site.email}</a>, or see <a href="/hire-me/">how to hire me</a> and <a href="/services/">all services</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

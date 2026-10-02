@@ -1,0 +1,25 @@
+// Shared bits for service detail pages, /hire-me and FAQ blocks. Reuses the
+// same tokens + teal accent as _services.scss so it matches the hub page.
+.svc-section {margin-bottom:3.6rem}
+.svc-section h2 {font-size:2.6rem; font-weight:700; margin:0 0 1.6rem}
+
+.svc-chips {display:flex; flex-wrap:wrap; gap:.8rem; margin:0; padding:0; list-style:none}
+.svc-chips li {font-size:1.3rem; padding:.5rem 1.1rem; border:1px solid var(--card-border, rgba(0,0,0,.08)); border-radius:999px; background:var(--card-bg, #f8f9fa)}
+
+.svc-list {padding-left:2rem; display:flex; flex-direction:column; gap:1rem; margin:0}
+.svc-list li {font-size:1.6rem; line-height:1.75; color:var(--text-secondary, inherit)}
+
+.svc-related {display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.2rem; list-style:none; padding:0; margin:0}
+.svc-related a {display:block; border:1px solid var(--card-border, rgba(0,0,0,.08)); border-left:3px solid #02aab0; border-radius:10px; background:var(--card-bg, #f8f9fa); padding:1.4rem 1.6rem; text-decoration:none; font-size:1.5rem; font-weight:600; transition:transform .15s}
+.svc-related a:hover {transform:translateY(-2px)}
+.svc-related span {display:block; font-size:1.25rem; font-weight:400; opacity:.7; margin-top:.4rem}
+
+.svc-breadcrumb {font-size:1.35rem; margin:0 0 1.6rem; color:var(--text-secondary, inherit)}
+.svc-breadcrumb a {color:#02aab0; text-decoration:none}
+
+.faq__list {margin:0; padding:0}
+.faq__item {border-bottom:1px solid var(--card-border, rgba(0,0,0,.08)); padding:1.8rem 0}
+.faq__item:first-child {border-top:1px solid var(--card-border, rgba(0,0,0,.08))}
+.faq__q {font-size:1.7rem; font-weight:700; margin:0 0 .8rem}
+.faq__a {font-size:1.55rem; line-height:1.75; color:var(--text-secondary, inherit); margin:0}
+.faq__a a {color:#02aab0}

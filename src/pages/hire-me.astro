@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/pages/_services.scss';
+import '../styles/pages/_service-detail.scss';
+import { site } from '../data/site';
+import { services } from '../data/services';
+
+const takeOn = [
+  'Custom web applications — dashboards, portals, admin panels and internal tools.',
+  'SaaS products end to end — auth, billing, metered usage and the operator tooling.',
+  'AI integration — LLM features, OpenAI-compatible gateways and agent workflows.',
+  'Automation — Telegram / WhatsApp bots, webhook pipelines and auto-fulfilment.',
+  'E-commerce & payments — storefronts and QRIS / Midtrans / Pakasir / Stripe flows.',
+  'Production-readiness reviews — failure modes, security surfaces and running cost.',
+];
+
+const engagement = [
+  'Remote, worldwide — I work from Pontianak, Indonesia (GMT+7) and overlap with most timezones.',
+  'Freelance, fixed-scope projects, contract and long-term collaboration.',
+  'Fixed scope and fixed price with written acceptance criteria — not open-ended hourly billing.',
+  'Client work runs under Luxavero LLC, my company registered in Wyoming, USA.',
+];
+
+const tech = [
+  'Next.js', 'React', 'Vue 3', 'TypeScript', 'Astro', 'Laravel', 'Python / FastAPI',
+  'Flutter', 'Supabase / PostgreSQL', 'Cloudflare Workers (D1, KV)', 'Claude / GPT / Gemini APIs', 'QRIS / Midtrans / Pakasir / Stripe',
+];
+
+const references = [
+  { id: 'coaltrack', label: 'CoalTrack — anti-fraud attendance & payroll (Flutter + Laravel)' },
+  { id: 'vensix', label: 'Vensix — OpenAI-compatible AI gateway with metered billing' },
+  { id: 'statsbuzz', label: 'STATSBUZZ — sourced stats & rankings (Next.js + Supabase)' },
+  { id: 'luxafoir', label: 'LUXAFOIR — e-commerce store with real QRIS payments' },
+];
+
+// Machine-answerable FAQ — answers only from facts already on this site.
+const faqs = [
+  {
+    q: 'What does Ksatria Bintang Samudra build?',
+    a: 'Custom web applications, SaaS products, AI integrations, automation systems, dashboards, APIs and e-commerce/payment flows. Every project on this site links to something live you can open.',
+  },
+  {
+    q: 'Is Ksatria available for remote work?',
+    a: 'Yes. He is open to remote work worldwide from Pontianak, Indonesia (GMT+7), and takes freelance, fixed-scope, contract and collaboration engagements.',
+  },
+  {
+    q: 'Does he build SaaS products?',
+    a: 'Yes — end to end, including multi-tenant auth, billing and metered usage. He built Vensix, an OpenAI-compatible AI gateway with cost-based metering and QRIS top-ups.',
+  },
+  {
+    q: 'Can he integrate AI into an existing product?',
+    a: 'Yes. He adds LLM features (chat, extraction, summarisation) and OpenAI-compatible gateways with prompt versioning, cost metering, rate limits and server-side guardrails so they behave in production.',
+  },
+  {
+    q: 'Does he work with React and Next.js?',
+    a: 'Yes. His main stack is Next.js, React, Vue 3, TypeScript, Astro, Laravel and Flutter, deployed on Cloudflare Workers and Supabase.',
+  },
+  {
+    q: 'Can he build custom dashboards and APIs?',
+    a: 'Yes — dashboards, admin panels, internal tools and API integrations with real roles, permissions and audit trails.',
+  },
+  {
+    q: 'Does he work with international clients?',
+    a: 'Yes. He targets remote international work, and his client work runs under Luxavero LLC, a company registered in Wyoming, USA. The site is written in English and he also works in Indonesian.',
+  },
+  {
+    q: 'How do I hire Ksatria Bintang Samudra?',
+    a: `Message him on WhatsApp at +62 852-6440-2640 or email ${site.email}. A free 20-minute intro call comes first, then a fixed-scope written proposal.`,
+  },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${site.url}/hire-me/#faq`,
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'Hire Me', item: new URL('/hire-me/', site.url).toString() },
+  ],
+};
+---
+
+<BaseLayout
+  title="Hire Me"
+  description="Hire Ksatria Bintang Samudra — AI engineer and full-stack developer available for remote work worldwide. Custom web apps, SaaS, AI integration, automation and e-commerce, freelance or contract."
+  jsonLd={[faqLd, breadcrumbLd]}
+>
+  <section class="services-page" id="main-content">
+    <div class="services-page__container">
+      <header class="services-page__hero">
+        <h1>Hire Ksatria Bintang Samudra</h1>
+        <p class="services-page__lede">
+          I’m an AI engineer and full-stack developer, <strong>available for remote work worldwide</strong>. I build custom
+          web applications, SaaS products, AI integrations, automation and e-commerce — spec first, shipped fast, with an
+          engineer who owns every trade-off.
+        </p>
+        <div class="services-page__cta-row">
+          <a class="services-page__btn services-page__btn--primary" href={site.bookCall} target="_blank" rel="noopener">Book an intro call</a>
+          <a class="services-page__btn services-page__btn--secondary" href={`mailto:${site.email}`}>Email me</a>
+        </div>
+      </header>
+
+      <div class="svc-section">
+        <h2>What I take on</h2>
+        <ul class="svc-list">{takeOn.map((x) => <li>{x}</li>)}</ul>
+      </div>
+
+      <div class="svc-section">
+        <h2>How I work with clients</h2>
+        <ul class="svc-list">{engagement.map((x) => <li>{x}</li>)}</ul>
+      </div>
+
+      <div class="svc-section">
+        <h2>Strongest technologies</h2>
+        <ul class="svc-chips">{tech.map((t) => <li>{t}</li>)}</ul>
+      </div>
+
+      <div class="svc-section">
+        <h2>Services</h2>
+        <ul class="svc-related">
+          {services.map((s) => (
+            <li><a href={`/services/${s.slug}/`}>{s.label}<span>{s.lede}</span></a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="svc-section">
+        <h2>Proof — recent work</h2>
+        <ul class="svc-related">
+          {references.map((r) => (
+            <li><a href={`/projects/${r.id}/`}>{r.label}</a></li>
+          ))}
+        </ul>
+        <p style="font-size:1.4rem;margin-top:1.2rem;opacity:.8">
+          More on <a href="/projects/" style="color:#02aab0">all projects</a> and
+          <a href="https://github.com/Kstriabintang" target="_blank" rel="noopener" style="color:#02aab0"> GitHub (39 public repos)</a>.
+        </p>
+      </div>
+
+      <div class="svc-section">
+        <h2>Frequently asked</h2>
+        <div class="faq__list">
+          {faqs.map((f) => (
+            <div class="faq__item">
+              <p class="faq__q">{f.q}</p>
+              <p class="faq__a">{f.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="services-page__cta services-page__cta--bottom">
+        <a class="services-page__btn services-page__btn--primary" href={site.bookCall} target="_blank" rel="noopener">Book an intro call</a>
+        <p class="services-page__cta-note">
+          Prefer async? <a href={`mailto:${site.email}`}>{site.email}</a> — tell me what you’re building and what’s getting in the way.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

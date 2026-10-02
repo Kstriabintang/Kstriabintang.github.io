@@ -1,4 +1,41 @@
+# ksatriabintangsamudra.com — Ksatria Bintang Samudra (AI Engineer)
+# Everything public is open to search engines and AI search assistants.
+
 User-agent: *
+Allow: /
+
+# --- AI search assistants (kept explicit & separate on purpose) ---
+
+# OpenAI ChatGPT Search (surfaces & cites pages in ChatGPT answers)
+User-agent: OAI-SearchBot
+Allow: /
+
+# OpenAI training/browse crawler
+User-agent: GPTBot
+Allow: /
+
+# ChatGPT user-triggered browsing
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Google's AI (Gemini / AI Overviews) — separate from Googlebot
+User-agent: Google-Extended
+Allow: /
+
+# Apple / Amazon assistants
+User-agent: Applebot-Extended
+Allow: /
+User-agent: Amazonbot
 Allow: /
 
 Sitemap: https://ksatriabintangsamudra.com/sitemap-index.xml

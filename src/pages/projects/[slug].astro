@@ -41,6 +41,8 @@ const actions = [
 ].filter(Boolean) as { href: string; label: string; primary: boolean }[];
 
 const SHOTS: Record<string, string> = {
+  statsbuzz: 'statsbuzz.vercel.app',
+  inspobase: 'inspobase.ksatriabintangsamudra.com',
   coaltrack: 'demo.coaltrack.id',
   vensix: 'vensix.biz.id',
   'makmur-motor': 'makmurmotor.biz.id',
@@ -56,6 +58,27 @@ const SHOTS: Record<string, string> = {
 };
 const showcaseHost = SHOTS[project.id];
 const url = new URL(`/projects/${project.id}/`, site.url).toString();
+const liveUrl = d.links.live ?? d.links.demo ?? null;
+const appType =
+  d.category === 'mobile' ? 'MobileApplication' : d.category === 'web' || d.category === 'ai-automation' ? 'WebApplication' : 'SoftwareApplication';
+const appCategory = d.category === 'security' ? 'SecurityApplication' : 'BusinessApplication';
+// A live/demo project IS a running app — describe it as one, linked to the person.
+const appLd = liveUrl
+  ? [
+      {
+        '@context': 'https://schema.org',
+        '@type': appType,
+        name: d.title,
+        description: d.summary,
+        url: liveUrl,
+        applicationCategory: appCategory,
+        operatingSystem: d.category === 'mobile' ? 'Android, iOS' : 'Web',
+        author: { '@id': `${site.url}/#person` },
+        ...(d.links.source ? { codeRepository: d.links.source } : {}),
+      },
+    ]
+  : [];
+
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -66,9 +89,10 @@ const jsonLd = [
     url,
     dateCreated: String(d.year),
     keywords: [...d.tags, ...d.stack].join(', '),
-    author: { '@type': 'Person', name: site.name, url: site.url },
-    ...(d.links.live || d.links.demo ? { sameAs: d.links.live ?? d.links.demo } : {}),
+    author: { '@id': `${site.url}/#person` },
+    ...(liveUrl ? { sameAs: liveUrl } : {}),
   },
+  ...appLd,
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

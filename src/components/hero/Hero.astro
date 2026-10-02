@@ -33,6 +33,8 @@ const chips = ['LLM gateways', 'QRIS payments', 'webhooks', 'edge computing'];
 
         <p class="hero-role-line">
           <span class="hero-role-line__prefix">$ whoami →</span>{' '}<span id="hero-role-type" data-roles={JSON.stringify(site.roles)}></span><span class="hero-role-line__caret" aria-hidden="true"></span>
+          {/* SSR fallback so crawlers/AI without JS still read the roles (JS types the animated version above). */}
+          <span style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">{site.roles.join(' · ')}</span>
         </p>
 
         <p class="hero-subtitle-text">Ask about any tech topic — I'll explain it simply, with a diagram.</p>
