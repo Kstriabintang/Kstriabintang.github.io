@@ -33,12 +33,12 @@ export const playground = {
       items: [
         {
           title: 'DevSec Toolbox',
-          meta: 'Security · Dev',
-          desc: '34 privacy-first developer & security tools — JWT, AES, hashing, regex, JSON — running 100% in your browser.',
+          meta: 'Security · DevSecOps',
+          desc: '62 security & dev tools — on-device utilities plus live Cloudflare-Worker scanners (dependency CVEs, website, TLS, DNS, AI explainer) and a 270+ tool DevSecOps Arsenal.',
           href: 'https://devsec.ksatriabintangsamudra.com/',
           poster: '/images/tools/devsec.jpg',
           emoji: '🧰',
-          badge: 'Live',
+          badge: 'New',
         },
         {
           title: 'HAND//TRACE',

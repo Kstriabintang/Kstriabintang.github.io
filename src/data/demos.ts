@@ -86,19 +86,19 @@ export const demos = {
           caseStudy: '/projects/lavelle/',
         },
         {
-          title: 'Inspobase',
+          title: 'Loupe',
           category: 'Design · curated gallery',
           stack: 'Next.js · Tailwind · Supabase',
           desc: 'A curated gallery of the best design on the web — filter by colour and font, ⌘K search, and an immersive full-page detail view.',
-          href: 'https://inspobase.ksatriabintangsamudra.com/',
-          poster: '/images/shots/inspobase/desktop.jpg',
+          href: 'https://loupe.ksatriabintangsamudra.com/',
+          poster: '/images/shots/loupe/desktop.jpg',
           emoji: '🎨',
           status: 'Live demo',
           access: {
             kind: 'open',
             note: 'Open and browse — filter by colour/font. Sign-in (Google or GitHub) is optional, only to save pieces.',
           },
-          caseStudy: '/projects/inspobase/',
+          caseStudy: '/projects/loupe/',
         },
         {
           title: 'StatsBuzz',
@@ -259,14 +259,14 @@ export const demos = {
       items: [
         {
           title: 'DevSec Toolbox',
-          category: 'Security · Dev',
-          stack: '34 tools · 100% client-side',
-          desc: 'JWT, AES, hashing, regex, JSON and more — every tool runs on-device, nothing leaves your browser.',
+          category: 'Security · DevSecOps',
+          stack: '62 tools · live edge scanners',
+          desc: 'A full DevSecOps suite — 62 tools. On-device utilities (JWT, AES, hashing, JSON) plus live scanners (dependency CVEs via OSV, website/TLS/DNS/WHOIS, AI explainer) on Cloudflare Workers, and a 270+ tool DevSecOps Arsenal.',
           href: 'https://devsec.ksatriabintangsamudra.com/',
           poster: '/images/tools/devsec.jpg',
           emoji: '🧰',
           status: 'Live',
-          access: { kind: 'open', note: 'Runs in your browser — no sign-up.' },
+          access: { kind: 'open', note: 'On-device tools + live edge scanners — no sign-up.' },
         },
         {
           title: 'HAND//TRACE',

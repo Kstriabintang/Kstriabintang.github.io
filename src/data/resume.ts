@@ -109,7 +109,7 @@ export const resume = {
     { html: '<strong>ksatriabintangsamudra.com</strong> — Astro on Cloudflare Workers with a Workers AI chat assistant and an “Explain it” endpoint that returns sanitised Mermaid diagrams.', when: '2026' },
     { html: '<strong>Kiloan</strong> — subscription Android point-of-sale for laundry businesses (Flutter).', when: '2026' },
     { html: '<strong>Makmur Motor</strong> — showroom and inventory CMS for a Denpasar dealership on Cloudflare Workers, D1 and KV.', when: 'makmurmotor.biz.id' },
-    { html: '<strong>DevSec Toolbox</strong> — 34 developer and security tools that run entirely in the browser.', when: 'Live' },
+    { html: '<strong>DevSec Toolbox</strong> — 62 developer & security tools: on-device utilities plus live DevSecOps scanners (dependency CVEs, website, TLS, DNS, AI) on Cloudflare Workers, and a 270+ tool DevSecOps Arsenal.', when: 'Live' },
   ],
   education: [
     { html: '<strong>STIE Anindya Guna Semarang</strong> — Bachelor of Management (S.M.), in progress · expected Nov–Dec 2027' },

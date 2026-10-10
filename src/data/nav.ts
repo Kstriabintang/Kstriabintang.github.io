@@ -63,7 +63,7 @@ export const navGroups: NavGroup[] = [
     blurb: 'Things I built that run in your browser right now.',
     layout: 'grid',
     items: [
-      { label: 'DevSec Toolbox', desc: '34 in-browser dev tools', href: 'https://devsec.ksatriabintangsamudra.com/', icon: 'wrench', badge: 'Live', external: true },
+      { label: 'DevSec Toolbox', desc: '62 dev & security tools + live scanners', href: 'https://devsec.ksatriabintangsamudra.com/', icon: 'wrench', badge: 'New', external: true },
       { label: 'HAND//TRACE', desc: 'Gesture AR in the browser', href: 'https://handtrace.ksatriabintangsamudra.com/', icon: 'sparkles', external: true },
       { label: 'ResumeKita', desc: 'ATS-friendly CV builder', href: 'https://resume.ksatriabintangsamudra.com', icon: 'file', external: true },
       { label: 'Games', desc: 'Termle & more — play now', href: '/games/', icon: 'sparkles', badge: 'New' },
