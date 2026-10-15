@@ -74,6 +74,17 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
         </div>
       </section>
 
+      <!-- Rules -->
+      <section class="ctf-rules" aria-label="Rules of play">
+        <p class="ctf-rules__title">⚠ Rules — honor code, strictly enforced</p>
+        <ul class="ctf-rules__list">
+          <li><b>No AI.</b> No ChatGPT, Claude, Copilot, Gemini or any model to find, decode, explain or hint a flag. That defeats the entire point.</li>
+          <li><b>No shortcuts.</b> Don't look up, share, or ask anyone for flags or write-ups. Solve it yourself.</li>
+          <li><b>Tools, not answers.</b> Use the toolbox below and your own analysis — <code>strings</code>, <code>python3</code>, a hex editor, your brain.</li>
+          <li>Flags are <b>case-sensitive</b>, format <code>KBS&#123;…&#125;</code>. The certificate at the end certifies that <b>you</b> captured them, unaided.</li>
+        </ul>
+      </section>
+
       <!-- Tools -->
       <section class="ctf-tools" aria-label="Toolbox">
         <span class="ctf-tools__label">Solve with my tools →</span>
@@ -163,10 +174,39 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
           <a href="/games/">More games →</a>
         </div>
       </div>
+
+      <!-- Certificate -->
+      <section class="ctf-cert" id="ctf-cert" aria-label="Completion certificate">
+        <p class="ctf-cert__eyebrow">Your reward</p>
+        <h2 class="ctf-cert__h2">A certificate worth earning.</h2>
+        <p class="ctf-cert__lead">
+          Capture all <b>16</b> flags and claim a personalized certificate — scannable, downloadable, yours.
+          Below is a live sample issued to <b>Ksatria Bintang Samudra</b>.
+        </p>
+
+        <div class="ctf-cert__frame">
+          <canvas id="ctf-cert-canvas" class="ctf-cert__canvas" width="1400" height="990" role="img" aria-label="Sample CTF completion certificate for Ksatria Bintang Samudra"></canvas>
+          <div class="ctf-cert__lock" data-cert-lock>
+            <span class="ctf-cert__lock-icon" aria-hidden="true">🔒</span>
+            <p><b data-cert-remaining>16</b> flags left to unlock your own — this is a sample.</p>
+          </div>
+        </div>
+
+        <div class="ctf-cert__claim" data-cert-claim hidden>
+          <label class="ctf-cert__claim-label" for="ctf-cert-name">Name on the certificate</label>
+          <div class="ctf-cert__claim-row">
+            <input id="ctf-cert-name" class="ctf-cert__claim-input" type="text" maxlength="42" autocomplete="name" placeholder="Your full name" />
+            <button class="ctf-cert__claim-btn" type="button" data-cert-gen>Generate</button>
+            <a class="ctf-cert__dl" data-cert-dl hidden download="ven0day-ctf-certificate.png">Download PNG ↓</a>
+          </div>
+          <p class="ctf-cert__disclaimer">A practice certificate — not an accredited credential. Issued for motivation, under the honor code above (no AI, no shared solutions).</p>
+        </div>
+      </section>
     </div>
   </main>
 
   <script>
+    import QRCode from 'qrcode';
     const KEY = 'ctf-solved-v2';
     const cards = Array.from(document.querySelectorAll('.ctf-card')) as HTMLElement[];
     const flagsEl = document.querySelector('[data-flags]') as HTMLElement;
@@ -193,6 +233,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
       if (barEl) barEl.style.width = `${(solved.length / total) * 100}%`;
       if (solved.length === total) { if (winPtsEl) winPtsEl.textContent = String(totalPts); winEl.hidden = false; }
       else winEl.hidden = true;
+      document.dispatchEvent(new CustomEvent('ctf:progress', { detail: { solved: solved.length, total, pts } }));
     }
 
     function markSolved(card: HTMLElement, persist = true) {
@@ -282,6 +323,112 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
       };
       tick();
     }
+
+    // ===== Completion certificate =====
+    const certCanvas = document.getElementById('ctf-cert-canvas') as HTMLCanvasElement | null;
+    if (certCanvas) {
+      const ctx = certCanvas.getContext('2d')!;
+      const lockEl = document.querySelector('[data-cert-lock]') as HTMLElement;
+      const remainEl = document.querySelector('[data-cert-remaining]') as HTMLElement;
+      const claimEl = document.querySelector('[data-cert-claim]') as HTMLElement;
+      const nameInput = document.getElementById('ctf-cert-name') as HTMLInputElement;
+      const genBtn = document.querySelector('[data-cert-gen]') as HTMLButtonElement;
+      const dlLink = document.querySelector('[data-cert-dl]') as HTMLAnchorElement;
+      const W = 1400, H = 990;
+
+      const niceDate = () => new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      const codeFor = async (name: string, date: string, pts: number) =>
+        (await sha256(`${name}|${date}|${pts}|ven0day`)).slice(0, 10).toUpperCase().replace(/(.{5})(.{5})/, '$1-$2');
+
+      function wrap(text: string, x: number, y: number, maxW: number, lh: number) {
+        const words = text.split(' '); let line = '';
+        for (const w of words) {
+          const t = line ? line + ' ' + w : w;
+          if (ctx.measureText(t).width > maxW && line) { ctx.fillText(line, x, y); line = w; y += lh; }
+          else line = t;
+        }
+        ctx.fillText(line, x, y);
+      }
+
+      async function draw(name: string, flags: number, pts: number, sample: boolean) {
+        const date = niceDate();
+        const code = await codeFor(name, date, pts);
+        const g = ctx.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, '#0d1119'); g.addColorStop(1, '#090c12');
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        const rg = ctx.createRadialGradient(W / 2, 300, 50, W / 2, 300, 920);
+        rg.addColorStop(0, 'rgba(25,211,197,0.08)'); rg.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = 'rgba(25,211,197,0.55)'; ctx.lineWidth = 3; ctx.strokeRect(42, 42, W - 84, H - 84);
+        ctx.strokeStyle = 'rgba(217,186,124,0.35)'; ctx.lineWidth = 1; ctx.strokeRect(56, 56, W - 112, H - 112);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#19d3c5'; ctx.font = '600 24px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillText('ven_0day // CTF LAB', W / 2, 128);
+        ctx.fillStyle = '#eef1f6'; ctx.font = '700 54px Georgia, "Times New Roman", serif';
+        ctx.fillText('Certificate of Completion', W / 2, 208);
+        ctx.strokeStyle = 'rgba(25,211,197,0.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W / 2 - 120, 236); ctx.lineTo(W / 2 + 120, 236); ctx.stroke();
+        ctx.fillStyle = '#9aa3b2'; ctx.font = 'italic 24px Georgia, serif';
+        ctx.fillText('This certifies that', W / 2, 320);
+        let fs = 72; ctx.font = `italic 700 ${fs}px Georgia, serif`;
+        while (ctx.measureText(name || 'Anonymous').width > W - 260 && fs > 32) { fs -= 2; ctx.font = `italic 700 ${fs}px Georgia, serif`; }
+        ctx.fillStyle = '#19d3c5'; ctx.fillText(name || 'Anonymous', W / 2, 408);
+        ctx.fillStyle = '#c7ccd8'; ctx.font = '23px Georgia, serif';
+        wrap(`has captured all ${flags} flags of the ven_0day Capture-the-Flag — spanning cryptography, encoding, forensics, steganography, web and reversing — scoring ${pts} of ${totalPts} points, unaided.`, W / 2, 470, 980, 34);
+        ctx.fillStyle = '#d9ba7c'; ctx.font = '600 19px ui-monospace, Menlo, monospace';
+        ctx.fillText('Completed under the honor code — no AI, no shared solutions.', W / 2, 584);
+        ctx.fillStyle = '#8891a0'; ctx.font = '18px ui-monospace, Menlo, monospace';
+        ctx.fillText(`FLAGS ${flags}/${total}        SCORE ${pts}        CATEGORIES 7`, W / 2, 628);
+        // QR (bottom-left)
+        const verify = `ven_0day CTF | ${name || 'Anonymous'} | ${flags}/${total} flags | ${pts} pts | ${date} | ${code}`;
+        try {
+          const url = await QRCode.toDataURL(verify, { margin: 1, width: 320, errorCorrectionLevel: 'M', color: { dark: '#0b0e14', light: '#e9f7f4' } });
+          const qim = new Image(); qim.src = url; await qim.decode();
+          const qs = 150, qx = 155, qy = 712;
+          ctx.fillStyle = '#e9f7f4'; ctx.fillRect(qx - 8, qy - 8, qs + 16, qs + 16);
+          ctx.drawImage(qim, qx, qy, qs, qs);
+          ctx.textAlign = 'center'; ctx.fillStyle = '#8891a0'; ctx.font = '15px ui-monospace, Menlo, monospace';
+          ctx.fillText('scan to verify', qx + qs / 2, qy + qs + 30);
+        } catch (_) { /* qr failed; continue */ }
+        // signature (bottom-right)
+        ctx.textAlign = 'right';
+        ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W - 155 - 340, 796); ctx.lineTo(W - 155, 796); ctx.stroke();
+        ctx.fillStyle = '#eef1f6'; ctx.font = 'italic 36px "Snell Roundhand", "Brush Script MT", Georgia, cursive';
+        ctx.fillText('Ksatria Bintang Samudra', W - 155, 786);
+        ctx.fillStyle = '#8891a0'; ctx.font = '16px ui-monospace, Menlo, monospace';
+        ctx.fillText('Ksatria Bintang Samudra', W - 155, 826);
+        ctx.fillText('Author · ven_0day CTF Lab', W - 155, 850);
+        ctx.fillText(`Issued ${date}`, W - 155, 886);
+        ctx.fillText(`Verify  ${code}`, W - 155, 910);
+        ctx.textAlign = 'center'; ctx.fillStyle = '#5a6270'; ctx.font = '14px ui-monospace, Menlo, monospace';
+        ctx.fillText('Practice certificate — not an accredited credential. Issued for motivation.', W / 2, H - 34);
+        if (sample) {
+          ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(-Math.PI / 9);
+          ctx.fillStyle = 'rgba(25,211,197,0.10)'; ctx.font = '700 180px Georgia, serif'; ctx.textAlign = 'center';
+          ctx.fillText('SAMPLE', 0, 60); ctx.restore();
+        }
+      }
+
+      draw('Ksatria Bintang Samudra', total, totalPts, true);
+
+      function setLock(solved: number) {
+        if (remainEl) remainEl.textContent = String(total - solved);
+        const done = solved === total;
+        if (lockEl) lockEl.hidden = done;
+        if (claimEl) claimEl.hidden = !done;
+      }
+      document.addEventListener('ctf:progress', (e: any) => setLock(e.detail.solved));
+      setLock(cards.filter((c) => c.classList.contains('is-solved')).length);
+
+      genBtn?.addEventListener('click', async () => {
+        const solved = cards.filter((c) => c.classList.contains('is-solved'));
+        if (solved.length !== total) return;
+        const pts = solved.reduce((a, c) => a + Number(c.dataset.pts || 0), 0);
+        const nm = (nameInput.value || 'Anonymous').trim().slice(0, 42) || 'Anonymous';
+        await draw(nm, solved.length, pts, false);
+        dlLink.href = certCanvas.toDataURL('image/png');
+        dlLink.hidden = false;
+      });
+    }
   </script>
 
   <style>
@@ -344,8 +491,8 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
     .ctf-card__prompt { color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.5; margin-bottom: 1rem; }
 
     .ctf-card__puzzle { display: block; width: 100%; text-align: left; position: relative; background: var(--term-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 9px; padding: 0.85rem 1rem; cursor: copy; margin-bottom: 1rem; }
-    .ctf-card__puzzle code { font-family: var(--font-mono, monospace); font-size: 1.2rem; color: var(--ctf); word-break: break-all; line-height: 1.55; display: block; max-height: 7rem; overflow-y: auto; }
-    .ctf-card__copy { position: absolute; top: 0.45rem; right: 0.55rem; font-size: 0.95rem; color: var(--text-secondary); background: var(--card-bg, #12121f); padding: 0.08rem 0.4rem; border-radius: 4px; }
+    .ctf-card__puzzle code { font-family: var(--font-mono, monospace); font-size: 1.2rem; color: var(--ctf); word-break: break-all; line-height: 1.55; display: block; max-height: 7rem; overflow-y: auto; padding-top: 2rem; }
+    .ctf-card__copy { position: absolute; top: 0.45rem; right: 0.55rem; font-size: 0.95rem; color: var(--text-secondary); background: rgba(25,211,197,0.14); border: 1px solid rgba(25,211,197,0.3); padding: 0.1rem 0.5rem; border-radius: 5px; pointer-events: none; }
 
     .ctf-card__media { text-align: center; margin-bottom: 1rem; }
     .ctf-card__media img { border-radius: 8px; background: #fff; padding: 6px; }
@@ -384,6 +531,40 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
     .ctf-win__links { display: flex; gap: 1.4rem; justify-content: center; flex-wrap: wrap; }
     .ctf-win__links a { color: var(--ctf); text-decoration: none; font-weight: 600; font-family: var(--font-mono, monospace); }
     .ctf-win__links a:hover { text-decoration: underline; }
+
+    /* Rules */
+    .ctf-rules { border: 1px solid rgba(254,188,46,0.35); background: rgba(254,188,46,0.05); border-radius: 12px; padding: 1.3rem 1.6rem; margin-bottom: 2rem; }
+    .ctf-rules__title { font-family: var(--font-mono, monospace); font-size: var(--text-sm); color: #f5b73a; letter-spacing: 0.04em; margin-bottom: 0.7rem; }
+    .ctf-rules__list { margin: 0; padding-left: 1.3rem; display: grid; gap: 0.5rem; }
+    .ctf-rules__list li { color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.5; }
+    .ctf-rules__list b { color: var(--text-primary); }
+    .ctf-rules__list code { background: var(--dim); color: var(--ctf); padding: 0.05em 0.35em; border-radius: 4px; font-size: 0.9em; }
+
+    /* Certificate */
+    .ctf-cert { margin-top: 3.2rem; text-align: center; }
+    .ctf-cert__eyebrow { font-family: var(--font-mono, monospace); font-size: 1.25rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ctf); }
+    .ctf-cert__h2 { font-size: var(--text-2xl); margin: 0.3rem 0 0.6rem; }
+    .ctf-cert__lead { color: var(--text-secondary); font-size: var(--text-base); line-height: 1.6; max-width: 48rem; margin: 0 auto 1.8rem; }
+    .ctf-cert__lead b { color: var(--text-primary); }
+    .ctf-cert__frame { position: relative; max-width: 70rem; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 1px solid rgba(25,211,197,0.25); box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+    .ctf-cert__canvas { display: block; width: 100%; height: auto; }
+    .ctf-cert__lock { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1.4rem 1.2rem 0.9rem; background: linear-gradient(to top, rgba(8,11,16,0.95), rgba(8,11,16,0)); }
+    .ctf-cert__lock[hidden] { display: none; }
+    .ctf-cert__lock-icon { font-size: 1.4rem; }
+    .ctf-cert__lock p { color: var(--text-secondary); font-size: var(--text-sm); margin: 0; }
+    .ctf-cert__lock b { color: var(--ctf); }
+    .ctf-cert__claim { max-width: 44rem; margin: 1.8rem auto 0; }
+    .ctf-cert__claim[hidden] { display: none; }
+    .ctf-cert__claim-label { display: block; font-family: var(--font-mono, monospace); font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: 0.6rem; }
+    .ctf-cert__claim-row { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; }
+    .ctf-cert__claim-input { flex: 1; min-width: 16rem; background: var(--term-bg); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 0.7rem 1rem; color: var(--text-primary); font-size: var(--text-base); }
+    .ctf-cert__claim-input:focus { outline: none; border-color: var(--ctf); }
+    .ctf-cert__claim-btn { background: var(--ctf); color: #04231f; border: none; border-radius: 10px; padding: 0.7rem 1.4rem; font-weight: 700; cursor: pointer; font-family: var(--font-mono, monospace); }
+    .ctf-cert__claim-btn:hover { opacity: 0.9; }
+    .ctf-cert__dl { align-self: center; color: var(--ctf); text-decoration: none; font-family: var(--font-mono, monospace); border: 1px solid rgba(25,211,197,0.4); padding: 0.7rem 1.2rem; border-radius: 10px; }
+    .ctf-cert__dl[hidden] { display: none; }
+    .ctf-cert__dl:hover { background: var(--dim); }
+    .ctf-cert__disclaimer { color: var(--text-secondary); font-size: 1.2rem; margin-top: 1rem; opacity: 0.8; }
 
     @media (max-width: 640px) {
       .ctf-term__body { padding: 1.4rem 1.3rem 1.8rem; }

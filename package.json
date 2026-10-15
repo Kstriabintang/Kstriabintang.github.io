@@ -24,6 +24,7 @@
     "astro": "^7.3.5",
     "chess.js": "^1.4.0",
     "cobe": "^2.0.1",
+    "qrcode": "^1.5.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "sass": "^1.105.0"
@@ -33,6 +34,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "autoprefixer": "^10.6.1",
+    "tailwindcss": "^3.4.19",
     "typescript": "^6.0.3",
     "wrangler": "^4.141.0"
   }
