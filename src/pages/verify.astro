@@ -19,6 +19,16 @@ import '../styles/pages/_tool-page.scss';
         <p class="verify__note" id="verify-note"></p>
       </div>
 
+      <form class="verify__paste" id="verify-paste">
+        <label class="verify__paste-label" for="verify-input">Have a certificate link? Paste it to check</label>
+        <div class="verify__paste-row">
+          <input class="verify__paste-input" id="verify-input" type="text" inputmode="url" autocomplete="off" spellcheck="false"
+            placeholder="https://ksatriabintangsamudra.com/verify/?n=…" />
+          <button class="verify__paste-btn" type="submit">Verify</button>
+        </div>
+        <p class="verify__paste-err" id="verify-paste-err" role="alert" hidden></p>
+      </form>
+
       <p class="verify__foot">
         This is an <b>honor-based practice credential</b> from the <a href="/games/ctf/">KBS Lab CTF</a> — not an accredited qualification.
         Verification confirms the certificate's details are internally consistent; it is issued on trust (no AI, no shared solutions).
@@ -43,17 +53,22 @@ import '../styles/pages/_tool-page.scss';
 
     function esc(s: string) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-    (async () => {
-      const q = new URLSearchParams(location.search);
+    const pasteForm = document.getElementById('verify-paste') as HTMLFormElement;
+    const pasteInput = document.getElementById('verify-input') as HTMLInputElement;
+    const pasteErr = document.getElementById('verify-paste-err') as HTMLElement;
+
+    async function runVerify(q: URLSearchParams) {
       const name = q.get('n'), flags = q.get('f'), pts = q.get('p'), date = q.get('d'), code = (q.get('c') || '').toUpperCase();
 
       if (!name || !flags || !pts || !date || !code) {
         card.dataset.state = 'empty';
         badge.textContent = '?'; statusEl.textContent = 'No certificate to check';
-        note.textContent = 'Scan the QR code on a KBS Lab certificate, or open the link it points to.';
+        details.hidden = true; details.innerHTML = '';
+        note.textContent = 'Scan the QR code on a KBS Lab certificate, or paste its link below.';
         return;
       }
 
+      card.dataset.state = 'loading'; badge.textContent = ''; statusEl.textContent = 'Checking…';
       const expected = await codeFor(name, date, pts);
       const ok = expected === code;
 
@@ -73,7 +88,32 @@ import '../styles/pages/_tool-page.scss';
       note.textContent = ok
         ? 'The certificate details are consistent and its code checks out. Issued on the honor code — no AI, no shared solutions.'
         : 'The verify code does not match these details — the link may have been altered. Ask for a freshly generated certificate.';
-    })();
+    }
+
+    function parseLink(raw: string): URLSearchParams | null {
+      raw = raw.trim(); if (!raw) return null;
+      let qs = '';
+      try { qs = new URL(raw).search; } catch { const i = raw.indexOf('?'); qs = i >= 0 ? raw.slice(i) : raw; }
+      if (!qs.startsWith('?')) qs = '?' + qs;
+      const p = new URLSearchParams(qs);
+      return p.get('c') ? p : null;
+    }
+
+    pasteForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pasteErr.hidden = true;
+      const q = parseLink(pasteInput.value);
+      if (!q) {
+        pasteErr.hidden = false;
+        pasteErr.textContent = "That doesn't look like a certificate link — paste the full /verify/ URL.";
+        return;
+      }
+      try { history.replaceState(null, '', '/verify/?' + q.toString()); } catch (_) { /* ignore */ }
+      runVerify(q);
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    runVerify(new URLSearchParams(location.search));
   </script>
 
   <style>
@@ -98,6 +138,16 @@ import '../styles/pages/_tool-page.scss';
     .verify__details dt { color: var(--text-secondary); font-size: var(--text-sm); margin: 0; }
     .verify__details dd { color: var(--text-primary); font-family: var(--font-mono, monospace); font-size: var(--text-sm); margin: 0; text-align: right; }
     .verify__note { color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6; margin-top: 1.6rem; max-width: 30rem; margin-left: auto; margin-right: auto; }
+    .verify__paste { margin: 1.8rem auto 0; max-width: 38rem; }
+    .verify__paste-label { display: block; font-family: var(--font-mono, monospace); font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: 0.6rem; text-align: center; }
+    .verify__paste-row { display: flex; gap: 0.6rem; }
+    .verify__paste-input { flex: 1; min-width: 0; background: var(--card-bg, #12121f); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 0.7rem 1rem; color: var(--text-primary); font-family: var(--font-mono, monospace); font-size: var(--text-sm); }
+    .verify__paste-input:focus { outline: none; border-color: var(--ctf); }
+    .verify__paste-btn { background: var(--ctf); color: #04231f; border: none; border-radius: 10px; padding: 0.7rem 1.4rem; font-weight: 700; cursor: pointer; font-family: var(--font-mono, monospace); }
+    .verify__paste-btn:hover { opacity: 0.9; }
+    .verify__paste-err { color: #ff6b6b; font-size: var(--text-sm); margin-top: 0.7rem; text-align: center; }
+    .verify__paste-err[hidden] { display: none; }
+
     .verify__foot { color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6; margin-top: 2rem; }
     .verify__foot a { color: var(--ctf); }
     .verify__foot b { color: var(--text-primary); }
