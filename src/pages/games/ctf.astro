@@ -51,7 +51,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
           <span class="ctf-term__dot ctf-term__dot--r"></span>
           <span class="ctf-term__dot ctf-term__dot--y"></span>
           <span class="ctf-term__dot ctf-term__dot--g"></span>
-          <span class="ctf-term__path">ven_0day@ctf: ~/challenges</span>
+          <span class="ctf-term__path">kbs@lab: ~/challenges</span>
         </div>
         <div class="ctf-term__body">
           <pre class="ctf-term__boot" id="ctf-boot" aria-hidden="true"></pre>
@@ -186,10 +186,10 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
 
         <div class="ctf-cert__frame">
           <canvas id="ctf-cert-canvas" class="ctf-cert__canvas" width="1400" height="990" role="img" aria-label="Sample CTF completion certificate for Ksatria Bintang Samudra"></canvas>
-          <div class="ctf-cert__lock" data-cert-lock>
-            <span class="ctf-cert__lock-icon" aria-hidden="true">🔒</span>
-            <p><b data-cert-remaining>16</b> flags left to unlock your own — this is a sample.</p>
-          </div>
+        </div>
+        <div class="ctf-cert__lock" data-cert-lock>
+          <span class="ctf-cert__lock-icon" aria-hidden="true">🔒</span>
+          <p><b data-cert-remaining>16</b> flags left to unlock your own — this is a live sample.</p>
         </div>
 
         <div class="ctf-cert__claim" data-cert-claim hidden>
@@ -197,7 +197,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
           <div class="ctf-cert__claim-row">
             <input id="ctf-cert-name" class="ctf-cert__claim-input" type="text" maxlength="42" autocomplete="name" placeholder="Your full name" />
             <button class="ctf-cert__claim-btn" type="button" data-cert-gen>Generate</button>
-            <a class="ctf-cert__dl" data-cert-dl hidden download="ven0day-ctf-certificate.png">Download PNG ↓</a>
+            <a class="ctf-cert__dl" data-cert-dl hidden download="kbs-lab-ctf-certificate.png">Download PNG ↓</a>
           </div>
           <p class="ctf-cert__disclaimer">A practice certificate — not an accredited credential. Issued for motivation, under the honor code above (no AI, no shared solutions).</p>
         </div>
@@ -303,7 +303,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
     const boot = document.getElementById('ctf-boot') as HTMLElement;
     const banner = document.getElementById('ctf-banner') as HTMLElement;
     const lines = [
-      'ven_0day@ctf:~$ ./ctf --init',
+      'kbs@lab:~$ ./ctf --init',
       '[ok] mounting /challenges ... 16 found',
       '[ok] crypto · encoding · forensics · stego · web · reversing',
       '[ok] flag format: KBS{...}  ·  verify: sha-256 (offline)',
@@ -338,7 +338,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
 
       const niceDate = () => new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
       const codeFor = async (name: string, date: string, pts: number) =>
-        (await sha256(`${name}|${date}|${pts}|ven0day`)).slice(0, 10).toUpperCase().replace(/(.{5})(.{5})/, '$1-$2');
+        (await sha256(`${name}|${date}|${pts}|kbslab`)).slice(0, 10).toUpperCase().replace(/(.{5})(.{5})/, '$1-$2');
 
       function wrap(text: string, x: number, y: number, maxW: number, lh: number) {
         const words = text.split(' '); let line = '';
@@ -350,61 +350,106 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
         ctx.fillText(line, x, y);
       }
 
+      const GOLD = '#d9ba7c', GOLD2 = '#e8cf9a', TEAL = '#19d3c5', CREAM = '#f3f1ea';
+      function flourish(cx: number, y: number, half: number) {
+        ctx.strokeStyle = 'rgba(217,186,124,0.65)'; ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(cx - half, y); ctx.lineTo(cx - 16, y); ctx.moveTo(cx + 16, y); ctx.lineTo(cx + half, y); ctx.stroke();
+        ctx.save(); ctx.translate(cx, y); ctx.rotate(Math.PI / 4); ctx.fillStyle = GOLD; ctx.fillRect(-5, -5, 10, 10); ctx.restore();
+      }
+      function corner(x: number, y: number, dx: number, dy: number) {
+        ctx.strokeStyle = 'rgba(217,186,124,0.8)'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x, y + dy * 28); ctx.lineTo(x, y); ctx.lineTo(x + dx * 28, y); ctx.stroke();
+      }
+      function seal(cx: number, cy: number, r: number) {
+        ctx.save();
+        ctx.strokeStyle = GOLD; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.stroke();
+        ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(cx, cy, r - 9, 0, 7); ctx.stroke();
+        ctx.strokeStyle = 'rgba(217,186,124,0.55)'; ctx.lineWidth = 1;
+        for (let i = 0; i < 44; i++) { const a = i / 44 * Math.PI * 2; ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * (r - 9), cy + Math.sin(a) * (r - 9)); ctx.lineTo(cx + Math.cos(a) * (r - 5), cy + Math.sin(a) * (r - 5)); ctx.stroke(); }
+        ctx.textAlign = 'center';
+        ctx.fillStyle = GOLD; ctx.font = '700 18px Georgia, serif'; ctx.fillText('★', cx, cy - 22);
+        ctx.fillStyle = GOLD2; ctx.font = '700 30px Georgia, serif'; ctx.fillText('KBS', cx, cy + 8);
+        ctx.fillStyle = GOLD; ctx.font = '600 12px ui-monospace, monospace'; ctx.fillText('— LAB —', cx, cy + 30);
+        ctx.fillStyle = TEAL;
+        ctx.beginPath(); ctx.moveTo(cx - 20, cy + r - 6); ctx.lineTo(cx - 34, cy + r + 28); ctx.lineTo(cx - 10, cy + r + 15); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(cx + 20, cy + r - 6); ctx.lineTo(cx + 34, cy + r + 28); ctx.lineTo(cx + 10, cy + r + 15); ctx.closePath(); ctx.fill();
+        ctx.restore();
+      }
+
       async function draw(name: string, flags: number, pts: number, sample: boolean) {
         const date = niceDate();
         const code = await codeFor(name, date, pts);
+        const nm = name || 'Anonymous';
+        // background
         const g = ctx.createLinearGradient(0, 0, 0, H);
-        g.addColorStop(0, '#0d1119'); g.addColorStop(1, '#090c12');
+        g.addColorStop(0, '#0e1220'); g.addColorStop(1, '#080b12');
         ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-        const rg = ctx.createRadialGradient(W / 2, 300, 50, W / 2, 300, 920);
-        rg.addColorStop(0, 'rgba(25,211,197,0.08)'); rg.addColorStop(1, 'rgba(0,0,0,0)');
+        const rg = ctx.createRadialGradient(W / 2, 360, 40, W / 2, 360, 980);
+        rg.addColorStop(0, 'rgba(25,211,197,0.07)'); rg.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
-        ctx.strokeStyle = 'rgba(25,211,197,0.55)'; ctx.lineWidth = 3; ctx.strokeRect(42, 42, W - 84, H - 84);
-        ctx.strokeStyle = 'rgba(217,186,124,0.35)'; ctx.lineWidth = 1; ctx.strokeRect(56, 56, W - 112, H - 112);
+        // guilloche watermark
+        ctx.save(); ctx.globalAlpha = 0.05; ctx.strokeStyle = GOLD; ctx.lineWidth = 1;
+        for (let i = 0; i < 11; i++) { ctx.beginPath(); ctx.arc(W / 2, 430, 110 + i * 24, 0, 7); ctx.stroke(); }
+        ctx.restore();
+        // borders + corners
+        ctx.strokeStyle = GOLD; ctx.lineWidth = 3; ctx.strokeRect(40, 40, W - 80, H - 80);
+        ctx.strokeStyle = 'rgba(25,211,197,0.5)'; ctx.lineWidth = 1.5; ctx.strokeRect(54, 54, W - 108, H - 108);
+        corner(40, 40, 1, 1); corner(W - 40, 40, -1, 1); corner(40, H - 40, 1, -1); corner(W - 40, H - 40, -1, -1);
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#19d3c5'; ctx.font = '600 24px ui-monospace, SFMono-Regular, Menlo, monospace';
-        ctx.fillText('ven_0day // CTF LAB', W / 2, 128);
-        ctx.fillStyle = '#eef1f6'; ctx.font = '700 54px Georgia, "Times New Roman", serif';
-        ctx.fillText('Certificate of Completion', W / 2, 208);
-        ctx.strokeStyle = 'rgba(25,211,197,0.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W / 2 - 120, 236); ctx.lineTo(W / 2 + 120, 236); ctx.stroke();
-        ctx.fillStyle = '#9aa3b2'; ctx.font = 'italic 24px Georgia, serif';
-        ctx.fillText('This certifies that', W / 2, 320);
-        let fs = 72; ctx.font = `italic 700 ${fs}px Georgia, serif`;
-        while (ctx.measureText(name || 'Anonymous').width > W - 260 && fs > 32) { fs -= 2; ctx.font = `italic 700 ${fs}px Georgia, serif`; }
-        ctx.fillStyle = '#19d3c5'; ctx.fillText(name || 'Anonymous', W / 2, 408);
-        ctx.fillStyle = '#c7ccd8'; ctx.font = '23px Georgia, serif';
-        wrap(`has captured all ${flags} flags of the ven_0day Capture-the-Flag — spanning cryptography, encoding, forensics, steganography, web and reversing — scoring ${pts} of ${totalPts} points, unaided.`, W / 2, 470, 980, 34);
-        ctx.fillStyle = '#d9ba7c'; ctx.font = '600 19px ui-monospace, Menlo, monospace';
-        ctx.fillText('Completed under the honor code — no AI, no shared solutions.', W / 2, 584);
-        ctx.fillStyle = '#8891a0'; ctx.font = '18px ui-monospace, Menlo, monospace';
-        ctx.fillText(`FLAGS ${flags}/${total}        SCORE ${pts}        CATEGORIES 7`, W / 2, 628);
-        // QR (bottom-left)
-        const verify = `ven_0day CTF | ${name || 'Anonymous'} | ${flags}/${total} flags | ${pts} pts | ${date} | ${code}`;
+        // brand
+        ctx.fillStyle = GOLD; ctx.font = '600 20px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillText('K B S   L A B   ·   C A P T U R E   T H E   F L A G', W / 2, 100);
+        // title
+        ctx.fillStyle = CREAM; ctx.font = '700 52px Georgia, "Times New Roman", serif';
+        ctx.fillText('Certificate of Completion', W / 2, 172);
+        flourish(W / 2, 202, 155);
+        // certify + name
+        ctx.fillStyle = '#9aa3b2'; ctx.font = 'italic 23px Georgia, serif';
+        ctx.fillText('This is to certify that', W / 2, 262);
+        let fs = 66; ctx.font = `italic 700 ${fs}px Georgia, serif`;
+        while (ctx.measureText(nm).width > W - 300 && fs > 30) { fs -= 2; ctx.font = `italic 700 ${fs}px Georgia, serif`; }
+        ctx.fillStyle = TEAL; ctx.fillText(nm, W / 2, 338);
+        ctx.strokeStyle = 'rgba(217,186,124,0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2 - 230, 362); ctx.lineTo(W / 2 + 230, 362); ctx.stroke();
+        // body
+        ctx.fillStyle = '#c7ccd8'; ctx.font = '22px Georgia, serif';
+        wrap(`has captured all ${flags} flags of the KBS Lab Capture-the-Flag — spanning cryptography, encoding, forensics, steganography, web and reversing — scoring ${pts} of ${totalPts} points, unaided.`, W / 2, 414, 1000, 33);
+        // honor + stats
+        ctx.fillStyle = GOLD; ctx.font = '600 18px ui-monospace, Menlo, monospace';
+        ctx.fillText('Completed under the honor code — no AI, no shared solutions.', W / 2, 512);
+        ctx.fillStyle = '#8891a0'; ctx.font = '17px ui-monospace, Menlo, monospace';
+        ctx.fillText(`FLAGS ${flags}/${total}        SCORE ${pts}        CATEGORIES 7`, W / 2, 550);
+        // QR → verify URL
+        const params = new URLSearchParams({ n: nm, f: String(flags), p: String(pts), d: date, c: code });
+        const verifyUrl = `${location.origin}/verify/?${params.toString()}`;
         try {
-          const url = await QRCode.toDataURL(verify, { margin: 1, width: 320, errorCorrectionLevel: 'M', color: { dark: '#0b0e14', light: '#e9f7f4' } });
+          const url = await QRCode.toDataURL(verifyUrl, { margin: 1, width: 320, errorCorrectionLevel: 'M', color: { dark: '#0b0e14', light: '#e9f7f4' } });
           const qim = new Image(); qim.src = url; await qim.decode();
-          const qs = 150, qx = 155, qy = 712;
-          ctx.fillStyle = '#e9f7f4'; ctx.fillRect(qx - 8, qy - 8, qs + 16, qs + 16);
+          const qs = 140, qx = 150, qy = 700;
+          ctx.fillStyle = '#e9f7f4'; ctx.fillRect(qx - 7, qy - 7, qs + 14, qs + 14);
+          ctx.strokeStyle = GOLD; ctx.lineWidth = 2; ctx.strokeRect(qx - 7, qy - 7, qs + 14, qs + 14);
           ctx.drawImage(qim, qx, qy, qs, qs);
-          ctx.textAlign = 'center'; ctx.fillStyle = '#8891a0'; ctx.font = '15px ui-monospace, Menlo, monospace';
-          ctx.fillText('scan to verify', qx + qs / 2, qy + qs + 30);
+          ctx.textAlign = 'center'; ctx.fillStyle = '#8891a0'; ctx.font = '14px ui-monospace, Menlo, monospace';
+          ctx.fillText('scan to verify', qx + qs / 2, qy + qs + 28);
         } catch (_) { /* qr failed; continue */ }
+        // seal
+        seal(W / 2, 772, 70);
         // signature (bottom-right)
         ctx.textAlign = 'right';
-        ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W - 155 - 340, 796); ctx.lineTo(W - 155, 796); ctx.stroke();
-        ctx.fillStyle = '#eef1f6'; ctx.font = 'italic 36px "Snell Roundhand", "Brush Script MT", Georgia, cursive';
-        ctx.fillText('Ksatria Bintang Samudra', W - 155, 786);
-        ctx.fillStyle = '#8891a0'; ctx.font = '16px ui-monospace, Menlo, monospace';
-        ctx.fillText('Ksatria Bintang Samudra', W - 155, 826);
-        ctx.fillText('Author · ven_0day CTF Lab', W - 155, 850);
-        ctx.fillText(`Issued ${date}`, W - 155, 886);
-        ctx.fillText(`Verify  ${code}`, W - 155, 910);
-        ctx.textAlign = 'center'; ctx.fillStyle = '#5a6270'; ctx.font = '14px ui-monospace, Menlo, monospace';
-        ctx.fillText('Practice certificate — not an accredited credential. Issued for motivation.', W / 2, H - 34);
+        ctx.fillStyle = '#eef1f6'; ctx.font = 'italic 34px "Snell Roundhand", "Brush Script MT", Georgia, cursive';
+        ctx.fillText('Ksatria Bintang Samudra', W - 150, 758);
+        ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W - 150 - 320, 780); ctx.lineTo(W - 150, 780); ctx.stroke();
+        ctx.fillStyle = '#8891a0'; ctx.font = '15px ui-monospace, Menlo, monospace';
+        ctx.fillText('Ksatria Bintang Samudra', W - 150, 804);
+        ctx.fillText('Author · KBS Lab', W - 150, 826);
+        ctx.fillText(`Issued ${date}`, W - 150, 860);
+        ctx.fillText(`Verify  ${code}`, W - 150, 882);
+        // disclaimer
+        ctx.textAlign = 'center'; ctx.fillStyle = '#5a6270'; ctx.font = '13px ui-monospace, Menlo, monospace';
+        ctx.fillText('Practice certificate — not an accredited credential. Issued by KBS Lab for motivation.', W / 2, H - 32);
         if (sample) {
           ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(-Math.PI / 9);
-          ctx.fillStyle = 'rgba(25,211,197,0.10)'; ctx.font = '700 180px Georgia, serif'; ctx.textAlign = 'center';
-          ctx.fillText('SAMPLE', 0, 60); ctx.restore();
+          ctx.fillStyle = 'rgba(25,211,197,0.09)'; ctx.font = '700 170px Georgia, serif'; ctx.textAlign = 'center';
+          ctx.fillText('SAMPLE', 0, 55); ctx.restore();
         }
       }
 
@@ -494,8 +539,8 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
     .ctf-card__puzzle code { font-family: var(--font-mono, monospace); font-size: 1.2rem; color: var(--ctf); word-break: break-all; line-height: 1.55; display: block; max-height: 7rem; overflow-y: auto; padding-top: 2rem; }
     .ctf-card__copy { position: absolute; top: 0.45rem; right: 0.55rem; font-size: 0.95rem; color: var(--text-secondary); background: rgba(25,211,197,0.14); border: 1px solid rgba(25,211,197,0.3); padding: 0.1rem 0.5rem; border-radius: 5px; pointer-events: none; }
 
-    .ctf-card__media { text-align: center; margin-bottom: 1rem; }
-    .ctf-card__media img { border-radius: 8px; background: #fff; padding: 6px; }
+    .ctf-card__media { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .ctf-card__media img { border-radius: 8px; background: #fff; padding: 6px; display: block; }
     .ctf-card__file { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; background: var(--term-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.9rem; }
     .ctf-card__thumb { width: 8rem; height: 4.5rem; object-fit: cover; border-radius: 6px; flex-shrink: 0; filter: saturate(0.9); }
     .ctf-card__fileicon { font-size: 2.4rem; width: 4.5rem; text-align: center; flex-shrink: 0; }
@@ -548,7 +593,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
     .ctf-cert__lead b { color: var(--text-primary); }
     .ctf-cert__frame { position: relative; max-width: 70rem; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 1px solid rgba(25,211,197,0.25); box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
     .ctf-cert__canvas { display: block; width: 100%; height: auto; }
-    .ctf-cert__lock { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1.4rem 1.2rem 0.9rem; background: linear-gradient(to top, rgba(8,11,16,0.95), rgba(8,11,16,0)); }
+    .ctf-cert__lock { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin: 1.1rem auto 0; max-width: 46rem; padding: 0.7rem 1.2rem; border: 1px solid rgba(254,188,46,0.28); background: rgba(254,188,46,0.05); border-radius: 10px; }
     .ctf-cert__lock[hidden] { display: none; }
     .ctf-cert__lock-icon { font-size: 1.4rem; }
     .ctf-cert__lock p { color: var(--text-secondary); font-size: var(--text-sm); margin: 0; }
