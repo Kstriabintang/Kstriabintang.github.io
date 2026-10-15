@@ -110,14 +110,19 @@ import '../../styles/pages/_chess.scss';
     }
 
     function updateCaptured() {
-      // Count captured by comparing to the full starting set.
-      const start = { p: 8, n: 2, b: 2, r: 2, q: 1 };
-      const live = { w: { p:0,n:0,b:0,r:0,q:0 }, b: { p:0,n:0,b:0,r:0,q:0 } } as any;
-      game.board().flat().forEach((p) => { if (p && p.type !== 'k') live[p.color][p.type]++; });
-      const capByMe = Object.entries(start).map(([t, n]) => GLYPH[t].repeat(n - live.b[t])).join('');
-      const capByAi = Object.entries(start).map(([t, n]) => GLYPH[t].repeat(n - live.w[t])).join('');
-      capMeEl.textContent = capByMe;
-      capAiEl.textContent = capByAi;
+      // Derive captured pieces from the move history. The old version counted
+      // "missing from the starting set", which broke after a pawn promotion:
+      // a 2nd queen made the count negative and `"♛".repeat(-1)` throws a
+      // RangeError, freezing the board. History-based counting can't go negative
+      // and also handles en-passant captures correctly.
+      const byMe: string[] = [];
+      const byAi: string[] = [];
+      for (const m of game.history({ verbose: true }) as any[]) {
+        if (!m.captured) continue;
+        (m.color === 'w' ? byMe : byAi).push(GLYPH[m.captured]);
+      }
+      capMeEl.textContent = byMe.join('');
+      capAiEl.textContent = byAi.join('');
     }
 
     function onTap(sq: string) {

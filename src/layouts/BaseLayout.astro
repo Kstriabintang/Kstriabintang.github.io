@@ -47,9 +47,9 @@ const personLd = {
   familyName: 'Samudra',
   url: site.url,
   image: new URL('/images/profile.jpg', site.url).toString(),
-  jobTitle: 'AI Engineer',
+  jobTitle: 'Product Engineer',
   hasOccupation: [
-    { '@type': 'Occupation', name: 'AI Engineer' },
+    { '@type': 'Occupation', name: 'Product Engineer' },
     { '@type': 'Occupation', name: 'Full-Stack Developer' },
     { '@type': 'Occupation', name: 'SaaS & Product Developer' },
     { '@type': 'Occupation', name: 'Automation Engineer' },
@@ -66,7 +66,7 @@ const personLd = {
     'Solutions Architecture', 'Payment Integration', 'Cloudflare Workers',
     'Next.js', 'React', 'Vue.js', 'TypeScript', 'Node.js', 'Astro', 'Flutter', 'Laravel', 'Python', 'Supabase', 'PostgreSQL',
   ],
-  sameAs: [site.socials.github, site.socials.linkedin, site.socials.instagram],
+  sameAs: [site.socials.github, site.socials.linkedin, site.socials.gravatar, site.socials.pinterest, site.socials.devto, site.socials.instagram],
 };
 const orgLd = {
   '@context': 'https://schema.org',
@@ -99,10 +99,13 @@ const ldBlocks = [personLd, orgLd, websiteLd, ...(jsonLd ? (Array.isArray(jsonLd
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
+    <meta name="p:domain_verify" content="d5cc00349911b6d9d875809fe307774b" />
     <meta name="theme-color" content="#02aab0" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
     <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title={`${site.name} — Notebook`} href="/rss.xml" />

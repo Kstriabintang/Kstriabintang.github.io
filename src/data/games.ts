@@ -13,6 +13,15 @@ export interface Game {
 
 export const games: Game[] = [
   {
+    title: 'Capture the Flag',
+    meta: 'CTF · Crypto & forensics',
+    desc: 'A browser CTF — seven crypto, encoding and forensics challenges, every flag KBS{…}. Solve them with the DevSec Toolbox; progress saves as you capture flags.',
+    href: '/games/ctf/',
+    emoji: '🚩',
+    badge: 'New',
+    ctaLabel: 'Play',
+  },
+  {
     title: 'Termle',
     meta: 'Daily · Word puzzle',
     desc: 'A tech twist on the daily word game — guess the 5-letter developer/security word in six tries. New word every day, share your result.',

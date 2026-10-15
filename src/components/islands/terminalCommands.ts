@@ -92,7 +92,7 @@ const FILES: Record<string, string> = {
   'about.txt': `
 ${B}About Bintang${R}
 
-  AI Engineer, Automation Builder and Solutions Architect based in
+  Product Engineer — Mining & Vertical SaaS, AI-augmented, based in
   Pontianak, Indonesia — a city that sits right on the equator.
 
   I ship production systems end to end: an OpenAI-compatible AI gateway
@@ -157,11 +157,11 @@ ${rows.map(([c, d]) => `  ${T}${c.padEnd(18)}${R} ${d}`).join('\n')}
 function whoami(): string {
   return `
   ${B}Ksatria Bintang Samudra${R}
-  AI Engineer building production systems from Pontianak, Indonesia —
+  Product Engineer building production systems from Pontianak, Indonesia —
   LLM gateways, payment-native automation and field apps that people
   actually use every day.
 
-  ${T}AI Engineer${R}  ${D}|${R}  ${T}Automation Builder${R}  ${D}|${R}  ${T}Solutions Architect${R}
+  ${T}Product Engineer${R}  ${D}|${R}  ${T}Mining & Vertical SaaS${R}  ${D}|${R}  ${T}AI-augmented${R}
 `;
 }
 
@@ -191,7 +191,7 @@ function neofetch(): string {
   ${T}  ( 0°  )  ${R}   ───────────────
   ${T}   '-.-'   ${R}   ${T}OS:${R}       Human, equatorial edition
   ${T}   / | \\   ${R}   ${T}Host:${R}     Pontianak, Indonesia
-  ${T}  /  |  \\  ${R}   ${T}Kernel:${R}   AI Engineer
+  ${T}  /  |  \\  ${R}   ${T}Kernel:${R}   Product Engineer
   ${T}     |     ${R}   ${T}Shell:${R}    TypeScript + Python
   ${T}    / \\    ${R}   ${T}Edge:${R}     Cloudflare Workers
                   ${T}Payments:${R} QRIS

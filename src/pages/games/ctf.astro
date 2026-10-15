@@ -1,0 +1,291 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/pages/_tool-page.scss';
+
+const DEVSEC = 'https://devsec.ksatriabintangsamudra.com';
+
+// Each flag is KBS{...}. The plaintext flag is NOT in the source — only the
+// puzzle (encoded/ciphered) and a SHA-256 of the answer, so you must solve it.
+const challenges = [
+  { id: 'warmup', cat: 'Encoding', pts: 100, title: 'Warm-up', tool: 'base64',
+    prompt: 'Everything starts somewhere. Decode this.',
+    puzzle: 'S0JTe3czbGMwbWVfdDBfdGgzX2N0Zn0=',
+    hint: 'Trailing = padding = Base64. Open DevSec › Base64 and decode.',
+    hash: 'e8b26f1a3a2a5f0a5f0fd351f89acf17eaab7336bb523449677ac13141ff4479' },
+  { id: 'hexdump', cat: 'Encoding', pts: 100, title: 'Hex Dump', tool: 'hex',
+    prompt: 'Two characters per byte. Turn it back into text.',
+    puzzle: '4b42537b68616c665f615f627974655f656163687d',
+    hint: 'Only 0-9 and a-f = hexadecimal. DevSec › Hex, decode to text.',
+    hash: '5d2093f4c980e3e917edb327d2d1f5dbcaccf1b76f5d96b0da3ce029741e917d' },
+  { id: 'thirty-two', cat: 'Encoding', pts: 150, title: 'Thirty-Two', tool: 'base32',
+    prompt: 'Like Base64, but upper-case and chunkier.',
+    puzzle: 'JNBFG63CMFZWKMZSL5UDI427OBQWIZBRNZTX2===',
+    hint: 'A-Z and 2-7 with = padding = Base32. DevSec › Base32.',
+    hash: '0eb97471ab466752b816ab756d2c17ff2f8ea6b681499cec548f2831fc56196d' },
+  { id: 'ones-zeros', cat: 'Encoding', pts: 150, title: 'Ones & Zeros', tool: 'numbase',
+    prompt: 'Eight bits make a byte. Read the machine.',
+    puzzle: '01001011 01000010 01010011 01111011 01111010 00110011 01110010 01101111 01110011 01011111 01100001 01101110 01100100 01011111 00110000 01101110 01100101 01110011 01111101',
+    hint: 'Groups of 8 ones/zeros = binary ASCII. DevSec › Number base (binary → text).',
+    hash: '585d7312c8152b87007b12b8573b42d427021fc7481c9dac2e4e10ccfae956c2' },
+  { id: 'mirror', cat: 'Misc', pts: 150, title: 'Mirror', tool: 'text',
+    prompt: 'It reads wrong because it is the wrong way round.',
+    puzzle: '}sdrawkcab_siht_daer{SBK',
+    hint: 'Reverse the whole string. DevSec › Text (reverse).',
+    hash: '23af7cd8fa1b4cc807c8e1670461221728d075bcfb093d74cdee0b4b5a42786b' },
+  { id: 'xorcist', cat: 'Crypto', pts: 200, title: 'The XORcist', tool: 'xor',
+    prompt: 'Hex ciphertext, XORed byte-by-byte with ONE secret byte. Recover the text.',
+    puzzle: '090011393a72301d29713b1d73311d723a76703f',
+    hint: 'Single-byte XOR — try keys until "KBS{" appears (it is 0x42). DevSec › XOR Cipher.',
+    hash: '6f3b8156362cd4f6e4ddb736b89a61f76990a347a1d91db4ccceaf44b815f32e' },
+  { id: 'carved', cat: 'Forensics', pts: 250, title: 'Carved', tool: 'fileinspect',
+    prompt: 'Raw bytes as hex. A readable flag is buried in the noise — carve it out.',
+    puzzle: '390c8c7d7247342cd8100f2f6f774b42537b737472316e67735f66316e645f733363723374737d0d65d670e58e0351d8ae8e4f6eac342fc231',
+    hint: 'Hex-decode; a run of printable ASCII among the junk is the flag. DevSec › File Inspector / Hex.',
+    hash: 'd830ba4532c373455628f8cafb4b4ba7f85a05c75a703d54dcf5dc6cf713a030' },
+];
+
+const tools = [
+  { slug: 'base64', label: 'Base64' },
+  { slug: 'hex', label: 'Hex' },
+  { slug: 'base32', label: 'Base32' },
+  { slug: 'numbase', label: 'Number base' },
+  { slug: 'text', label: 'Text' },
+  { slug: 'xor', label: 'XOR Cipher' },
+  { slug: 'fileinspect', label: 'File Inspector' },
+  { slug: 'hash', label: 'Hash' },
+];
+
+const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
+---
+
+<BaseLayout
+  title="Capture the Flag — a browser CTF"
+  description="A browser capture-the-flag by Ksatria Bintang Samudra: seven crypto, encoding and forensics challenges. Solve them with the DevSec Toolbox. No sign-up — runs entirely in your browser."
+>
+  <main class="tool-page ctf-page">
+    <div class="tool-page__container">
+      <header class="ctf__header">
+        <p class="ctf__eyebrow">ven_0day // browser CTF</p>
+        <h1 class="ctf__title">Capture the <span class="ctf__flag-word">Flag</span></h1>
+        <p class="ctf__sub">
+          Seven challenges — crypto, encoding and forensics. Every flag is <code>KBS&#123;…&#125;</code>.
+          Solve them in your browser, with my <a href={DEVSEC} target="_blank" rel="noopener">DevSec Toolbox</a>.
+        </p>
+
+        <div class="ctf__hud">
+          <div class="ctf__stat"><span class="ctf__stat-num" data-flags>0</span><span class="ctf__stat-label">/ {challenges.length} flags</span></div>
+          <div class="ctf__stat"><span class="ctf__stat-num" data-points>0</span><span class="ctf__stat-label">/ {totalPts} pts</span></div>
+          <button class="ctf__reset" type="button" data-reset>Reset</button>
+        </div>
+        <div class="ctf__bar"><span class="ctf__bar-fill" data-bar></span></div>
+      </header>
+
+      <section class="ctf__tools" aria-label="DevSec Toolbox">
+        <span class="ctf__tools-label">Solve with my tools →</span>
+        {tools.map((t) => (
+          <a class="ctf__tool" href={`${DEVSEC}/${t.slug}/`} target="_blank" rel="noopener">{t.label}</a>
+        ))}
+      </section>
+
+      <div class="ctf__grid">
+        {challenges.map((c) => (
+          <article class="ctf-card" data-id={c.id} data-hash={c.hash} data-pts={c.pts}>
+            <div class="ctf-card__glow" aria-hidden="true"></div>
+            <header class="ctf-card__top">
+              <span class="ctf-card__cat">{c.cat}</span>
+              <span class="ctf-card__pts">{c.pts} pts</span>
+              <span class="ctf-card__check" data-check aria-hidden="true">✓</span>
+            </header>
+            <h2 class="ctf-card__title">{c.title}</h2>
+            <p class="ctf-card__prompt">{c.prompt}</p>
+
+            <button class="ctf-card__puzzle" type="button" data-copy title="Click to copy">
+              <code>{c.puzzle}</code>
+              <span class="ctf-card__copy" data-copy-label>copy</span>
+            </button>
+
+            <details class="ctf-card__hint">
+              <summary>Need a hint?</summary>
+              <p>{c.hint}</p>
+              <a class="ctf-card__open-tool" href={`${DEVSEC}/${c.tool}/`} target="_blank" rel="noopener">Open DevSec › {c.tool} ↗</a>
+            </details>
+
+            <form class="ctf-card__form" data-form novalidate>
+              <input class="ctf-card__input" type="text" name="flag" autocomplete="off" spellcheck="false"
+                placeholder="KBS{...}" aria-label={`Flag for ${c.title}`} />
+              <button class="ctf-card__submit" type="submit">Submit</button>
+            </form>
+            <p class="ctf-card__msg" data-msg role="status" hidden></p>
+          </article>
+        ))}
+      </div>
+
+      <div class="ctf__win" data-win hidden>
+        <p class="ctf__win-title">🚩 All flags captured.</p>
+        <p class="ctf__win-sub">Nicely done — that's the whole board, <strong data-win-pts>0</strong> points. You just solved a CTF with the same toolbox I bring to the real ones.</p>
+        <div class="ctf__win-links">
+          <a href="https://github.com/Kstriabintang" target="_blank" rel="noopener">GitHub ↗</a>
+          <a href={DEVSEC} target="_blank" rel="noopener">DevSec Toolbox ↗</a>
+          <a href="/games/">More games →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const KEY = 'ctf-solved-v1';
+    const cards = Array.from(document.querySelectorAll('.ctf-card')) as HTMLElement[];
+    const flagsEl = document.querySelector('[data-flags]') as HTMLElement;
+    const pointsEl = document.querySelector('[data-points]') as HTMLElement;
+    const barEl = document.querySelector('[data-bar]') as HTMLElement;
+    const winEl = document.querySelector('[data-win]') as HTMLElement;
+    const winPtsEl = document.querySelector('[data-win-pts]') as HTMLElement;
+    const total = cards.length;
+    const totalPts = cards.reduce((a, c) => a + Number(c.dataset.pts || 0), 0);
+
+    const load = (): string[] => { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } };
+    const save = (ids: string[]) => { try { localStorage.setItem(KEY, JSON.stringify(ids)); } catch { /* private mode */ } };
+
+    async function sha256(text: string): Promise<string> {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+      return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function refreshHud() {
+      const solved = cards.filter((c) => c.classList.contains('is-solved'));
+      const pts = solved.reduce((a, c) => a + Number(c.dataset.pts || 0), 0);
+      flagsEl.textContent = String(solved.length);
+      pointsEl.textContent = String(pts);
+      barEl.style.width = `${(solved.length / total) * 100}%`;
+      if (solved.length === total) { winPtsEl.textContent = String(totalPts); winEl.hidden = false; }
+      else winEl.hidden = true;
+    }
+
+    function markSolved(card: HTMLElement, persist = true) {
+      if (card.classList.contains('is-solved')) return;
+      card.classList.add('is-solved');
+      const form = card.querySelector('[data-form]') as HTMLFormElement;
+      const input = form.querySelector('.ctf-card__input') as HTMLInputElement;
+      input.value = 'KBS{ captured }';
+      input.disabled = true;
+      (form.querySelector('.ctf-card__submit') as HTMLButtonElement).disabled = true;
+      const msg = card.querySelector('[data-msg]') as HTMLElement;
+      msg.hidden = false; msg.textContent = '✓ Flag captured'; msg.className = 'ctf-card__msg is-ok';
+      if (persist) { const ids = load(); if (!ids.includes(card.dataset.id!)) { ids.push(card.dataset.id!); save(ids); } }
+    }
+
+    // Restore progress
+    const saved = load();
+    cards.forEach((c) => { if (saved.includes(c.dataset.id!)) markSolved(c, false); });
+    refreshHud();
+
+    // Submit handlers
+    cards.forEach((card) => {
+      const form = card.querySelector('[data-form]') as HTMLFormElement;
+      const input = form.querySelector('.ctf-card__input') as HTMLInputElement;
+      const msg = card.querySelector('[data-msg]') as HTMLElement;
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (card.classList.contains('is-solved')) return;
+        const guess = input.value.trim();
+        if (!guess) return;
+        const ok = (await sha256(guess)) === card.dataset.hash;
+        if (ok) { markSolved(card); refreshHud(); }
+        else {
+          msg.hidden = false; msg.textContent = '✗ Not it — check the format KBS{…}'; msg.className = 'ctf-card__msg is-bad';
+          card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+        }
+      });
+
+      // Copy puzzle to clipboard
+      const copyBtn = card.querySelector('[data-copy]') as HTMLButtonElement;
+      const copyLabel = card.querySelector('[data-copy-label]') as HTMLElement;
+      copyBtn?.addEventListener('click', async () => {
+        const text = card.querySelector('.ctf-card__puzzle code')?.textContent || '';
+        try { await navigator.clipboard.writeText(text); copyLabel.textContent = 'copied'; setTimeout(() => (copyLabel.textContent = 'copy'), 1200); } catch { /* no clipboard */ }
+      });
+    });
+
+    // Reset
+    document.querySelector('[data-reset]')?.addEventListener('click', () => {
+      save([]);
+      cards.forEach((c) => {
+        c.classList.remove('is-solved');
+        const form = c.querySelector('[data-form]') as HTMLFormElement;
+        const input = form.querySelector('.ctf-card__input') as HTMLInputElement;
+        input.value = ''; input.disabled = false;
+        (form.querySelector('.ctf-card__submit') as HTMLButtonElement).disabled = false;
+        const msg = c.querySelector('[data-msg]') as HTMLElement;
+        msg.hidden = true;
+      });
+      refreshHud();
+    });
+  </script>
+
+  <style>
+    .ctf-page { --ctf: #19d3c5; --ctf-dim: rgba(25, 211, 197, 0.14); }
+    .ctf__header { text-align: center; max-width: 60rem; margin: 0 auto 3.2rem; }
+    .ctf__eyebrow { font-family: var(--font-mono, monospace); font-size: 1.25rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ctf); opacity: 0.85; }
+    .ctf__title { font-size: var(--text-3xl); margin: 0.4rem 0 0.8rem; }
+    .ctf__flag-word { color: var(--ctf); }
+    .ctf__sub { color: var(--text-secondary); font-size: var(--text-base); line-height: 1.6; }
+    .ctf__sub code { background: var(--ctf-dim); color: var(--ctf); padding: 0.1em 0.4em; border-radius: 6px; font-size: 0.92em; }
+    .ctf__sub a { color: var(--ctf); text-decoration: underline; text-underline-offset: 3px; }
+
+    .ctf__hud { display: flex; align-items: center; justify-content: center; gap: 2.4rem; margin-top: 2rem; flex-wrap: wrap; }
+    .ctf__stat { display: flex; align-items: baseline; gap: 0.5rem; }
+    .ctf__stat-num { font-size: var(--text-2xl); font-weight: 700; color: var(--ctf); font-variant-numeric: tabular-nums; }
+    .ctf__stat-label { color: var(--text-secondary); font-size: var(--text-sm); }
+    .ctf__reset { background: transparent; border: 1px solid var(--color-border, rgba(255,255,255,0.14)); color: var(--text-secondary); padding: 0.5rem 1.2rem; border-radius: 999px; cursor: pointer; font-size: var(--text-sm); transition: all 0.2s; }
+    .ctf__reset:hover { color: var(--text-primary); border-color: var(--ctf); }
+    .ctf__bar { height: 4px; border-radius: 999px; background: var(--ctf-dim); margin: 1.4rem auto 0; max-width: 32rem; overflow: hidden; }
+    .ctf__bar-fill { display: block; height: 100%; width: 0; background: var(--ctf); border-radius: 999px; transition: width 0.4s cubic-bezier(0.2,0.8,0.2,1); }
+
+    .ctf__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; justify-content: center; margin: 0 auto 2.8rem; max-width: 64rem; }
+    .ctf__tools-label { font-size: var(--text-sm); color: var(--text-secondary); margin-right: 0.4rem; }
+    .ctf__tool { font-size: var(--text-sm); padding: 0.45rem 1rem; border: 1px solid var(--color-border, rgba(255,255,255,0.14)); border-radius: 999px; color: var(--text-primary); text-decoration: none; transition: all 0.2s; font-family: var(--font-mono, monospace); }
+    .ctf__tool:hover { border-color: var(--ctf); color: var(--ctf); background: var(--ctf-dim); }
+
+    .ctf__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr)); gap: 1.6rem; }
+    .ctf-card { position: relative; overflow: hidden; border: 1px solid var(--card-border, rgba(255,255,255,0.08)); background: var(--card-bg, #1a1a30); border-radius: 16px; padding: 1.8rem; transition: border-color 0.25s, transform 0.25s; }
+    .ctf-card:hover { border-color: rgba(25,211,197,0.35); transform: translateY(-3px); }
+    .ctf-card.is-solved { border-color: rgba(25,211,197,0.55); }
+    .ctf-card__glow { position: absolute; inset: auto -20% -40% auto; width: 60%; height: 60%; background: radial-gradient(circle, var(--ctf-dim), transparent 70%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .ctf-card.is-solved .ctf-card__glow { opacity: 1; }
+    .ctf-card__top { display: flex; align-items: center; gap: 0.7rem; }
+    .ctf-card__cat { font-family: var(--font-mono, monospace); font-size: 1.1rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ctf); }
+    .ctf-card__pts { font-size: 1.2rem; color: var(--text-secondary); }
+    .ctf-card__check { margin-left: auto; color: var(--ctf); font-weight: 700; opacity: 0; transform: scale(0.5); transition: all 0.3s cubic-bezier(0.2,1.4,0.4,1); }
+    .ctf-card.is-solved .ctf-card__check { opacity: 1; transform: scale(1); }
+    .ctf-card__title { font-size: var(--text-lg); margin: 0.6rem 0 0.3rem; }
+    .ctf-card__prompt { color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.5; margin-bottom: 1.1rem; }
+    .ctf-card__puzzle { display: block; width: 100%; text-align: left; position: relative; background: var(--code-bg, #0f0f1a); border: 1px solid var(--code-border, rgba(255,255,255,0.08)); border-radius: 10px; padding: 0.9rem 1rem; cursor: copy; margin-bottom: 1rem; }
+    .ctf-card__puzzle code { font-family: var(--font-mono, monospace); font-size: 1.25rem; color: var(--text-primary); word-break: break-all; line-height: 1.55; display: block; max-height: 7.5rem; overflow-y: auto; }
+    .ctf-card__copy { position: absolute; top: 0.5rem; right: 0.6rem; font-size: 1rem; color: var(--text-secondary); background: var(--card-bg, #1a1a30); padding: 0.1rem 0.4rem; border-radius: 5px; }
+    .ctf-card__hint { margin-bottom: 1rem; }
+    .ctf-card__hint summary { cursor: pointer; font-size: var(--text-sm); color: var(--ctf); user-select: none; }
+    .ctf-card__hint p { color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.5; margin: 0.6rem 0 0.4rem; }
+    .ctf-card__open-tool { font-size: var(--text-sm); color: var(--ctf); text-decoration: none; }
+    .ctf-card__open-tool:hover { text-decoration: underline; }
+    .ctf-card__form { display: flex; gap: 0.6rem; }
+    .ctf-card__input { flex: 1; min-width: 0; background: var(--bg-primary, #0f0f1a); border: 1px solid var(--color-border, rgba(255,255,255,0.14)); border-radius: 10px; padding: 0.7rem 0.9rem; color: var(--text-primary); font-family: var(--font-mono, monospace); font-size: var(--text-sm); }
+    .ctf-card__input:focus { outline: none; border-color: var(--ctf); }
+    .ctf-card__input:disabled { color: var(--ctf); opacity: 0.8; }
+    .ctf-card__submit { background: var(--ctf); color: #04231f; border: none; border-radius: 10px; padding: 0.7rem 1.3rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+    .ctf-card__submit:hover { opacity: 0.88; }
+    .ctf-card__submit:disabled { opacity: 0.5; cursor: default; }
+    .ctf-card__msg { margin-top: 0.8rem; font-size: var(--text-sm); }
+    .ctf-card__msg.is-ok { color: var(--ctf); }
+    .ctf-card__msg.is-bad { color: #ff6b6b; }
+    .ctf-card.shake { animation: ctf-shake 0.4s; }
+    @keyframes ctf-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+
+    .ctf__win { text-align: center; margin: 3.2rem auto 0; max-width: 48rem; padding: 2.4rem; border: 1px solid rgba(25,211,197,0.4); border-radius: 18px; background: var(--ctf-dim); }
+    .ctf__win-title { font-size: var(--text-2xl); font-weight: 700; }
+    .ctf__win-sub { color: var(--text-secondary); line-height: 1.6; margin: 0.8rem 0 1.4rem; }
+    .ctf__win-sub strong { color: var(--ctf); }
+    .ctf__win-links { display: flex; gap: 1.4rem; justify-content: center; flex-wrap: wrap; }
+    .ctf__win-links a { color: var(--ctf); text-decoration: none; font-weight: 600; }
+    .ctf__win-links a:hover { text-decoration: underline; }
+  </style>
+</BaseLayout>
