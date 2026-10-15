@@ -14,8 +14,8 @@ export interface Game {
 export const games: Game[] = [
   {
     title: 'Capture the Flag',
-    meta: 'CTF · Crypto & forensics',
-    desc: 'A browser CTF — seven crypto, encoding and forensics challenges, every flag KBS{…}. Solve them with the DevSec Toolbox; progress saves as you capture flags.',
+    meta: 'CTF · 16 challenges',
+    desc: 'A terminal-style browser CTF — 16 challenges across crypto, encoding, forensics, stego, web and reversing. Some are strings; some are real files you download and crack (PNG stego, a broken header, an obfuscated Python script). Solve them with the DevSec Toolbox; progress saves as you capture flags.',
     href: '/games/ctf/',
     emoji: '🚩',
     badge: 'New',
