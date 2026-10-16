@@ -216,6 +216,13 @@ const routes: Record<string, Handler> = {
   '/api/chat': chat,
 };
 
+/** Retired URLs and where they live now (the old CV, the React-era sitemap). */
+const retired: Record<string, string> = {
+  '/cv/ksatria-cv-ai-engineer.pdf': '/cv/ksatria-bintang-samudra-resume.pdf',
+  '/cv/ksatria-cv-ai-engineer.html': '/cv/ksatria-bintang-samudra-resume.pdf',
+  '/sitemap.xml': '/sitemap-index.xml',
+};
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -225,6 +232,10 @@ export default {
       url.hostname = url.hostname.slice(4);
       return Response.redirect(url.toString(), 301);
     }
+
+    // Retired URLs → their current home, checked before assets so a stale copy is never served.
+    const moved = retired[url.pathname];
+    if (moved) return Response.redirect(new URL(moved, url.origin).toString(), 301);
 
     if (url.pathname.startsWith('/api/')) {
       const handler = routes[url.pathname.replace(/\/$/, '')];
