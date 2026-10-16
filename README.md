@@ -15,7 +15,6 @@
 
 > [!IMPORTANT]
 > **v2 is live at [ksatriabintangsamudra.com](https://ksatriabintangsamudra.com)** (deployed from the `v2-astro` branch).
-> The previous React site is still served from `main` at [ksatriabintangsamudra.my.id](https://ksatriabintangsamudra.my.id) until the old domain is redirected.
 > Check the [Roadmap](#-roadmap) for real progress.
 
 ---
@@ -449,8 +448,8 @@ A committed `.dev.vars.example` lists the names with empty values.
 ### Commands
 
 ```bash
-git clone https://github.com/Kstriabintang/Kstriabintang.github.io.git
-cd Kstriabintang.github.io
+git clone https://github.com/Kstriabintang/ksatriabintangsamudra.com.git
+cd ksatriabintangsamudra.com
 git switch v2-astro
 
 npm install
@@ -493,9 +492,8 @@ npm run test:e2e     # Playwright e2e + visual
 |------|-------|
 | Production domain | `ksatriabintangsamudra.com` (Cloudflare Registrar, registered 2026-09-25) |
 | `www` | 301 → apex |
-| Hosting | Cloudflare Pages project, production branch `main` |
-| Old domain | `ksatriabintangsamudra.my.id/*` → 301 → `ksatriabintangsamudra.com/$1` |
-| Old hosting | GitHub Pages workflow and `CNAME` files removed after cutover |
+| Hosting | Cloudflare Worker `ksatriabintangsamudra` serving the static build (`npm run deploy`), branch `v2-astro` |
+| Old site | Retired: the React `main` branch and its GitHub Pages site are removed |
 
 ### Cutover checklist (end of Phase 1)
 
