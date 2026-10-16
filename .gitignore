@@ -52,3 +52,4 @@ coverage/
 .wrangler/
 .dev.vars
 .playwright-mcp/
+.cf-token-ksatria.txt
