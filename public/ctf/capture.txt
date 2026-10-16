@@ -1,0 +1,16 @@
+GET /account/dashboard HTTP/1.1
+Host: shop.deadface.io
+User-Agent: Mozilla/5.0 (X11; Linux x86_64)
+Accept: text/html,application/xhtml+xml
+Authorization: Basic Z3Vlc3Q6Z3Vlc3Q=
+Cookie: prefs=dGhlbWU9ZGFyazsgbGFuZz1lbg==; ab_group=control
+
+HTTP/1.1 200 OK
+Server: nginx
+Content-Type: text/html; charset=utf-8
+Set-Cookie: hint=bm90LXRoZS1mbGFnLWtlZXAtbG9va2luZw==; Path=/
+X-Session-Token: S0JTe2MwMGtpM19jcnVtYnN9
+X-Powered-By: PhantomStack
+Cache-Control: no-store
+
+<!doctype html><title>Dashboard</title><p>Welcome back.</p>

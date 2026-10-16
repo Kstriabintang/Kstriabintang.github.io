@@ -23,6 +23,10 @@ const challenges = [
   { id: 'whisper', cat: 'STEGO', diff: 'insane', pts: 450, title: 'Whisper', tool: 'fileinspect', type: 'file', file: '/ctf/whisper.png', thumb: '/ctf/whisper.png', prompt: 'The flag is encoded in the least-significant bit of the red channel, left-to-right, top-to-bottom, terminated by a NUL byte.', hint: 'Classic LSB steganography. Extract LSBs of the red channel into bytes (zsteg / stegsolve / a few lines of Python + PIL).', hash: 'cc596921e305531cdb22ecb245142f2cde3709d65f952f8a5f20f8278331d119' },
   { id: 'view-source', cat: 'WEB', diff: 'medium', pts: 200, title: 'Right-Click Denied', tool: 'base64', type: 'web', file: '/ctf/denied.html', prompt: 'Open the page. It blocks right-click and says there is nothing here. It is lying.', hint: 'View source (Ctrl/Cmd+U) or DevTools. A Base64 string sits in a comment — decode it (DevSec › Base64).', hash: '69784554f7d5d295a3dfd139a1c93becda77675144dc781c5bc97a016b357a33' },
   { id: 'spaghetti', cat: 'REVERSING', diff: 'hard', pts: 375, title: 'Spaghetti', tool: null, type: 'file', file: '/ctf/spaghetti.py', prompt: 'A short, deliberately messy Python script. Figure out what it prints — or just run it.', hint: 'Each byte is XORed with 0x2a. Run python3 spaghetti.py, or decode the list yourself.', hash: 'e55bf4042509fb23e8f2a1af1cf2a0052da888a724d5605f6e3c4597d6cbb7c9' },
+  { id: 'morse', cat: 'CRYPTO', diff: 'medium', pts: 175, title: 'Dots & Dashes', tool: null, type: 'text', prompt: 'Dots, dashes, and silence. Decode the signal.', puzzle: '-- ----- .-. ... ...-- -.-. ----- -.. ...--', hint: 'International Morse, letters separated by spaces. Decode it, then lower-case the result into KBS{...}.', hash: '1a5e9db7f90a58b43693a46d056eb2f342cbbe8ec1bfa073f0f66df2382a5314' },
+  { id: 'epitaph', cat: 'STEGO', diff: 'easy', pts: 150, title: 'Epitaph', tool: null, type: 'file', file: '/ctf/epitaph.txt', prompt: 'A caretaker log, water-damaged. The words say nothing — but the lines do.', hint: 'Acrostic — read the FIRST letter of every line, top to bottom, then lower-case that word into KBS{...}.', hash: 'cc0416fe400a75b49651da40c7057b4fc8da455f46ad6b23f81a64228264a0e0' },
+  { id: 'capture', cat: 'TRAFFIC', diff: 'medium', pts: 225, title: 'Packet Capture', tool: 'base64', type: 'file', file: '/ctf/capture.txt', prompt: 'A captured HTTP exchange. One header is carrying more than it should.', hint: 'Scan every header for Base64 — one token decodes to the flag, the rest are decoys. DevSec › Base64.', hash: '2be06cc174f08d8e581f641108fd92fd5c228fcf7c7a9d2dc7eca326c4ecebf2' },
+  { id: 'veils', cat: 'PROGRAMMING', diff: 'hard', pts: 325, title: 'A Dozen Veils', tool: 'base64', type: 'text', prompt: 'Base64, wrapped a dozen times. By hand you will give up; by loop you will not.', puzzle: 'Vm0wd2QyUXlVWGxXYTFwUFZsZG9WVll3WkRSV01WbDNXa2M1VjFKc2JETlhhMk0xVmpKS1IySkVUbGhoTWsweFZqQmFZV1JIVmtkWGJGcE9ZV3RGZUZacVFtRlRNazE1VTJ0V1ZXSkhhRzlVVmxaM1ZsWmtWMWt6YUZSTlZXdzBWa2MxVDFkSFNrZGpSVGxhWWxSR2RsWldXbUZrUjFaSFYyMTRVMkpIZHpCV2Fra3hVakZhV0ZOcmFGWmlhMHBZVkZWYWQxTkdVbFZTYlhSWFRWZFNNRlZ0ZUhkV01ERldZMFpzVjFaNlFYaFZla1p6VmpGT2RWVnNXbWxTTW1oWFZtMTBWMWxXVWtkWGJHUllZa2hDYzFWdE1WTk5SbkJHVjJ4T1ZXSkdjREJhU0hCRFZqSkZlVlJZYUZabGEzQklWbXBHVDJSV1ZuUmhSazVzWWxob2IxWnRjRU5pTVVWNFYxaG9hbEp0YUhOVmFrSmhZMVphZEdSSVpHeGlSbXcxVkZaU1UxWnJNVVZTYTFwWFlsaENXRlpxUmt0ak1rNUlZVVprYUdFeGNHOVdha0poVkRKT2RGTnJaRlJpVjJoeldXeG9iMkl4V1hoYVJGSnBUVlpXTkZaWGRHdFhSMHBJVld4c1dtSkdXbWhXYTFwaFpFZFNTVnBIZUZkaVIzY3hWMnhXVjFReFdYZE5XRXBYWVdzMVlWUlZXbmRXUmxweFVtMUdWMDFyTlVoV1J6RkhWVEZLVjJORlZsZGlSMUV3VlZSR1lWWnJNVlpXYXpWVFVrVkZOUT09', hint: 'Base64-decode repeatedly (about 12 times) until the text starts with KBS{. A short while-loop in Python.', hash: '806cc49a69ce5c2643056aa6e5ba0db56bab3c6ebee9e7fa09deec0c9ad58780' },
 ];
 
 const tools = [
@@ -36,11 +40,12 @@ const diffs = [
   { k: 'hard', label: 'hard' }, { k: 'insane', label: 'insane' },
 ];
 const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
+const catWords = cats.filter((c) => c !== 'ALL').map((c) => c.toLowerCase()).join(', ');
 ---
 
 <BaseLayout
   title="Capture the Flag — a terminal CTF"
-  description="A browser capture-the-flag by Ksatria Bintang Samudra: 16 challenges across crypto, encoding, forensics, steganography, web and reversing — real files to download and crack. Solve them with the DevSec Toolbox. Runs entirely in your browser."
+  description={`A browser capture-the-flag by Ksatria Bintang Samudra: ${challenges.length} challenges across ${catWords} — real files to download and crack. Solve them with the DevSec Toolbox. Runs entirely in your browser.`}
 >
   <main class="tool-page ctf-page" data-total-pts={totalPts}>
     <div class="tool-page__container ctf-wrap">
@@ -59,7 +64,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
             <p class="ctf-term__line"><span class="ctf-term__prompt">$</span> whoami &amp;&amp; cat intro.txt</p>
             <h1 class="ctf-term__title">Capture the <span>Flag</span></h1>
             <p class="ctf-term__desc">
-              16 challenges — crypto, encoding, forensics, stego, web and reversing. Every flag is
+              {challenges.length} challenges — {catWords}. Every flag is
               <code>KBS&#123;…&#125;</code>. Some are strings; some are <strong>real files you download and crack</strong>.
               Solve them with my <a href={DEVSEC} target="_blank" rel="noopener">DevSec Toolbox</a> — or any tool you like
               (<code>strings</code>, <code>exiftool</code>, <code>binwalk</code>, <code>python3</code>).
@@ -166,8 +171,8 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
  | || | /_\ |  \/  | \| | __|   \
  | __ |/ _ \| |\/| | .` | _|| |) |
  |_||_/_/ \_\_|  |_|_|\_|___|___/ </pre>
-        <p class="ctf-win__title">All 16 flags captured — <strong data-win-pts>0</strong> pts.</p>
-        <p class="ctf-win__sub">Clean sweep. You just worked through crypto, forensics, stego, web and reversing with the same toolbox I bring to the real ones.</p>
+        <p class="ctf-win__title">All {challenges.length} flags captured — <strong data-win-pts>0</strong> pts.</p>
+        <p class="ctf-win__sub">Clean sweep across the whole board — {catWords} — with the same toolbox I bring to the real ones.</p>
         <div class="ctf-win__links">
           <a href="https://github.com/Kstriabintang" target="_blank" rel="noopener">GitHub ↗</a>
           <a href={DEVSEC} target="_blank" rel="noopener">DevSec Toolbox ↗</a>
@@ -180,7 +185,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
         <p class="ctf-cert__eyebrow">Your reward</p>
         <h2 class="ctf-cert__h2">A certificate worth earning.</h2>
         <p class="ctf-cert__lead">
-          Capture all <b>16</b> flags and claim a personalized certificate — scannable, downloadable, yours.
+          Capture all <b>{challenges.length}</b> flags and claim a personalized certificate — scannable, downloadable, yours.
           Below is a live sample issued to <b>Ksatria Bintang Samudra</b>.
         </p>
 
@@ -189,7 +194,7 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
         </div>
         <div class="ctf-cert__lock" data-cert-lock>
           <span class="ctf-cert__lock-icon" aria-hidden="true">🔒</span>
-          <p><b data-cert-remaining>16</b> flags left to unlock your own — this is a live sample.</p>
+          <p><b data-cert-remaining>{challenges.length}</b> flags left to unlock your own — this is a live sample.</p>
         </div>
 
         <div class="ctf-cert__claim" data-cert-claim hidden>
@@ -302,10 +307,11 @@ const totalPts = challenges.reduce((a, c) => a + c.pts, 0);
     // Boot sequence → reveal banner
     const boot = document.getElementById('ctf-boot') as HTMLElement;
     const banner = document.getElementById('ctf-banner') as HTMLElement;
+    const bootCats = [...new Set(cards.map((c) => (c.dataset.cat || '').toLowerCase()))].join(' · ');
     const lines = [
       'kbs@lab:~$ ./ctf --init',
-      '[ok] mounting /challenges ... 16 found',
-      '[ok] crypto · encoding · forensics · stego · web · reversing',
+      `[ok] mounting /challenges ... ${cards.length} found`,
+      `[ok] ${bootCats}`,
       '[ok] flag format: KBS{...}  ·  verify: sha-256 (offline)',
       '[ok] ready. good hunting.',
     ];
